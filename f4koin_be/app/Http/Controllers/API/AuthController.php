@@ -40,15 +40,6 @@ class AuthController extends Controller
         return response($response,201);
     }
 
-    public function logout(User $user)
-    {
-        $user->tokens()->delete();
-
-        return [
-            'message' => 'User logged out'
-        ];
-    }
-
     public function login(Request $request) 
     {
         $fields = $request->validate([
@@ -73,4 +64,14 @@ class AuthController extends Controller
 
         return response($response,201);
     }
+
+    public function logout(User $user)
+    {
+        $user->tokens()->delete();
+
+        return [
+            'message' => 'User logged out'
+        ];
+    }
+    
 }

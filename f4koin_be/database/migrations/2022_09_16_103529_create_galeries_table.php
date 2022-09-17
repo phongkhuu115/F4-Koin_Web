@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('galeries', function (Blueprint $table) {
-            $table->integer('galeryID')->primary();
+            $table->uuid('galeryID')->primary();
             $table->integer('galeryProductID');
             $table->integer('galeryThumbnail');
         });

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sessions', function (Blueprint $table) {
-            $table->integer('sessionID')->primary();
+            $table->uuid('sessionID')->primary();
             $table->integer('sessionUserID');
             $table->dateTime('create_at');
             $table->dateTime('update_at');

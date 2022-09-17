@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('feed_backs', function (Blueprint $table) {
-            $table->integer('feedbackID')->primary();
+            $table->uuid('feedbackID')->primary();
             $table->string('firstName');
             $table->string('lastName');
             $table->string('email');

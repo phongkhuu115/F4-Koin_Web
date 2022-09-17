@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('discounts', function (Blueprint $table) {
-            $table->integer('discountID')->primary();
+            $table->uuid('discountID')->primary();
             $table->string('discountName');
             $table->decimal('discountRate');
             $table->boolean('discountActive');

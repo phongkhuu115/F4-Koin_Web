@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->integer('payID')->primary();
+            $table->uuid('payID')->primary();
             $table->integer('payUserID');
             $table->string('payType');
         });

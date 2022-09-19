@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.2.1",
+    "sass": "^1.54.9"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.19.1",
+    "@babel/preset-env": "^7.19.1"
+  }
+}

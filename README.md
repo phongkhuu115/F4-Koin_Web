@@ -2,7 +2,7 @@
 
 ## Web E-Commerce: F4-Koin
 
-**Thành viên Nhóm
+**Thành viên Nhóm**
 
 1. Khưu Minh Phong
 

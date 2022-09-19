@@ -1,5 +1,5 @@
 b1: tạo file .eve lấy nội dung từ .env example
-b2: tạo database rồi 
+b2: tạo database 
 note về mấy cái posting - fillable
 php artisan make:controller API\UserController --model=User // tạo một controller có đường dẫn là 'API\UserController' cho model user(request) cái gì đó truyền vào cái hàm định nghĩa ở file
 php artisan key:generate // 

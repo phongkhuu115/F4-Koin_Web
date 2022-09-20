@@ -45,7 +45,7 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function showAll(User $user)
     {
         //
     }
@@ -84,9 +84,10 @@ class UserController extends Controller
         //
     }
 
-    public function myfunctionforindexUser()
+    public function getAllUser()
     {
         $user = User::all();
         return ['users' => $user];
     }
+
 }

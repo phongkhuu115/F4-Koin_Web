@@ -68,9 +68,8 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product)
-    {    
-        $product->update([    
-        'productID' => $request -> productID,
+    {   $isSuccess =  $product::where('productID', $request->productID)
+        ->update([    
         'productName' => $request ->productName,
         'productType' => $request ->productType,
         'productDetail' => $request ->productDetail,
@@ -80,9 +79,11 @@ class ItemController extends Controller
         'productDiscountID' => $request ->productDiscountID,
         'productThumbnail' => $request ->productThumbnail,
         'update_at' => now()]);
+       
         return response() -> json([
-            'message' => 'Product updated successfully',
+            'message' =>  $isSuccess ? 'Product updated successfully' : 'Product update failed',
             'request' => $request->all()
+            
         ], 200);
     }
 

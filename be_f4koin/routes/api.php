@@ -21,6 +21,7 @@ Route::post('/login',[AuthController::class,'login']);
 
 Route::group(['middleware'=>['auth:sanctum']],function () {
     Route::post('/logout',[AuthController::class,'logout']);
+    
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -36,5 +37,5 @@ Route::get('/getAllUser',[UserController::class,'showAll']);
 //  The Post Type is used to insert the data into the database
 Route::get('/getAllItem',[ItemController::class,'showAll']);
 Route::post('/insertItem',[ItemController::class,'insert']);
-Route::post('/updateItem',[ItemController::class,'update']);
+Route::put('/updateItem',[ItemController::class,'update']);
 

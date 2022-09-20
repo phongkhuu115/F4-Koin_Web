@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ItemController;
+use App\Models\Role;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,12 +18,12 @@ use App\Http\Controllers\API\ItemController;
 |
 */
 
-Route::post('/register',[AuthController::class,'register']);
-Route::post('/login',[AuthController::class,'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::group(['middleware'=>['auth:sanctum']],function () {
-    Route::post('/logout',[AuthController::class,'logout']);
-    
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -31,11 +33,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // This is the route for the testing API
 // The Get Type is used to get the data from the database
-Route::get('/getAllUser',[UserController::class,'showAll']);
-
+Route::get('/getAllUser', [UserController::class, 'showAll']);
 
 //  The Post Type is used to insert the data into the database
-Route::get('/getAllItem',[ItemController::class,'showAll']);
-Route::post('/insertItem',[ItemController::class,'insert']);
-Route::put('/updateItem',[ItemController::class,'update']);
+
+//item
+
+Route::post('/insertItem', [ItemController::class, 'insert']);
+Route::put('/updateItem', [ItemController::class, 'update']);
+Route::delete('/deleteItem', [ItemController::class, 'delete']);
+Route::get('/getSpecifyItem', [ItemController::class, 'getbyID']);
+Route::get('/getAllItem', [ItemController::class, 'showall']);
+Route::get('/getCategoryItem', [ItemController::class, 'getbyCatID']);
 

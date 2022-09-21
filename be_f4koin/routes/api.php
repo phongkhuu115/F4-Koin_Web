@@ -41,7 +41,7 @@ Route::get('/getAllUser', [UserController::class, 'showAll']);
 
 Route::post('/insertItem', [ItemController::class, 'insert']);
 Route::put('/updateItem', [ItemController::class, 'update']);
-Route::delete('/deleteItem', [ItemController::class, 'delete']);
+Route::delete('/deleteItem', [ItemController::class, 'destroy']);
 Route::get('/getSpecifyItem', [ItemController::class, 'getbyID']);
 Route::get('/getAllItem', [ItemController::class, 'showall']);
 Route::get('/getCategoryItem', [ItemController::class, 'getbyCatID']);

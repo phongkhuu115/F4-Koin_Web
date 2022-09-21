@@ -104,7 +104,12 @@ class ItemController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product,Request $request)
     {
+        $isSuccess = $product::where('productID', $request->productID)->delete();
+        return response()->json([
+            'message' =>  $isSuccess ? 'Product deleted successfully' : 'Product delete failed',
+            'product' => $product
+        ], 200);
     }
 }

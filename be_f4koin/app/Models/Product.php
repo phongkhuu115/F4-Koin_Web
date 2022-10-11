@@ -23,7 +23,6 @@ class Product extends Model
         'productID',       
         'productCategoryID',
         'productDiscountID',
-
     ];
 
 

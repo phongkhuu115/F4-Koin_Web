@@ -20,6 +20,12 @@ use App\Models\Role;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/insertItem', [ItemController::class, 'insert']);
+Route::put('/updateItem', [ItemController::class, 'update']);
+Route::delete('/deleteItem', [ItemController::class, 'destroy']);
+Route::get('/getSpecifyItem', [ItemController::class, 'getbyID']);
+Route::get('/getAllItem', [ItemController::class, 'showall']);
+Route::get('/getCategoryItem', [ItemController::class, 'getbyCatID']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -31,18 +37,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-// This is the route for the testing API
-// The Get Type is used to get the data from the database
 Route::get('/getAllUser', [UserController::class, 'showAll']);
-
-//  The Post Type is used to insert the data into the database
-
-//item
-
-Route::post('/insertItem', [ItemController::class, 'insert']);
-Route::put('/updateItem', [ItemController::class, 'update']);
-Route::delete('/deleteItem', [ItemController::class, 'destroy']);
-Route::get('/getSpecifyItem', [ItemController::class, 'getbyID']);
-Route::get('/getAllItem', [ItemController::class, 'showall']);
-Route::get('/getCategoryItem', [ItemController::class, 'getbyCatID']);
-

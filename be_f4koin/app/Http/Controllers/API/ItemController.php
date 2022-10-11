@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Validator;
+use Illuminate\Support\Facades\Hash;
 
 class ItemController extends Controller
 {
@@ -13,6 +15,18 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function isValidRQ($request)
+    {
+        $validator = Validator::make($request->all(), [
+            'productID' => 'required',
+            'productCategoryID' => 'required',
+            'productDiscountID' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return false;
+        }
+        return true;
+    }
     public function index()
     {
         //
@@ -29,7 +43,7 @@ class ItemController extends Controller
         return response()->json([
             'product found' => $item,
             'status' => $item != null ?  'success':'fail'
-        ]);
+        ],200);
     }
     /**
      * Store a newly created resource in storage.
@@ -52,7 +66,9 @@ class ItemController extends Controller
         $product->update_at = now();
         $isSuccess = $product->save();
         return response()->json([
-            'message' =>  $isSuccess ? 'Product created failed' : 'Product created successfully',
+            'request' => $request->all(),
+            'token' =>  $request->bearerToken(),
+            'message' =>  $isSuccess ? 'Product created successfully' :'Product created failed'  ,
             'product' => $product
         ], 201);
     }
@@ -90,11 +106,9 @@ class ItemController extends Controller
                 'productThumbnail' => $request->productThumbnail,
                 'update_at' => now()
             ]);
-
         return response()->json([
             'message' =>  $isSuccess ? 'Product updated successfully' : 'Product update failed',
             'request' => $request->all()
-
         ], 200);
     }
 

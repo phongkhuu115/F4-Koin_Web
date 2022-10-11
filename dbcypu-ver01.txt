@@ -1,0 +1,4 @@
+Database:	fzypgzcz_demo
+Host:	localhost
+Username:	fzypgzcz_demo
+Password:	5AvHP3oD

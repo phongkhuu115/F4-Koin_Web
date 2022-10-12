@@ -59,7 +59,7 @@ class ItemController extends Controller
         $product->productDetail = $request->productDetail;
         $product->productPrice = $request->productPrice;
         $product->productCategoryID = $request->productCategoryID;
-        $product->productInentory = $request->productInentory;
+        $product->productInventory = $request->productInventory;
         $product->productDiscountID = $request->productDiscountID;
         $product->productThumbnail = $request->productThumbnail;
         $product->create_at = now();
@@ -101,7 +101,7 @@ class ItemController extends Controller
                 'productDetail' => $request->productDetail,
                 'productPrice' => $request->productPrice,
                 'productCategoryID' => $request->productCategoryID,
-                'productInentory' => $request->productInentory,
+                'productInventory' => $request->productInentory,
                 'productDiscountID' => $request->productDiscountID,
                 'productThumbnail' => $request->productThumbnail,
                 'update_at' => now()
@@ -120,10 +120,11 @@ class ItemController extends Controller
      */
     public function destroy(Product $product,Request $request)
     {
+        
         $isSuccess = $product::where('productID', $request->productID)->delete();
         return response()->json([
             'message' =>  $isSuccess ? 'Product deleted successfully' : 'Product delete failed',
-            'product' => $product
+            'request' => $request->all()
         ], 200);
     }
 }

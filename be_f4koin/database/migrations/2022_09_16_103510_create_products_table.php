@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('productDetail');
             $table->integer('productPrice');
             $table->integer('productCategoryID');
-            $table->integer('productInentory');
+            $table->integer('productInventory');
             $table->integer('productDiscountID');
             $table->string('productThumbnail');
             $table->dateTime('create_at');

@@ -17,19 +17,17 @@ use App\Models\Role;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/insertItem', [ItemController::class, 'insert']);
-Route::put('/updateItem', [ItemController::class, 'update']);
-Route::delete('/deleteItem', [ItemController::class, 'destroy']);
-Route::get('/getSpecifyItem', [ItemController::class, 'getbyID']);
-Route::get('/getAllItem', [ItemController::class, 'showall']);
-Route::get('/getCategoryItem', [ItemController::class, 'getbyCatID']);
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-
+    Route::post('/insertItem', [ItemController::class, 'insert']);
+    Route::put('/updateItem', [ItemController::class, 'update']);
+    Route::delete('/deleteItem', [ItemController::class, 'destroy']);
+    Route::get('/getSpecifyItem', [ItemController::class, 'getbyID']);
+    Route::get('/getAllItem', [ItemController::class, 'showall']);
+    Route::get('/getCategoryItem', [ItemController::class, 'getbyCatID']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

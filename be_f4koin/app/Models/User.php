@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\UuidTrait;
-
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {

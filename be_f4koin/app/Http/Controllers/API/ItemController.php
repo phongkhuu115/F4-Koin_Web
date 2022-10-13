@@ -5,45 +5,35 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Validator;
-use Illuminate\Support\Facades\Hash;
 
 class ItemController extends Controller
 {
+
+    public function isAdmin(Request $request)
+    {
+        if ($request->user()->userRoleID == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function isValidRQ($request)
-    {
-        $validator = Validator::make($request->all(), [
-            'productID' => 'required',
-            'productCategoryID' => 'required',
-            'productDiscountID' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return false;
-        }
-        return true;
-    }
-    public function index()
-    {
-        //
-       $product = Product::all();
-    }
-    public function getbyCatID()
+    public function getbycategoryid()
     {
         $product = Product::where('productCategoryID', request('productCategoryID'))->get();
         return response()->json($product);
     }
     public function getbyid(Request $request)
-    {    
+    {
         $item = Product::find($request->productID);
         return response()->json([
             'product found' => $item,
-            'status' => $item != null ?  'success':'fail'
-        ],200);
+            'status' => $item != null ?  'success' : 'fail'
+        ], 200);
     }
     /**
      * Store a newly created resource in storage.
@@ -53,36 +43,46 @@ class ItemController extends Controller
      */
     public function insert(Request $request)
     {
-        $product = new Product;
-        $product->productName = $request->productName;
-        $product->productType = $request->productType;
-        $product->productDetail = $request->productDetail;
-        $product->productPrice = $request->productPrice;
-        $product->productCategoryID = $request->productCategoryID;
-        $product->productInventory = $request->productInventory;
-        $product->productDiscountID = $request->productDiscountID;
-        $product->productThumbnail = $request->productThumbnail;
-        $product->create_at = now();
-        $product->update_at = now();
-        $isSuccess = $product->save();
-        return response()->json([
-            'request' => $request->all(),
-            'token' =>  $request->bearerToken(),
-            'message' =>  $isSuccess ? 'Product created successfully' :'Product created failed'  ,
-            'product' => $product
-        ], 201);
+        if ($this->isAdmin($request)) {
+            $product = new Product;
+            $product->productName = $request->productName;
+            $product->productType = $request->productType;
+            $product->productDetail = $request->productDetail;
+            $product->productPrice = $request->productPrice;
+            $product->productCategoryID = $request->productCategoryID;
+            $product->productInventory = $request->productInventory;
+            $product->productDiscountID = $request->productDiscountID;
+            $product->productThumbnail = $request->productThumbnail;
+            $product->create_at = now();
+            $product->update_at = now();
+            $isSuccess = $product->save();
+            return response()->json([
+                'request' => $request->all(),
+                'token' =>  $request->bearerToken(),
+                'message' =>  $isSuccess ? 'Product created successfully' : 'Product created failed',
+                'product' => $product
+            ], 201);
+        } else {
+            return response()->json([
+                'your role' => $request->user()->userRoleID,
+                'message' => 'You have no permission'
+            ], 401);
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Display the all resource.
      *
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function showall()
+    public function index(Request $request)
     {
         $product = Product::all();
-        return ['product' => $product];
+        return response()->json([
+            'product' => $product,
+            'user making request' => $request->user()
+        ], 200);
     }
 
     /**
@@ -92,24 +92,31 @@ class ItemController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function edit(Request $request, Product $product)
     {
-        $isSuccess =  $product::where('productID', $request->productID)
-            ->update([
-                'productName' => $request->productName,
-                'productType' => $request->productType,
-                'productDetail' => $request->productDetail,
-                'productPrice' => $request->productPrice,
-                'productCategoryID' => $request->productCategoryID,
-                'productInventory' => $request->productInentory,
-                'productDiscountID' => $request->productDiscountID,
-                'productThumbnail' => $request->productThumbnail,
-                'update_at' => now()
-            ]);
-        return response()->json([
-            'message' =>  $isSuccess ? 'Product updated successfully' : 'Product update failed',
-            'request' => $request->all()
-        ], 200);
+        if ($this->isAdmin($request)) {
+
+            $isSuccess =  Product::where('productID', $request->productID)
+                ->update([
+                    'productName' => $request->productName,
+                    'productType' => $request->productType,
+                    'productDetail' => $request->productDetail,
+                    'productPrice' => $request->productPrice,
+                    'productCategoryID' => $request->productCategoryID,
+                    'productInventory' => $request->productInentory,
+                    'productDiscountID' => $request->productDiscountID,
+                    'productThumbnail' => $request->productThumbnail,
+                    'update_at' => now()
+                ]);
+            return response()->json([
+                'message' =>  $isSuccess ? 'Product updated successfully' : 'Product update failed',
+            ], 200);
+        } else {
+            return response()->json([
+                'your role' => $request->user()->userRoleID,
+                'message' => 'You have no permission'
+            ], 401);
+        }
     }
 
     /**
@@ -118,13 +125,19 @@ class ItemController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product,Request $request)
+    public function destroy(Product $product, Request $request)
     {
-        
-        $isSuccess = $product::where('productID', $request->productID)->delete();
-        return response()->json([
-            'message' =>  $isSuccess ? 'Product deleted successfully' : 'Product delete failed',
-            'request' => $request->all()
-        ], 200);
+        if ($this->isAdmin($request)) {
+            $isSuccess = $product->delete();
+            return response()->json([
+                'message' =>  $isSuccess ? 'Product deleted successfully' : 'Product delete failed',
+                'request' => $request->all()
+            ], 200);
+        } else {
+            return response()->json([
+                'your role' => $request->user()->userRoleID,
+                'message' => 'You have no permission'
+            ], 401);
+        }
     }
 }

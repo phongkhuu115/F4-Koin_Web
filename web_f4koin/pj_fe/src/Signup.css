@@ -1,0 +1,45 @@
+h3 {
+  font-size: 4rem;
+}
+
+p {
+  font-size: 2.4rem;
+}
+
+button {
+  font-size: 2rem;
+}
+
+form {
+  top: 15%;
+  left: 15%;
+  width: 35%;
+}
+
+.half {
+  width: 28rem;
+}
+
+label {
+  cursor: text;
+}
+
+img.main-pic {
+  left: 75%
+}
+
+.signup-button {
+  text-transform: uppercase;
+  min-width: 30rem;
+  padding: 1.6rem 3.2rem;
+}
+
+.signup-button:first-child {
+  background-image: linear-gradient(90deg, #A2A2A2 0%, #000000 81.44%);
+  color: #fff;
+}
+
+.signup-button:last-child {
+  background-image: linear-gradient(90deg, #6586BE 3.08%, #2D3748 99.95%);
+  color: #fff;
+}

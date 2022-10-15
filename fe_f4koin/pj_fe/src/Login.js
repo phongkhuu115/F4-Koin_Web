@@ -30,15 +30,15 @@ function RenderLogin() {
   return (
     <div className="Main container-fluid d-flex justify-content-center align-items-center h-100 position-relative">
       <form action="" className='login-form position-absolute'>
-        <label htmlFor="" className='fs-3 mb-2'>Username:</label>
-        <input type="text" name="" id="" placeholder='example123' className='form-control fs-4 p-4' onChange={(e) => setUsername(e.target.value)} />
+        <label htmlFor="username" className='fs-3 mb-2'>Username:</label>
+        <input type="text" name="username" id="username" placeholder='example123' className='form-control fs-4 p-4' onChange={(e) => setUsername(e.target.value)} />
         <div id="emailHelp" class="form-text my-3 fs-5">We'll never share your email with anyone else.</div>
-        <label htmlFor="" className='fs-3 mb-2'>Password:</label>
-        <input type="password" name="" id="" className='form-control fs-4 p-4' placeholder='•••••••••••••••••' onChange={(e) => setPassword(e.target.value)} />
+        <label htmlFor="password" className='fs-3 mb-2'>Password:</label>
+        <input type="password" name="password" id="password" className='form-control fs-4 p-4' placeholder='••••••••••••' onChange={(e) => setPassword(e.target.value)} />
         <div className="d-flex align-items-center justify-content-between">
           <div className='d-flex align-items-center'>
-            <input type="checkbox" name="" id="" className='d-inline-block' />
-            <label htmlFor="" className='d-inline-block fs-4 ms-3'>Remember me?</label>
+            <input type="checkbox" name="remember" id="remember" className='d-inline-block' />
+            <label htmlFor="remember" className='d-inline-block fs-4 ms-3'>Remember me?</label>
           </div>
           <a href="" className='fs-4'>Forgot Password ?</a>
         </div>

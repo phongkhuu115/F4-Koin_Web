@@ -35,12 +35,12 @@ label {
 }
 
 .form-button:first-child {
-  background-color: #fff;
   border: 2px solid #000;
 }
 
 .form-button:last-child {
   background-image: linear-gradient(90deg, #A2A2A2 0%, #000000 81.44%);
   color: #fff;
+  border: none;
 }
 

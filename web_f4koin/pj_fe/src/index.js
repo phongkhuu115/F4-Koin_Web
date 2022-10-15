@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import Header from './Header';
+import Body from './Body'
 import RenderLogin from './Login';
 import RenderSignup from './Signup'
 import {
@@ -18,7 +19,7 @@ root.render(
     <Header />
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={ <RenderLogin></RenderLogin>}></Route>
+        <Route path='/' element={ <Body></Body>}></Route>
         <Route path='/login' element={ <RenderLogin></RenderLogin>}></Route>
         <Route path='/signup' element={ <RenderSignup></RenderSignup>}></Route>
     </Routes>

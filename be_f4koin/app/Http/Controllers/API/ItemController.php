@@ -14,7 +14,7 @@ class ItemController extends Controller
           // return id, name, price, imageurl
         $data = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->orderBy('imageUrl', 'desc')->take(3)->get();   
 
-        return response()->json( [$data, 'message: success'] );
+        return response()->json( [$data, 'status:' => $data != null ? 'success':'fail' ],200 );
     }
     public function isAdmin(Request $request)
     {

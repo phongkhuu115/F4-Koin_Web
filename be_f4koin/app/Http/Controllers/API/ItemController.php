@@ -6,15 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\isEmpty;
+
 class ItemController extends Controller
 {
 
     public function get3Lastest()
-    {   
-          // return id, name, price, imageurl
-        $data = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->orderBy('imageUrl', 'desc')->take(3)->get();   
+    {
+        // return id, name, price, imageurl
+        $data = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->orderBy('imageUrl', 'desc')->take(3)->get();
 
-        return response()->json( [$data, 'status:' => $data != null ? 'success':'fail' ],200 );
+        return response()->json(['product' => $data, 'message:' => $data != null ? 'success' : 'fail'], 200);
     }
     public function isAdmin(Request $request)
     {
@@ -38,8 +40,8 @@ class ItemController extends Controller
     {
         $item = Product::find($request->productID);
         return response()->json([
-            'product found: ' => $item,
-            'status' => $item != null ?  'success' : 'fail'
+            'product' => $item,
+            'message' => $item != null ?  'success' : 'fail'
         ], 200);
     }
     /**
@@ -62,17 +64,14 @@ class ItemController extends Controller
             $product->productThumbnail = $request->productThumbnail;
             $product->create_at = now();
             $product->update_at = now();
-            $isSuccess = $product->save();
             return response()->json([
-                'request' => $request->all(),
-                'token' =>  $request->bearerToken(),
-                'message' =>  $isSuccess ? 'Product created successfully' : 'Product created failed',
-                'product' => $product
-            ], 201);
+                'product added' => $request->all(),
+                'message' =>  $product->save() ? 'Product created successfully' : 'Product created failed',
+            ], 200);
         } else {
             return response()->json([
-                'your role' => $request->user()->userRoleID,
-                'message' => 'You have no permission'
+                'role' => $request->user()->userRoleID,
+                'message:' => 'You have no permission'
             ], 401);
         }
     }
@@ -88,7 +87,7 @@ class ItemController extends Controller
         $product = Product::all();
         return response()->json([
             'product' => $product,
-            'user making request' => $request->user()
+            'role' => $request->user()->userRoleID,
         ], 200);
     }
 
@@ -99,12 +98,13 @@ class ItemController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, Product $product)
+    public function edit(Request $request)
     {
         if ($this->isAdmin($request)) {
-
-            $isSuccess =  Product::where('productID', $request->productID)
-                ->update([
+            $productFound =  Product::where('productID', $request->productID);
+            return response()->json([
+                
+                'message' =>  $productFound->update([
                     'productName' => $request->productName,
                     'productType' => $request->productType,
                     'productDetail' => $request->productDetail,
@@ -114,13 +114,14 @@ class ItemController extends Controller
                     'productDiscountID' => $request->productDiscountID,
                     'productThumbnail' => $request->productThumbnail,
                     'update_at' => now()
-                ]);
-            return response()->json([
-                'message' =>  $isSuccess ? 'Product updated successfully' : 'Product update failed',
+                ]) ? 'Product updated successfully' : 'Product update failed',
+                //product updated
+                'product' => $productFound->get()->count() != 0 ? $productFound->get() : 'Product not found',
+
             ], 200);
         } else {
             return response()->json([
-                'your role' => $request->user()->userRoleID,
+                'role' => $request->user()->userRoleID,
                 'message' => 'You have no permission'
             ], 401);
         }
@@ -132,17 +133,18 @@ class ItemController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product, Request $request)
+    public function destroy(Request $request)
     {
         if ($this->isAdmin($request)) {
-            $isSuccess = $product->delete();
+
+            $productFound = Product::where('productID', $request->productID);
             return response()->json([
-                'message' =>  $isSuccess ? 'Product deleted successfully' : 'Product delete failed',
-                'request' => $request->all()
+                'product' => $productFound->get()->count() != 0  ? $productFound->get() : 'Product not found',
+                'message' =>  $productFound->delete() ? 'Product deleted successfully' : 'Product delete failed',
             ], 200);
         } else {
             return response()->json([
-                'your role' => $request->user()->userRoleID,
+                'role' => $request->user()->userRoleID,
                 'message' => 'You have no permission'
             ], 401);
         }

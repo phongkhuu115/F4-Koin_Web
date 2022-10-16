@@ -10,9 +10,12 @@ class ItemController extends Controller
 {
 
     public function get3Lastest()
-    {
-        $product = Product::orderBy('create_at', 'desc')->take(3)->get();
-        return response()->json($product);
+    {   
+          // return id, name, price, imageurl
+        $data = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->orderBy('imageUrl', 'desc')->take(3)->get();   
+
+
+        return response()->json( $data );
     }
     public function isAdmin(Request $request)
     {

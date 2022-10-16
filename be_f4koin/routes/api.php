@@ -17,9 +17,10 @@ use App\Models\Role;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+// Route Public
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-
+Route::get('/get3Lastest', [ItemController::class, 'get3Lastest']);
 // Route Product
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/updateItem', [ItemController::class, 'edit']);
@@ -28,7 +29,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/getSpecifyItem', [ItemController::class, 'getbyid']);
     Route::get('/getAllItem', [ItemController::class, 'index']);
     Route::get('/getCategoryItem', [ItemController::class, 'getbycategoryid']);
-    Route::get('/get3Lastest', [ItemController::class, 'get3Lastest']);
+
 });
 
 // Route User

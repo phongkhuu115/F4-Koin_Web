@@ -12,5 +12,33 @@ button {
 
 .description {
   top: 25%;
-  left: 20%;
+  left: 10%;
+}
+
+#slidesPic {
+  display: none;
+}
+
+#slidesPic > img {
+  transition: 0.5s;
+}
+
+.fade {
+  animation-name: fade, fadeOut;
+  animation-duration: 2000ms, 2000ms;
+  animation-delay: 0ms, 2000ms;
+}
+
+@keyframes fade {
+  from {opacity: 0}
+  to {opacity: 1}
+}
+
+@keyframes fadeOut {
+  from {opacity: 1}
+  to {opacity: 0}
+}
+
+#dot {
+  background-color: #ccc;
 }

@@ -37,7 +37,7 @@ function RenderLogin() {
         <input type="password" name="password" id="password" className='form-control fs-4 p-4' placeholder='••••••••••••' onChange={(e) => setPassword(e.target.value)} />
         <div className="d-flex align-items-center justify-content-between">
           <div className='d-flex align-items-center'>
-            <input type="checkbox" name="remember" id="remember" className='d-inline-block' />
+            <input type="checkbox" name="remember" id="remember" className='d-inline-block mb-1' />
             <label htmlFor="remember" className='d-inline-block fs-4 ms-3'>Remember me?</label>
           </div>
           <a href="" className='fs-4'>Forgot Password ?</a>

@@ -1,0 +1,38 @@
+header {
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+}
+
+.search-btn {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  width: 6.5rem;
+}
+
+.search-group {
+  background-color: #F3F3F3;
+  border-top-left-radius: 0.375rem;
+  border-bottom-left-radius: 0.375rem;
+}
+
+.search-input {
+  border: none;
+}
+
+.btn-cart {
+  padding-left: 1.6rem;
+  padding-right: 1.6rem;
+}
+
+.avatar {
+  cursor: pointer;
+}
+
+.avatar > img {
+  height: 4.5rem;
+  border-radius: 50%;
+}
+
+button > img {
+  height: 1.6rem;
+}

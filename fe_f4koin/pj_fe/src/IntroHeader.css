@@ -2,3 +2,8 @@
   background-color: #000;
   color: #fff !important; 
 }
+
+.action-menu {
+  right: 0;
+  left: auto !important;
+}

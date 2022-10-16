@@ -1,0 +1,11 @@
+.half:first-child {
+  background-image: url(./assets/fish-link.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.half:last-child {
+  background-image: url(./assets/tool-link.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}

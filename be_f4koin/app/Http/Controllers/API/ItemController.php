@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 class ItemController extends Controller
 {
 
+    public function get3Lastest()
+    {
+        $product = Product::orderBy('create_at', 'desc')->take(3)->get();
+        return response()->json($product);
+    }
     public function isAdmin(Request $request)
     {
         if ($request->user()->userRoleID == 1) {

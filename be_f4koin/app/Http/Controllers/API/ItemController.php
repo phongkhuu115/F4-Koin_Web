@@ -14,8 +14,7 @@ class ItemController extends Controller
           // return id, name, price, imageurl
         $data = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->orderBy('imageUrl', 'desc')->take(3)->get();   
 
-
-        return response()->json( $data );
+        return response()->json( [$data, 'message: success'] );
     }
     public function isAdmin(Request $request)
     {
@@ -39,7 +38,7 @@ class ItemController extends Controller
     {
         $item = Product::find($request->productID);
         return response()->json([
-            'product found' => $item,
+            'product found: ' => $item,
             'status' => $item != null ?  'success' : 'fail'
         ], 200);
     }

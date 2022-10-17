@@ -18,5 +18,4 @@ yarn-error.log
 /.vscode
 
 # ignore other branches
-fe_f4koin
-main
+!master

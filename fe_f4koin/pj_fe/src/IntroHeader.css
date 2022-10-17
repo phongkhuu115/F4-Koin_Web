@@ -7,3 +7,7 @@
   right: 0;
   left: auto !important;
 }
+
+.show {
+  display: block !important;
+}

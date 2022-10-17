@@ -2,30 +2,31 @@ import './Login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import mainPic from './koi.png';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link} from 'react-router-dom'
 
 function RenderLogin() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-  async function loginUser(sendData) {
-    return fetch('http://be.f4koin.cyou/api/login', {
-      method: "POST",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(sendData)
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  }
-  var handleSubmit = async e => {
+  var handleLogin = async e => {
     e.preventDefault();
-    const sendBody = await {
-      username,
-      password
+    try {
+      let res = await axios('http://be.f4koin.cyou/api/login', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: {
+          username: username,
+          password: password
+        }
+      })
+      console.log(res)
     }
-    console.log(sendBody);
-    var result = loginUser(sendBody);
-
-    result = await result.json;
+    catch (error) {
+      console.log(error)
+    }
   }
   return (
     <div className="Main container-fluid d-flex justify-content-center align-items-center h-100 position-relative">
@@ -43,8 +44,8 @@ function RenderLogin() {
           <a href="" className='fs-4'>Forgot Password ?</a>
         </div>
         <div className="d-flex justify-content-evenly mt-4">
-          <button type="submit" className='form-button btn btn-outline-dark text-uppercase fw-bold fs-3' onClick={handleSubmit}>Log In</button>
-          <button type="submit" className='form-button btn text-uppercase fw-bold fs-3'>Sign UP</button>
+          <button type="submit" className='form-button btn btn-outline-dark text-uppercase fw-bold fs-3' onClick={handleLogin}>Log In</button>
+          <Link to = '/signup'><button type="submit" className='form-button btn text-uppercase fw-bold fs-3'>Sign UP</button></Link>
         </div>
       </form>
       <img src={mainPic} className="main-pic h-75 position-absolute top-50 translate-middle" alt="" />

@@ -27,6 +27,7 @@ button {
   animation-name: fade, fadeOut;
   animation-duration: 2000ms, 2000ms;
   animation-delay: 0ms, 2000ms;
+  animation-fill-mode: forwards;
 }
 
 @keyframes fade {

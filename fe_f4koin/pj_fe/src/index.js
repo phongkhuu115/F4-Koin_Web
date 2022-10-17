@@ -17,7 +17,6 @@ const htmlRoot = document.getElementById('root');
 htmlRoot.classList.add("h-100")
 const root = ReactDOM.createRoot(htmlRoot);
 root.render(
-  <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<IntroHeader />}>
@@ -32,6 +31,5 @@ root.render(
         </Route>
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
 );
 

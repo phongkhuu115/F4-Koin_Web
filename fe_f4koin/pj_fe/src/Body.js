@@ -4,7 +4,7 @@ import fishPic from './koi.png';
 import foodPic from './fishfood.jpg';
 import toolPic from './fishtool.jpg';
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 
 var slides = [fishPic, toolPic, foodPic];
@@ -12,23 +12,16 @@ var slides = [fishPic, toolPic, foodPic];
 function Header() {
   const [index, setIndex] = useState(0);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     var pics = document.querySelectorAll('#slidesPic')
-    pics[index % 3].style.display = 'block';
-    setTimeout(() => {
-      pics[index % 3].style.display = 'none'
-      setIndex(index + 1);
-    }, 4000)
-
-  }, [index])
-
-  useEffect(() => {
     var dots = document.querySelectorAll('#dot')
+    pics[index % 3].style.display = 'block';
     dots[index % 3].classList.add('bg-secondary');
     setTimeout(() => {
+      pics[index % 3].style.display = 'none'
       dots[index % 3].classList.remove('bg-secondary');
+      setIndex(index + 1);
     }, 4000)
-
   }, [index])
   return (
     <>

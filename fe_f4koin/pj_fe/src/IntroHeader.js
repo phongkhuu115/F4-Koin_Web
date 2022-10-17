@@ -5,11 +5,11 @@ import { Outlet, Link } from 'react-router-dom'
 
 function openMenu() {
   var menu = document.querySelector('ul.dropdown-menu');
-  if (menu.style.display === 'none') {
-    menu.style.display = 'block';
+  if (!menu.classList.contains('show')) {
+    menu.classList.add('show');
   }
   else {
-    menu.style.display = 'none';
+    menu.classList.remove('show');
   }
 }
 

@@ -15,15 +15,25 @@ class ItemController extends Controller
     // get x item random param
     public function getXRandom(Request $request)
     {
+          
+          
         $x = $request->input('x');
-        $items = Product::inRandomOrder()->limit($x)->get();
+        // return id, name, price, imageurl
+
+        $items = Product::inRandomOrder()->limit($x)->get(['productID', 'productName', 'productPrice', 'imageUrl']);
+        foreach ($items as $item) {
+            $item->imageUrl = 'https://picsum.photos/500/500?' . rand(1, 1000);
+        }
         return response()->json(['product' => $items, 'message' => $items->isEmpty() ? 'product not found' : 'success'], 200);
     }
 
     // get 6 items random
     public function get6Random()
     {
-        $items = Product::inRandomOrder()->limit(6)->get();
+        $items = Product::inRandomOrder()->limit(6)->get(['productID', 'productName', 'productPrice', 'imageUrl']);
+        foreach ($items as $item) {
+            $item->imageUrl = 'https://picsum.photos/500/500?' . rand(1, 1000);
+        }
         return response()->json(['product' => $items, 'message' => $items->isEmpty() ? 'product not found' : 'success'], 200);
     }
     public function get3Lastest()

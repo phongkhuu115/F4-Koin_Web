@@ -23,5 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # ignore other branches 
-be_f4koin
 node_modules

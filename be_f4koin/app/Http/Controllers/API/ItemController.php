@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
+
 use function PHPUnit\Framework\isEmpty;
 
 class ItemController extends Controller
@@ -14,8 +15,13 @@ class ItemController extends Controller
     public function get3Lastest()
     {
         // return id, name, price, imageurl
-        $data = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->orderBy('imageUrl', 'desc')->take(3)->get();
+        $data = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->orderBy('create_at', 'desc')->take(3)->get();
 
+        //  temp modify for MrFong to test Layout
+        //  modify image url with 'https://picsum.photos/200/300?'+random(1,1000)
+        foreach ($data as $item) {
+            $item->imageUrl = 'https://picsum.photos/500/500?' . rand(1, 1000);
+        }
         return response()->json(['product' => $data, 'message:' => $data != null ? 'success' : 'fail'], 200);
     }
     public function isAdmin(Request $request)
@@ -71,7 +77,7 @@ class ItemController extends Controller
         } else {
             return response()->json([
                 'role' => $request->user()->userRoleID,
-                'message:' => 'You have no permission'
+                'message' => 'You have no permission'
             ], 401);
         }
     }

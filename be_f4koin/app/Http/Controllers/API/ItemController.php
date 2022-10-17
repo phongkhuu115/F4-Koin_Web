@@ -12,6 +12,20 @@ use function PHPUnit\Framework\isEmpty;
 class ItemController extends Controller
 {
 
+    // get x item random param
+    public function getXRandom(Request $request)
+    {
+        $x = $request->input('x');
+        $items = Product::inRandomOrder()->limit($x)->get();
+        return response()->json(['product' => $items, 'message' => $items->isEmpty() ? 'product not found' : 'success'], 200);
+    }
+
+    // get 6 items random
+    public function get6Random()
+    {
+        $items = Product::inRandomOrder()->limit(6)->get();
+        return response()->json(['product' => $items, 'message' => $items->isEmpty() ? 'product not found' : 'success'], 200);
+    }
     public function get3Lastest()
     {
         // return id, name, price, imageurl
@@ -109,7 +123,7 @@ class ItemController extends Controller
         if ($this->isAdmin($request)) {
             $productFound =  Product::where('productID', $request->productID);
             return response()->json([
-                
+
                 'message' =>  $productFound->update([
                     'productName' => $request->productName,
                     'productType' => $request->productType,

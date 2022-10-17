@@ -5,36 +5,50 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
-
-
 use function PHPUnit\Framework\isEmpty;
 
 class ItemController extends Controller
 {
+    // custom imageUrl data for testing
+    public function customImageUrl($data)
+    {
+        $data->map(function ($item) {
+            $item->image = 'http://localhost:8000/storage/' . rand(1, 1000);
+            return $item;
+        });
+        return $data;
+    }
+    public function isAdmin(Request $request)
+    {
+        if ($request->user()->userRoleID == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     // get x item random param
     public function getXRandom(Request $request)
-    {
-          
-          
+    {       
         $x = $request->input('x');
         // return id, name, price, imageurl
 
         $items = Product::inRandomOrder()->limit($x)->get(['productID', 'productName', 'productPrice', 'imageUrl']);
-        foreach ($items as $item) {
-            $item->imageUrl = 'https://picsum.photos/500/500?' . rand(1, 1000);
-        }
-        return response()->json(['product' => $items, 'message' => $items->isEmpty() ? 'product not found' : 'success'], 200);
+        
+        return response()->json([
+            'product' =>  $items = $this->customImageUrl($items),
+             'message' => $items->isEmpty() ? 'product not found' : 'success'
+            ], 200);
     }
 
     // get 6 items random
     public function get6Random()
     {
         $items = Product::inRandomOrder()->limit(6)->get(['productID', 'productName', 'productPrice', 'imageUrl']);
-        foreach ($items as $item) {
-            $item->imageUrl = 'https://picsum.photos/500/500?' . rand(1, 1000);
-        }
-        return response()->json(['product' => $items, 'message' => $items->isEmpty() ? 'product not found' : 'success'], 200);
+        return response()->json([
+            'product' =>  $items = $this->customImageUrl($items),
+             'message' => $items->isEmpty() ? 'product not found' : 'success'
+            ], 200);
     }
     public function get3Lastest()
     {
@@ -48,14 +62,7 @@ class ItemController extends Controller
         }
         return response()->json(['product' => $data, 'message:' => $data != null ? 'success' : 'fail'], 200);
     }
-    public function isAdmin(Request $request)
-    {
-        if ($request->user()->userRoleID == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
     /**
      * Display a listing of the resource.
      *

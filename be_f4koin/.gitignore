@@ -17,5 +17,5 @@ yarn-error.log
 
 # ignore other branches
 !master
-
 fe_f4koin
+node_modules

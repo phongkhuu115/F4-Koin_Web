@@ -1,11 +1,19 @@
+a.footer-link:hover {
+  opacity: 0.7;
+}
+
 .link-half:first-child {
-  background-image: url(./assets/fish-link.png);
+  background-image: url(https://picsum.photos/500/500?544);
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 .link-half:last-child {
-  background-image: url(./assets/tool-link.png);
+  background-image: url(https://picsum.photos/500/500?562);
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+.pick-product {
+  background-color: #9CACBF;
 }

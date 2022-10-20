@@ -8,7 +8,7 @@ function ShopHeader() {
   return (
     <>
       <header className='navbar navbar-expand-lg bg-light justify-content-evenly shadow'>
-        <a class="navbar-brand fw-bold fs-3 text-uppercase " href="#">Koi Store</a>
+        <Link class="navbar-brand fw-bold fs-3 text-uppercase " to = '/home'>Koi Store</Link>
         <form action="" className='search-group d-flex'>
           <select id="cars" name="cars" className='p-3 bg-transparent fs-4 fw-bold'>
             <option value="1">All Categories</option>

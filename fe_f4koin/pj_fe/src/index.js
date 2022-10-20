@@ -7,6 +7,7 @@ import Body from './Body'
 import RenderLogin from './Login';
 import RenderSignup from './Signup'
 import HomePage from './Home';
+import ShopFooter from './ShopFooter';
 import {
   BrowserRouter,
   Routes,
@@ -24,7 +25,7 @@ root.render(
           <Route exact path="login" element={<RenderLogin />} />
           <Route exact path="signup" element={<RenderSignup />} />
         </Route>
-        <Route path="/home" element={<ShopHeader />}>
+        <Route path="/home" element={<><ShopHeader /><ShopFooter></ShopFooter></>}>
           <Route index element={<HomePage />} />
           <Route exact path="login" element={<RenderLogin />} />
           <Route exact path="signup" element={<RenderSignup />} />

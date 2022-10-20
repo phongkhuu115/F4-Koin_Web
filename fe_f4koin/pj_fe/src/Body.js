@@ -36,7 +36,7 @@ function Header() {
             Đừng có nhìn nữa mà mua lẹ Koin
           </p>
           <br />
-          <Link to='/' className='d-inline-block w-25'>
+          <Link to='/home' className='d-inline-block w-25'>
             <button className='btn btn-dark fs-1 fw-bold rounded-4'>Shop Now</button>
           </Link>
         </div>

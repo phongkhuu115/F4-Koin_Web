@@ -25,10 +25,10 @@ function IntroHeader() {
             <Link to='/' className="navbar-brand ms-4 text-uppercase fw-bold fs-2">Koi Store</Link>
           </div>
           <ul className="navbar-nav me-auto d-flex flex-row ms-4">
-            <li className="nav-item me-5 rounded"><a href="#" className="nav-link active px-4 py-2 fs-4 hoverEffect">Home</a></li>
-            <li className="nav-item me-5 rounded"><a href="#" className="nav-link active px-4 py-2 fs-4 hoverEffect">Product</a></li>
-            <li className="nav-item me-5 rounded"><a href="#" className="nav-link active px-4 py-2 fs-4 hoverEffect">About Us</a></li>
-            <li className="nav-item me-5 rounded"><a href="#" className="nav-link active px-4 py-2 fs-4 hoverEffect">Sale</a></li>
+            <li className="nav-item me-5 rounded"><Link to='/home' className="nav-link active px-4 py-2 fs-4 hoverEffect">Home</Link></li>
+            <li className="nav-item me-5 rounded"><Link to='/' className="nav-link active px-4 py-2 fs-4 hoverEffect">Product</Link></li>
+            <li className="nav-item me-5 rounded"><Link to='/' className="nav-link active px-4 py-2 fs-4 hoverEffect">About Us</Link></li>
+            <li className="nav-item me-5 rounded"><Link to='/' className="nav-link active px-4 py-2 fs-4 hoverEffect">Sale</Link></li>
           </ul>
           <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle me-5 fs-4 position-relative" type="button" aria-expanded="false" onClick={openMenu}>

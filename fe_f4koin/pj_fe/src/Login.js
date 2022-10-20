@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import mainPic from './koi.png';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
 
 function RenderLogin() {
   const [username, setUsername] = useState();
@@ -12,7 +13,7 @@ function RenderLogin() {
   var handleLogin = async e => {
     e.preventDefault();
     try {
-      let res = await axios('http://be.f4koin.cyou/api/login', {
+      let response = await axios('http://be.f4koin.cyou/api/login', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',
@@ -21,8 +22,9 @@ function RenderLogin() {
           username: username,
           password: password
         }
+      }).then(res => { 
+        localStorage.setItem('jwt', res.data.token)
       })
-      console.log(res)
     }
     catch (error) {
       console.log(error)
@@ -45,7 +47,7 @@ function RenderLogin() {
         </div>
         <div className="d-flex justify-content-evenly mt-4">
           <button type="submit" className='form-button btn btn-outline-dark text-uppercase fw-bold fs-3' onClick={handleLogin}>Log In</button>
-          <Link to = '/signup'><button type="submit" className='form-button btn text-uppercase fw-bold fs-3'>Sign UP</button></Link>
+          <Link to='/signup'><button type="submit" className='form-button btn text-uppercase fw-bold fs-3'>Sign UP</button></Link>
         </div>
       </form>
       <img src={mainPic} className="main-pic h-75 position-absolute top-50 translate-middle" alt="" />

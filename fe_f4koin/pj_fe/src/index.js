@@ -8,6 +8,7 @@ import RenderLogin from './Login';
 import RenderSignup from './Signup'
 import HomePage from './Home';
 import ShopFooter from './ShopFooter';
+import FishShop from './FishShop';
 import {
   BrowserRouter,
   Routes,
@@ -29,6 +30,7 @@ root.render(
           <Route index element={<HomePage />} />
           <Route exact path="login" element={<RenderLogin />} />
           <Route exact path="signup" element={<RenderSignup />} />
+          <Route exact path="fishshop" element={<FishShop/>} />
         </Route>
       </Routes>
     </BrowserRouter>

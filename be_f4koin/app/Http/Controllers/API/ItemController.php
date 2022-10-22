@@ -107,7 +107,7 @@ class ItemController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'role' => $request->user()->userRoleID,
+                // 'role' => $request->user()->userRoleID,
                 'message' => 'You have no permission'
             ], 401);
         }
@@ -124,7 +124,7 @@ class ItemController extends Controller
         $product = Product::all();
         return response()->json([
             'product' => $product,
-            'role' => $request->user()->userRoleID,
+            // 'role' => $request->user()->userRoleID,
         ], 200);
     }
 
@@ -158,7 +158,7 @@ class ItemController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'role' => $request->user()->userRoleID,
+                // 'role' => $request->user()->userRoleID,
                 'message' => 'You have no permission'
             ], 401);
         }
@@ -181,7 +181,7 @@ class ItemController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'role' => $request->user()->userRoleID,
+                // 'role' => $request->user()->userRoleID,
                 'message' => 'You have no permission'
             ], 401);
         }

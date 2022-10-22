@@ -23,13 +23,14 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/get3Lastest', [ItemController::class, 'get3Lastest']);
 Route::get('/get6Random', [ItemController::class, 'get6Random']);
 Route::get('/getXRandom', [ItemController::class, 'getXRandom']);
+Route::get('/getAllItem', [ItemController::class, 'index']);
 // Route Product
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/updateItem', [ItemController::class, 'edit']);
     Route::post('/insertItem', [ItemController::class, 'insert']);
     Route::delete('/deleteItem', [ItemController::class, 'destroy']);
     Route::get('/getSpecifyItem', [ItemController::class, 'getbyid']);
-    Route::get('/getAllItem', [ItemController::class, 'index']);
+    
     Route::get('/getCategoryItem', [ItemController::class, 'getbycategoryid']);
 });
 

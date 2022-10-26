@@ -193,7 +193,7 @@ class ItemController extends Controller
     {
         try {
             $category = Category::where('categoryName', $request->categoryName)->first();
-            $items = Product::where('productCategoryID', $category->categoryID)->get();
+            $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('productCategoryID', $category->categoryID)->get();           
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Category not found'

@@ -5,8 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ItemController;
+use App\Http\Controllers\API\CategoryController;
 use App\Models\Role;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,9 +17,11 @@ use App\Models\Role;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-// Route Public
+// Route Public API
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
+// Route Public product
 Route::get('/get3Latest', [ItemController::class, 'get3Latest']);
 Route::get('/get6Random', [ItemController::class, 'get6Random']);
 Route::get('/getXRandom', [ItemController::class, 'getXRandom']);
@@ -27,6 +29,12 @@ Route::get('/getAllItem', [ItemController::class, 'index']);
 Route::get('/getItemByCategoryName', [ItemController::class, 'getItemByCategoryName']);
 Route::get('/getSpecifyItem', [ItemController::class, 'getbyid']);
 Route::get('/getCategoryItem', [ItemController::class, 'getbycategoryid']);
+//Route Public category
+Route::get('/getAllCategory', [CategoryController::class, 'index']);
+
+
+
+
 // Route Product
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/updateItem', [ItemController::class, 'edit']);

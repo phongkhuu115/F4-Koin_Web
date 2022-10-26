@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\isEmpty;
 
@@ -50,7 +51,7 @@ class ItemController extends Controller
              'message' => $items->isEmpty() ? 'product not found' : 'success'
             ], 200);
     }
-    public function get3Lastest()
+    public function get3Latest()
     {
         // return id, name, price, imageurl
         $data = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->orderBy('create_at', 'desc')->take(3)->get();
@@ -185,5 +186,24 @@ class ItemController extends Controller
                 'message' => 'You have no permission'
             ], 401);
         }
+    }
+
+    // get by Category Name
+    public function getItemByCategoryName(Request $request)
+    {
+        try {
+            $category = Category::where('categoryName', $request->categoryName)->first();
+            $items = Product::where('productCategoryID', $category->categoryID)->get();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Category not found'
+            ], 404);
+        }
+       
+        return response()->json([
+            'product' =>  $items = $this->customImageUrl($items),
+            'category' => $category,
+            'message' => $items->isEmpty() ? 'product not found' : 'success'
+        ], 200);
     }
 }

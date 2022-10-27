@@ -28,9 +28,7 @@ root.render(
         </Route>
         <Route path="/home" element={<><ShopHeader /><ShopFooter></ShopFooter></>}>
           <Route index element={<HomePage />} />
-          <Route exact path="login" element={<RenderLogin />} />
-          <Route exact path="signup" element={<RenderSignup />} />
-          <Route exact path="fishshop" element={<FishShop/>} />
+          <Route exact path="shop" element={<FishShop/>} />
         </Route>
       </Routes>
     </BrowserRouter>

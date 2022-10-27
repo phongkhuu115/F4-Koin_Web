@@ -3,6 +3,30 @@ import './ShopHeader.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import avatar from './avt.png';
 import { Outlet, Link } from 'react-router-dom'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+var getCategory = async () => {
+  let data = await axios('http://be.f4koin.cyou/api/getAllCategory', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  return data;
+}
+function RenderCategory() {
+  let [category, setCategory] = useState([]);
+  useEffect(() => {
+    getCategory().then(res => {
+      setCategory(res.data.category.slice());
+    })
+  }, [])
+  return category.map(item => {
+    return (
+      <option value={item.categoryID}>{ item.categoryName}</option>
+    )
+  })
+}
 
 function ShopHeader() {
   return (
@@ -10,11 +34,9 @@ function ShopHeader() {
       <header className='navbar navbar-expand-lg bg-light justify-content-evenly shadow'>
         <Link class="navbar-brand fw-bold fs-3 text-uppercase " to = '/home'>Koi Store</Link>
         <form action="" className='search-group d-flex'>
-          <select id="cars" name="cars" className='p-3 bg-transparent fs-4 fw-bold'>
+          <select id="catergory" name="catergory" className='p-3 bg-transparent fs-4 fw-bold'>
             <option value="1">All Categories</option>
-            <option value="2">Fishs</option>
-            <option value="3">Tools</option>
-            <option value="4">Foods</option>
+            <RenderCategory></RenderCategory>
           </select>
           <hr className='border border-dark ms-3' />
           <input type="text" className='search-input form-control fs-4 p-4 bg-transparent' placeholder='Search for items...' />

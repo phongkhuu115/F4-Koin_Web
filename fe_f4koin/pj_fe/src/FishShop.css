@@ -1,26 +1,20 @@
-
-.header-1{
-  margin-top: 100px;
-}
-.em-2{
-  margin-bottom: 100px;
+#pick-item {
+  margin: 10rem 0;
 }
 
-body {
-  padding-right: 30px;
-  padding-left: 30px;
+div.nav > a:hover {
+  opacity: 0.8;
 }
-.nav{
-  margin: 20px;
-}
+
 .nav-link:focus,
 .nav-link:hover {
-  color: #dee2e6;
+  opacity: 0.8;
 }
 
 .nav-item:nth-child(1) {
   border-right: 1px groove #dee2e6;
 }
+
 .nav-item:hover {
   background-color: #212529;
 }
@@ -29,10 +23,7 @@ body {
   font-weight: lighter;
   font-size: 15px;
 }
-.header-2{
-  margin-bottom: 20px;
-  font-weight: bold;
-}
+
 .drop-item-btn {
   margin: 0 20px;
   padding: 10px 10px;
@@ -48,9 +39,6 @@ body {
 .span-category-close {
   color: var(--bs-btn-hover-color);
 }
-.btn-category-group {
-  margin: 20px;
-}
 
 .btn-close-category {
   background: var(--bs-black);
@@ -61,24 +49,17 @@ body {
   background: #212529;
 }
 
-.btn {
-  font-size: 15px;
-  margin: 0 10px ;
-}
+
 .dropdown-item {
   font-size: 15px;
 }
+
 .span-4 {
   font-size: 15px;
   font-weight: bold;
 }
-.btn-page{
-  background-color: var(--bs-black);
-}
-.btn-next,  .btn-prev {
-  font-size: 25px;
-  padding: 5px;
-}
+
+
 .btn-next:hover,  .btn-prev:hover {
   cursor: pointer;
 }

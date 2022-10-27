@@ -2,10 +2,12 @@ import './Home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 var get3lastest = async () => {
-  let data = await axios('http://be.f4koin.cyou/api/get3Lastest', {
+  let data = await axios('http://be.f4koin.cyou/api/get3Latest', {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -17,14 +19,13 @@ function RenderItem() {
   useEffect(() => {
     get3lastest().then(res => {
       setLatest(res.data.product.slice());
-      console.log(localStorage.getItem('jwt'))
     })
   }, [])
   return latest.map(item => {
     return (
       <>
         <div className='h-100'>
-          <img src={item.imageUrl} alt="" className=''/>
+          <img src={item.imageUrl} alt="" className='' />
           <p className='fs-4 my-3 text-uppercase fw-bold'>{item.productName}</p>
           <p className='fs-4 '>${item.productPrice}</p>
         </div>
@@ -51,7 +52,7 @@ function RenderPickItem() {
     return (
       <>
         <div className='h-100'>
-          <img src={item.imageUrl} alt="" className=''/>
+          <img src={item.imageUrl} alt="" className='' />
           <p className='fs-4 my-3 text-uppercase fw-semibold'>{item.productName}</p>
           <p className='fs-4 text-light'>${item.productPrice}</p>
         </div>
@@ -64,10 +65,14 @@ function HomePage() {
     <>
       <div className='link-section d-flex h-100'>
         <div className="link-half w-50 m-5 d-flex">
-          <button type="button" class="btn btn-dark fs-2 w-25 m-auto">Fish</button>
+          <Link to="/home/shop" className='w-25 m-auto' state={{name:"Koi Fish"}}>
+            <button type="button" class="btn btn-dark fs-2 w-100 btn-redirect">Koi Fish</button>
+          </Link>
         </div>
         <div className="link-half w-50 m-5 d-flex">
-          <button type="button" class="btn btn-light fs-2 w-25 m-auto">Tools & Foods</button>
+          <Link to='/home/shop' className='w-25 m-auto' state={{name:"Tool & Foods"}}>
+            <button type="button" class="btn btn-light fs-2 w-100 btn-redirect" >Tools & Foods</button>
+          </Link>
         </div>
       </div>
       <div className='newProduct-section d-flex flex-column h-75'>

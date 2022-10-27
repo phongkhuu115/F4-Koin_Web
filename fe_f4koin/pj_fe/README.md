@@ -2,6 +2,8 @@
 
 ## **Cài đặt**
 
+Cài đặt [Postman](https://www.postman.com/downloads/). Tất cả API nằm ở [đây](https://f4-koin.postman.co/workspace/Team-Workspace~f960be86-63d3-4800-85fe-1f3f473bac31/collection/21421644-36348ca2-9dd0-4788-b3c0-396a7bbe23fb?action=share&creator=23833583)
+
 Cài đặt môi trường [NodeJS](https://nodejs.org/en/download/)
 
 Kéo project từ Github về và chạy lệnh 

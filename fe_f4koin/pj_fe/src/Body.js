@@ -27,7 +27,7 @@ function Header() {
     <>
       <div className="Main container-fluid d-flex justify-content-center align-items-center h-100 position-relative">
         <div className="d-flex flex-column mb-auto mt-auto position-absolute description">
-          <h3 className='fw-bold'>TEST AUTO CD 02 Shop Bán cá Koi nè mua đi mua đi</h3>
+          <h3 className='fw-bold'>Shop Bán cá Koi nè mua đi mua đi</h3>
           <br />
           <p className=''>Ở đây không chỉ có cá Koi
             <br />

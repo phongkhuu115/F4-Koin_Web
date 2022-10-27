@@ -1,70 +1,125 @@
-# Getting Started with Create React App
+# **Document for Project IS207: Web**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## **Cài đặt**
 
-## Available Scripts
+Cài đặt môi trường [NodeJS](https://nodejs.org/en/download/)
 
-In the project directory, you can run:
+Kéo project từ Github về và chạy lệnh 
 
-### `npm start`
+```
+npm install
+```
 
-Runs the app in the development mode.
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+để cài đặt các package cần thiết
 
-The page will reload when you make changes.
-You may also see any lint errors in the console.
+Dùng lệnh 
 
-### `npm test`
+```
+npm start
+```
 
-Launches the test runner in the interactive watch mode.
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+để chạy code và test
 
-### `npm run build`
+## **Thư mục Project**
 
-Builds the app for production to the `build` folder.
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.
-Your app is ready to be deployed!
+- ***node_modules*** : Thư mục để chứa tất cả package cần thiết **(TUYỆT ĐỐI KHÔNG ĐỤNG VÀO)** 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- ***public*** : Thư mục chứa file html duy nhất và các resource để hỗ trợ ***chỉ riêng cho file html***
 
-### `npm run eject`
+  > Lưu ý: File html không nên viết code vào, chỉ trừ việc thêm thư viện hoặc cdn
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- ***src*** : Thư mục chứa các file
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- ***.gitignore***: File liệt kê những file/đuôi file không được push lên git (nên đọc để biết hỗ trợ cho BackEnd)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- ***package-lock.json và package.json***: File liệt kê những package được sử dụng, script, ...
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## **Coding** 
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Code trong thư mục ***src***. HTML được viết trong file JS, cách viết đọc trong [Document của React](https://reactjs.org/docs/getting-started.html)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> Lưu ý các file `.js` và `.css` phải đặt trong ***src*** thì project mới chạy
 
-### Code Splitting
+Ví dụ 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+return (
+      <>
+        <div className='h-100'>
+          <img src={item.imageUrl} alt="" className='' />
+          <p className='fs-4 my-3 text-uppercase fw-semibold'>{item.productName}</p>
+          <p className='fs-4 text-light'>${item.productPrice}</p>
+        </div>
+      </>
+    )
+``` 
 
-### Analyzing the Bundle Size
+CSS cho các element trong HTML: Viết bằng BOOTSTRAP
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+> Mục đích là để dễ dàng bảo trì và sửa code nếu UI lỗi, người sau đọc vào không cần phải tìm tag sau đó dò trong file css và thử từng dòng css để biết lỗi
 
-### Making a Progressive Web App
+CSS (nếu có) thì viết trong file .css như bình thường
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## **Teck Stack**
 
-### Advanced Configuration
+#### [ReactJS](https://reactjs.org/docs/getting-started.html)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+> Giải thích nhanh: Viết HTML trong ReactJS tiện hơn so với bình thường, ReactJS cũng dễ Render giao diện và xử lý data hơn bình thường
 
-### Deployment
+Cần nắm một chút các React Hooks như `useState()` và `useEffect()` các Hooks còn lại có thể tìm hiểu sau
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Nên tìm hiểu thêm những cú pháp của Javascript ES6
 
-### `npm run build` fails to minify
+#### [Bootstrap](https://getbootstrap.com/docs/5.2/getting-started/introduction/) (thư viện CSS)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> Giải thích nhanh: Bootstrap tích hợp các thuộc tính CSS vào trong các class, với việc căn chỉnh đã được thực hiện sẵn, nên khi CSS chỉ cần gọi tên class là được
+
+Code mẫu: 
+
+```
+<button type="button" class="btn btn-dark fs-2 w-100 btn-redirect">Koi Fish</button>
+```
+
+Đoạn code trên sử dụng các class `btn` `btn-dark` `fs-2` `w-100` thuộc thư viện Bootstrap để lần lượt: Tạo kiểu dáng cho button, tạo màu cho button, định font chữ cho button (font-size mức 2), chiều ngang 100% (Đọc document để biết rõ hơn) 
+#### [Axios](https://www.npmjs.com/package/axios) (thư viện dùng để tạo request lấy API)
+
+> Giải thích nhanh: Axios dễ dùng hơn so với dùng hàm fetch cơ bản của Javascript.
+
+Code mẫu: 
+
+```
+let response = await axios('http://be.f4koin.cyou/api/login', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: {
+          username: username,
+          password: password
+        }
+      }).then(res => { 
+        //some code
+      })
+```
+
+Đoạn code trên giúp tạo request post đến API login của server, axios giúp cú pháp khai báo các Header của request ngắn và đơn giản hơn. 
+
+Dễ thấy trên ví dụ các param truyền vào dưới dạng 1 object có các key là method, headers, data, ... . Các key có thể thay đổi tùy thuộc vào mục đích sử dụng
+
+Ở trên request post cần có `header` chứa `Content-Type: 'application/json'` do yêu cầu của Server và `data` gồm `username` và `password`
+
+Tham khảo request Get từ các file khác trong Project
+
+#### [React Router Dom](https://reactrouter.com/en/main) (thư viện để tạo Router chuyển hướng trang)
+
+> Giải thích nhanh: React Router Dom giúp tạo đường dẫn chuyển trang nhanh mà tốn ít dòng code hơn so với Javascript thuần. Thường sẽ đặt các Route này trong file `index.js`
+
+Code mẫu 
+
+```
+<Route path="/" element={<IntroHeader />}>
+```
+
+Khi người dùng nhập URL, giả sử: `example.com/` lên trình duyệt, lúc này đoạn code trên sẽ được thực thi và gọi tới file `IntroHeader.js` để render ra View 

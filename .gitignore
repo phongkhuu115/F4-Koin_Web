@@ -23,4 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # ignore other branches 
+!master
 be_f4koin

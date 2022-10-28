@@ -33,12 +33,11 @@ function RenderLogin() {
       }
       catch (error) {
         console.log(error)
-        msg.style.display = 'block'
       }
-      msg.style.display = 'none'
+      msg.classList.add('d-none')
     }
     else {
-      msg.style.display = 'block'
+      msg.classList.remove('d-none')
     }
   }
 
@@ -47,27 +46,37 @@ function RenderLogin() {
     if (e.target.value.match(inputRegex)) {
       e.target.classList.remove('is-invalid');
       e.target.classList.add('is-valid');
+      switch (e.target.id) {
+        case 'username': { 
+          validateMessage[0].innerHTML = '';
+          break;
+        } 
+        case 'password': { 
+          validateMessage[1].innerHTML = '';
+          break;
+        }
+      }
     }
     else {
       if (!e.target.value) {
         switch (e.target.id) {
-          case 'username':
-            validateMessage[0].innerHTML = 'Thông tin không được để trống'
+          case 'username': { 
+            validateMessage[0].innerHTML = 'Thông tin không được để trống';
             break;
-          case 'password':
-            validateMessage[1].innerHTML = 'Thông tin không được để trống'
+          } 
+          case 'password': { 
+            validateMessage[1].innerHTML = 'Thông tin không được để trống';
             break;
+          }
         }
       }
       else {
         switch (e.target.id) {
           case 'username':
-            validateMessage[0].innerHTML = 'Thông tin không được chứa ký tự đặc biệt'
-            setUsername(e.target.value)
+            validateMessage[0].innerHTML = 'Thông tin không được chứa ký tự đặc biệt';
             break;
           case 'password':
-            validateMessage[1].innerHTML = 'Thông tin không được chứa ký tự đặc biệt'
-            setPassword(e.target.value)
+            validateMessage[1].innerHTML = 'Thông tin không được chứa ký tự đặc biệt';
             break;
         }
       }
@@ -91,7 +100,7 @@ function RenderLogin() {
           </div>
           <a href="" className='fs-4'>Forgot Password ?</a>
         </div>
-        <p class="invalid-feedback text-center fs-4 my-2 allvalidate-msg">Thông tin đăng nhập không hợp lệ</p>
+        <p class="text-danger text-center fs-4 my-2 d-none allvalidate-msg">Thông tin đăng nhập không hợp lệ</p>
         <div className="d-flex justify-content-evenly mt-4">
           <button type="submit" className='form-button btn btn-outline-dark text-uppercase fw-bold fs-3 border border-2 border-dark' onClick={handleLogin}>Log In</button>
           <Link to='/signup'><button type="submit" className='form-button btn btn-outline-dark text-uppercase fw-bold fs-3 border border-2 border-dark'>Sign UP</button></Link>

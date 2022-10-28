@@ -12,12 +12,11 @@ jobs:
         uses: actions/checkout@main
       - name: Install npm
         run: npm install
-        env:
-          CI: false
       - name: Build dependencies
         run: npm run build
       - name: Move to build folder and zip files
         run: |
+          CI=false
           cd build
           zip -r build.zip .
       - name: Archive production artifact

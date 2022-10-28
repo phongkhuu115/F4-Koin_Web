@@ -4,11 +4,14 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use function PHPUnit\Framework\isEmpty;
 
 class ItemController extends Controller
 {
+
     // custom imageUrl data for testing
     public function customImageUrl($data)
     {
@@ -239,7 +242,8 @@ class ItemController extends Controller
             $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('productCategoryID', $category->categoryID)->get();
         } catch (\Throwable $th) {
             return response()->json([
-                'message' => 'Category not found'
+                'message' => 'Category not found',
+                'error' => $th
             ], 404);
         }
 
@@ -249,4 +253,111 @@ class ItemController extends Controller
             'message' => $items->isEmpty() ? 'product not found' : 'success'
         ], 200);
     }
+    // get all colors of product  from table products join fish_color join color
+    public function getItemWithColor(Request $request)
+    {
+        try {
+            $product = Product::where('productID', $request->productID)->first();
+            $colors = DB::table('fish_color')
+                ->join('color', 'fish_color.colorID', '=', 'color.colorID')
+                ->select('color.color', 'color.colorID')
+                ->where('fish_color.fishID', $product->productID)
+                ->get();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th
+            ], 500);
+        }
+        return response()->json([
+            'product' =>  $product,
+            'colors' => $colors->unique('colorID'),
+            'message' => $product != null ?  'success' : 'fail'
+        ], 200);
+    }
+    // get by subcategory name from products, subcategory, fish_have_subcategory
+    public function getItemBySubCategoryName(Request $request)
+    {
+        try {
+            $subcategory = SubCategory::where('subCategoryName', $request->subCategoryName)->first();
+            $items = DB::table('products')
+                ->join('fish_have_subcategory', 'products.productID', '=', 'fish_have_subcategory.productID')
+                ->select('products.productID', 'products.productName', 'products.productPrice', 'products.imageUrl')
+                ->where('fish_have_subcategory.subCategoryID', $subcategory->subcategoryID)
+                ->get();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th
+            ], 500);
+        }
+        return response()->json([
+            'subcategory' =>  $subcategory,
+            'product' =>  $items = $this->customImageUrl($items),
+            'message' => $items->isEmpty() ? 'product not found' : 'success'
+        ], 200);
+    }
+    // get by color name from products, fish_color, color
+    public function getItemByColorName(Request $request)
+    {
+        try {
+            $color = DB::table('color')->where('color', $request->ColorName)->first();
+            $items = DB::table('products')
+                ->join('fish_color', 'products.productID', '=', 'fish_color.fishID')
+                ->select('products.productID', 'products.productName', 'products.productPrice', 'products.imageUrl')
+                ->where('fish_color.ColorID', $color->ColorID)
+                ->get();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'color' => $color,
+                'message' => 'Something went wrong',
+                'error' => $th
+            ], 500);
+        }
+        // return unique item
+
+        return response()->json([
+            'product' =>  $items = $this->customImageUrl($items),
+            'message' => $items->isEmpty() ? 'product not found' : 'success'
+        ], 200);
+    }
+    // get category of item
+    public function getCategoryOfItem(Request $request)
+    {
+        try {
+            $product = Product::where('productID', $request->productID)->first();
+            $category = Category::where('categoryID', $product->productCategoryID)->first();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th
+            ], 500);
+        }
+        return response()->json([
+            'category' => $category,
+            'message' => $product != null ?  'success' : 'fail'
+        ], 200);
+    }
+    // get subcategory of item
+    public function getSubCategoryOfItem(Request $request)
+    {
+        try {
+            $product = Product::where('productID', $request->productID)->first();
+            $subcategories = DB::table('fish_have_subcategory')
+                ->join('subcategories', 'fish_have_subcategory.subCategoryID', '=', 'subcategories.subcategoryID')
+                ->select('subcategories.subcategoryID', 'subcategories.subcategoryName')
+                ->where('fish_have_subcategory.productID', $product->productID)
+                ->get();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th
+            ], 500);
+        }
+        return response()->json([
+            'subcategory' => $subcategories,
+            'message' => $product != null ?  'success' : 'fail'
+        ], 200);
+    }
+   
 }

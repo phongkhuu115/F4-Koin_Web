@@ -22,17 +22,21 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 // Route Public product
+Route::get('/getItemWithColor', [ItemController::class, 'getItemWithColor']);
+Route::get('/getItemByColorName', [ItemController::class, 'getItemByColorName']);
 Route::get('/get3Latest', [ItemController::class, 'get3Latest']);
 Route::get('/get6Random', [ItemController::class, 'get6Random']);
 Route::get('/getXRandom', [ItemController::class, 'getXRandom']);
 Route::get('/getAllItem', [ItemController::class, 'index']);
 Route::get('/getItemByCategoryName', [ItemController::class, 'getItemByCategoryName']);
 Route::get('/getSpecifyItem', [ItemController::class, 'getbyid']);
-Route::get('/getCategoryItem', [ItemController::class, 'getbycategoryid']);
+Route::get('/getItemBySubcategoryName', [ItemController::class, 'getItemBySubCategoryName']);
+Route::get('/getCategoryOfItem', [ItemController::class, 'getCategoryOfItem']);
+Route::get('/getSubCategoryOfItem', [ItemController::class, 'getSubCategoryOfItem']);
+
+
 //Route Public category
 Route::get('/getAllCategory', [CategoryController::class, 'index']);
-
-
 
 
 // Route Product

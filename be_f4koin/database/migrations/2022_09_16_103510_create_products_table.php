@@ -21,7 +21,8 @@ return new class extends Migration
             $table->integer('productPrice');
             $table->integer('productCategoryID');
             $table->integer('productInventory');
-            $table->integer('productDiscountID');
+            $table->integer('productDiscount');
+            $table->binary('imageData');
             $table->string('productThumbnail');
             $table->dateTime('create_at');
             $table->dateTime('update_at');

@@ -56,13 +56,27 @@ class AuthController extends Controller
         };
         
         $token = $user->createToken('loginToken')->plainTextToken;
-
+        // remove username field in user data
+        $userReturnData = [
+            'userID' => $user->userID,
+            // 'username' => $user->username,
+            'userEmail' => $user->userEmail,
+            'userFullName' => $user->userFullName,
+            'userTelephone' => $user->userTelephone,
+            'userRoleID' => $user->userRoleID,
+            'userAvatar' => $user->userAvatar,
+            'userAddress' => $user->userAddress,
+            'userStatus' => $user->userStatus,
+        ];
+      
         $response = [
-            'user' => $user,
-            'token' => $token
+            'user' => $userReturnData,
+            'token' => $token,
+            'message' => 'Login success'
         ];
 
         return response($response,201);
+        
     }
 
     public function logout(User $user)

@@ -33,13 +33,3 @@ img.main-pic {
   min-width: 30rem;
   padding: 1.6rem 3.2rem;
 }
-
-.signup-button:first-child {
-  background-image: linear-gradient(90deg, #A2A2A2 0%, #000000 81.44%);
-  color: #fff;
-}
-
-.signup-button:last-child {
-  background-image: linear-gradient(90deg, #6586BE 3.08%, #2D3748 99.95%);
-  color: #fff;
-}

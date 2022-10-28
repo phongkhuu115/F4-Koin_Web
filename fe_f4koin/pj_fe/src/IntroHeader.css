@@ -1,5 +1,12 @@
+.hoverEffect {
+  transition: 0.2s;
+}
+
 .hoverEffect:hover {
   background-color: #000;
+}
+
+.hoverEffect:hover > a {
   color: #fff !important; 
 }
 

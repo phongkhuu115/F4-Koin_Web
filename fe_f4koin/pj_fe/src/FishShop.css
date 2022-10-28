@@ -6,11 +6,6 @@ div.nav > a:hover {
   opacity: 0.8;
 }
 
-.nav-link:focus,
-.nav-link:hover {
-  opacity: 0.8;
-}
-
 .nav-item:nth-child(1) {
   border-right: 1px groove #dee2e6;
 }

@@ -59,8 +59,8 @@ function RenderSignup() {
           </div>
         </div>
         <div className="d-flex justify-content-between mt-4">
-          <button type="submit" className='signup-button text-uppercase fw-bold fs-3 rounded-2'>Create Account</button>
-          <button type="submit" className='signup-button text-uppercase fw-bold fs-3 rounded-2'><i class="fa-brands fa-google"></i> Sign in with Google</button>
+          <button type="submit" className='btn btn-outline-dark text-uppercase fw-bold fs-3 border border-2 border-dark signup-button'>Create Account</button>
+          <button type="submit" className='btn btn-outline-dark text-uppercase fw-bold fs-3 border border-2 border-dark signup-button'><i class="fa-brands fa-google"></i> Sign in with Google</button>
         </div>
       </form>
       <img src={mainPic} className="main-pic h-75 position-absolute top-50 translate-middle" alt="" />

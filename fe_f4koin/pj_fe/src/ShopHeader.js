@@ -34,7 +34,7 @@ function ShopHeader() {
       <header className='navbar navbar-expand-lg bg-light justify-content-evenly shadow'>
         <Link class="navbar-brand fw-bold fs-3 text-uppercase " to = '/home'>Koi Store</Link>
         <form action="" className='search-group d-flex'>
-          <select id="catergory" name="catergory" className='p-3 bg-transparent fs-4 fw-bold'>
+          <select id="catergory" name="catergory" className='p-3 bg-transparent fs-4 fw-bold border-0'>
             <option value="1">All Categories</option>
             <RenderCategory></RenderCategory>
           </select>

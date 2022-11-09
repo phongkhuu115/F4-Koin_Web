@@ -7,10 +7,23 @@ use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\JsonableInterface;
 use function PHPUnit\Framework\isEmpty;
 
 class ItemController extends Controller
 {
+
+    // panigating for returning data
+    public function paginate($items, $perPage, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+   
 
     // custom imageUrl data for testing
     public function customImageUrl($data)
@@ -36,8 +49,6 @@ class ItemController extends Controller
     {
         try {
             $x = $request->input('x');
-
-
             $items = Product::inRandomOrder()->limit($x)->get(['productID', 'productName', 'productPrice', 'imageUrl']);
         } catch (\Throwable $th) {
             return response()->json([
@@ -156,11 +167,22 @@ class ItemController extends Controller
      */
     public function index(Request $request)
     {
-        $product = Product::all();
-        return response()->json([
-            'product' => $product,
-            'message' => $product->isEmpty() ? 'product not found' : 'success'
-        ], 200);
+        try {
+            $product = Product::all();
+            // paginate 
+            $product = $this->paginate($product,10,$request->input('page'));
+            
+            return response()->json([
+                'product' => $product,
+                // fail if total is 0
+                'message' => $product->total() != 0 ? 'success' : 'fail'                               
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+            ], 500);
+        }
+      
     }
 
     /**

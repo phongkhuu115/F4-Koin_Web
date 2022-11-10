@@ -53,16 +53,28 @@ function FishShop(props) {
   }
   useEffect(() => {
     const btns = document.querySelectorAll('.btn.btn-dark.fs-4.mx-3.fw-bold.pt-2');
-    for (let i = 0; i < pageNum; i++) {
+    for (let i = 0; i < 5; i++) {
       btns[i].addEventListener('click', () => {
-        setCurrenPage(i + 1);
+        setCurrenPage(Number(btns[i].innerHTML));
       })
     }
   })
   function RenderPage() {
     let numbers = [];
-    for (let i = 0; i < pageNum; i++) {
-      numbers.push(i + 1);
+    console.log(pageNum)
+    for (let i = 0; i < 5; i++) {
+      if (i == 3 && pageNum > 5) {
+        numbers.push('...');
+      }
+      else {
+        if (i == 4 && pageNum > 5) { 
+          numbers.push(pageNum);
+        }
+        else {
+          numbers.push(i + 1);
+        }
+      }
+      // numbers.push(i + 1);
     }
     return numbers.map(number => (
       <button className="btn btn-dark fs-4 mx-3 fw-bold pt-2" type="button">{number}</button>

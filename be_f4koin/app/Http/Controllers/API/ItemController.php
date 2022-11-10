@@ -23,7 +23,7 @@ class ItemController extends Controller
         $items = $items instanceof Collection ? $items : Collection::make($items);
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
-   
+
 
     // custom imageUrl data for testing
     public function customImageUrl($data)
@@ -169,20 +169,20 @@ class ItemController extends Controller
     {
         try {
             $product = Product::all();
-            // paginate 
-            $product = $this->paginate($product,10,$request->input('page'));
-            
+            // paginate
+            $product = $this->paginate($product,12,$request->input('page'));
+
             return response()->json([
                 'product' => $product,
                 // fail if total is 0
-                'message' => $product->total() != 0 ? 'success' : 'fail'                               
+                'message' => $product->total() != 0 ? 'success' : 'fail'
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
             ], 500);
         }
-      
+
     }
 
     /**
@@ -381,5 +381,5 @@ class ItemController extends Controller
             'message' => $product != null ?  'success' : 'fail'
         ], 200);
     }
-   
+
 }

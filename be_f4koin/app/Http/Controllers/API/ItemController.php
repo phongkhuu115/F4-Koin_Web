@@ -29,7 +29,7 @@ class ItemController extends Controller
     public function customImageUrl($data)
     {
         $data->map(function ($item) {
-            $item->imageUrl = 'https://picsum.photos/500/500?' . rand(1, 1000);
+            // $item->imageUrl = 'https://picsum.photos/500/500?' . rand(1, 1000);
             return $item;
         });
         return $data;

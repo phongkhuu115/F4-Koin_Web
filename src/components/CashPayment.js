@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import hand_cash from './cash_in_hand.png'
+import hand_cash from '../cash_in_hand.png'
 function Cash(props) {
 
   return (

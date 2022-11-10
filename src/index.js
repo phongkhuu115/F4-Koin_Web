@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import ShopHeader from './ShopHeader';
-import IntroHeader from './IntroHeader';
-import Body from './Body'
-import RenderLogin from './Login';
-import RenderSignup from './Signup'
-import HomePage from './Home';
-import ShopFooter from './ShopFooter';
-import FishShop from './FishShop';
-import Payment from './Payment'
-import Bank from './BankPayment';
+import Body from './components/Body'
+import RenderLogin from './components/Login';
+import RenderSignup from './components/Signup'
+import HomePage from './components/Home';
+import ShopHeader from './components/ShopHeader';
+import IntroHeader from './components/IntroHeader';
+import ShopFooter from './components/ShopFooter';
+import FishShop from './components/FishShop';
+import Payment from './components/Payment'
+import Product from './components/Product';
 import {
   BrowserRouter,
   Routes,
@@ -31,9 +31,8 @@ root.render(
       <Route path="/home" element={<><ShopHeader /><ShopFooter></ShopFooter></>}>
         <Route index element={<HomePage />} />
         <Route exact path="shop" element={<FishShop />} />
-        <Route exact path='payment' element={ <Payment></Payment>}>
-          <Route exact path='bank' element={ <Bank></Bank>}></Route>
-        </Route>
+        <Route exact path='payment' element={<Payment></Payment>} />
+        <Route exact path='product' element={ <Product></Product>}/>
       </Route>
     </Routes>
   </BrowserRouter>

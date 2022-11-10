@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './ShopHeader.css';
+import '../ShopHeader.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
-import avatar from './avt.png';
+import avatar from '../avt.png';
 import { Outlet, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import axios from 'axios';

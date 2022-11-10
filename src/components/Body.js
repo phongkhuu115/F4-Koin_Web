@@ -1,28 +1,13 @@
-import './Body.css';
+import '../Body.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import fishPic from './koi.png';
-import foodPic from './fishfood.jpg';
-import toolPic from './fishtool.jpg';
+import fishPic from '../koi.png';
+import foodPic from '../fishfood.jpg';
+import toolPic from '../fishtool.jpg';
 import { Link } from 'react-router-dom'
-import { useEffect, useLayoutEffect, useState } from 'react';
 
-
-var slides = [fishPic, toolPic, foodPic];
 
 function Header() {
-  const [index, setIndex] = useState(0);
-
-  useLayoutEffect(() => {
-    var pics = document.querySelectorAll('#slidesPic')
-    var dots = document.querySelectorAll('#dot')
-    pics[index % 3].style.display = 'block';
-    dots[index % 3].classList.add('bg-secondary');
-    setTimeout(() => {
-      pics[index % 3].style.display = 'none'
-      dots[index % 3].classList.remove('bg-secondary');
-      setIndex(index + 1);
-    }, 4000)
-  }, [index])
+  const slides = [fishPic, toolPic, foodPic];
   return (
     <>
       <div className="Main container-fluid d-flex justify-content-center align-items-center h-100 position-relative">

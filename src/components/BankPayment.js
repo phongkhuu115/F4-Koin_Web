@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import bank_logo from './bank_logo.png'
+import bank_logo from '../bank_logo.png'
 
 function Bank(props) {
   return (

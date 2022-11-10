@@ -1,0 +1,46 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: ["Frontend"]
+jobs:
+  build:
+    name: Build ⛏
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+      - name: Install npm
+        run: npm install
+      - name: Build dependencies
+        run: npm run build
+      - name: Move to build folder and zip files
+        run: |
+          CI=false
+          cd build
+          zip -r build.zip .
+      - name: Archive production artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: build-folder
+          path: build/build.zip
+
+  deploy:
+    name: Deploy 🚀
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+      - name: Download folder result for job 1
+        uses: actions/download-artifact@v3
+        with:
+          name: build-folder
+      - name: unzip artifact for deployment
+        run: unzip build.zip
+      - name: Sync files to hosting
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}

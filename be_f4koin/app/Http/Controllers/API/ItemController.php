@@ -395,7 +395,7 @@ class ItemController extends Controller
         }
         return response()->json([
             'product' =>  $items = $this->customImageUrl($items),
-            'message' => $items->isEmpty() ? 'fish not found' : 'success'
+            'message' => 'success'
         ], 200);
     }
     // get only Food
@@ -412,7 +412,7 @@ class ItemController extends Controller
         }
         return response()->json([
             'product' =>  $items = $this->customImageUrl($items),
-            'message' => $items->isEmpty() ? 'food not found' : 'success'
+            'message' => 'success'
         ], 200);
     }
     //get only tool
@@ -429,7 +429,7 @@ class ItemController extends Controller
         }
         return response()->json([
             'product' =>  $items = $this->customImageUrl($items),
-            'message' => $items->isEmpty() ? 'tool not found' : 'success'
+            'message' =>  'success'
         ], 200);
     }
     //get only tool
@@ -446,7 +446,7 @@ class ItemController extends Controller
         }
         return response()->json([
             'product' =>  $items = $this->customImageUrl($items),
-            'message' => $items->isEmpty() ? 'tool not found' : 'success'
+            'message' => 'success'
         ], 200);
     }
 }

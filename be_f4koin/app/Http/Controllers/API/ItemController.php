@@ -381,5 +381,55 @@ class ItemController extends Controller
             'message' => $product != null ?  'success' : 'fail'
         ], 200);
     }
-
+    // get only Fish
+    public function getFish(Request $request)
+    {
+        try {
+            $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 1)->get();
+            $items = $this->paginate($items,12,$request->input('page'));
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th
+            ], 500);
+        }
+        return response()->json([
+            'product' =>  $items = $this->customImageUrl($items),
+            'message' => $items->isEmpty() ? 'fish not found' : 'success'
+        ], 200);
+    }
+    // get only Food
+    public function getFood(Request $request)
+    {
+        try {
+            $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 3)->get();
+            $items = $this->paginate($items,12,$request->input('page'));
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th
+            ], 500);
+        }
+        return response()->json([
+            'product' =>  $items = $this->customImageUrl($items),
+            'message' => $items->isEmpty() ? 'food not found' : 'success'
+        ], 200);
+    }
+    //get only tool
+    public function getTool(Request $request)
+    {
+        try {
+            $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 2)->get();
+            $items = $this->paginate($items,12,$request->input('page'));
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th
+            ], 500);
+        }
+        return response()->json([
+            'product' =>  $items = $this->customImageUrl($items),
+            'message' => $items->isEmpty() ? 'tool not found' : 'success'
+        ], 200);
+    }
 }

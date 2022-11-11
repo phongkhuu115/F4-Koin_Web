@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
@@ -106,7 +107,7 @@ class ItemController extends Controller
     {
         try {
             $data = Product::where('productID', $request->input('productID'))
-            ->get(['productID', 'productName', 'productPrice', 'imageUrl']);
+                ->get(['productID', 'productName', 'productPrice', 'imageUrl']);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
@@ -170,7 +171,7 @@ class ItemController extends Controller
         try {
             $product = Product::all();
             // paginate
-            $product = $this->paginate($product,12,$request->input('page'));
+            $product = $this->paginate($product, 12, $request->input('page'));
 
             return response()->json([
                 'product' => $product,
@@ -182,7 +183,6 @@ class ItemController extends Controller
                 'message' => 'Something went wrong',
             ], 500);
         }
-
     }
 
     /**
@@ -386,7 +386,7 @@ class ItemController extends Controller
     {
         try {
             $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 1)->get();
-            $items = $this->paginate($items,12,$request->input('page'));
+            $items = $this->paginate($items, 12, $request->input('page'));
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
@@ -403,7 +403,7 @@ class ItemController extends Controller
     {
         try {
             $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 3)->get();
-            $items = $this->paginate($items,12,$request->input('page'));
+            $items = $this->paginate($items, 12, $request->input('page'));
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
@@ -420,7 +420,24 @@ class ItemController extends Controller
     {
         try {
             $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 2)->get();
-            $items = $this->paginate($items,12,$request->input('page'));
+            $items = $this->paginate($items, 12, $request->input('page'));
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th
+            ], 500);
+        }
+        return response()->json([
+            'product' =>  $items = $this->customImageUrl($items),
+            'message' => $items->isEmpty() ? 'tool not found' : 'success'
+        ], 200);
+    }
+    //get only tool
+    public function getToolsAndFood(Request $request)
+    {
+        try {
+            $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 2)->orWhere('typeID', 3)->get();
+            $items = $this->paginate($items, 12, $request->input('page'));
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',

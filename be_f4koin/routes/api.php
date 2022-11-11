@@ -33,9 +33,11 @@ Route::get('/getSpecifyItem', [ItemController::class, 'getbyid']);
 Route::get('/getItemBySubcategoryName', [ItemController::class, 'getItemBySubCategoryName']);
 Route::get('/getCategoryOfItem', [ItemController::class, 'getCategoryOfItem']);
 Route::get('/getSubCategoryOfItem', [ItemController::class, 'getSubCategoryOfItem']);
-Route::get('/getOnlyFood', [ItemController::class, 'getFood']);
+
 Route::get('/getOnlyFish', [ItemController::class, 'getFish']);
-Route::get('/getOnlyTool', [ItemController::class, 'getTool']);
+// Route::get('/getOnlyFood', [ItemController::class, 'getFood']);
+// Route::get('/getOnlyTool', [ItemController::class, 'getTool']);
+Route::get('/getFoodAndTools', [ItemController::class, 'getToolsAndFood']);
 
 //Route Public category
 Route::get('/getAllCategory', [CategoryController::class, 'index']);

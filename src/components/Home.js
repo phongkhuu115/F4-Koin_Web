@@ -44,7 +44,7 @@ function RenderItem() {
           </div>
           <div>
             <h4 className="text-center text-white mt-3" >Tên: {item.productName}</h4>
-            <p className="text-center text-white">Giá: {item.productPrice * 24867.50} VND</p>
+            <p className="text-center text-white">Giá: {item.productPrice * 24815.00} VND</p>
           </div>
         </Link>
       </>
@@ -87,7 +87,7 @@ function RenderPickItem() {
           </div>
           <div>
             <h4 className="text-center text-white mt-3" >Tên: {item.productName}</h4>
-            <p className="text-center text-white">Giá: {item.productPrice} VND</p>
+            <p className="text-center text-white">Giá: {item.productPrice * 24815.00} VND</p>
           </div>
         </Link>
       </>

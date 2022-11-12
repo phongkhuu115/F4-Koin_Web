@@ -33,7 +33,7 @@ function Product(props) {
           <div className='h-100'>
             <p className='text-uppercase fs-1'>{item.productName} <span className='fs-3'>(Còn <span className='fw-bold text-danger'>{typeof item.productInventory === 'undefined' ? 0 : item.productInventory}</span> sản phẩm trong kho)</span></p>
             <div className='bg-light p-3 rounded'>
-              <p>Giá: <b>{item.productPrice} VND</b></p>
+              <p>Giá: <b>{item.productPrice * 24815.00} VND</b></p>
               <div className='bg-danger d-inline-block text-white fs-2 rounded p-2'>- { item.productDiscount}%</div>
             </div>
             <p>Giới tính: <b>{item.productSex === "Male" ? "Đực" : "Cái"}</b></p>

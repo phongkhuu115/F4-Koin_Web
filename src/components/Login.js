@@ -33,6 +33,7 @@ function RenderLogin() {
           console.log(res);
           localStorage.setItem('auth', res.data.token);
           if (res.data.message === "Login success") {
+            localStorage.setItem('isLogin', true);
             navigate('/home', {
               state: {
                 fullname: res.data.user.userFullName,

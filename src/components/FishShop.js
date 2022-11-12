@@ -48,7 +48,7 @@ function FishShop(props) {
       return (
         <>
           <div className='text-center mx-auto'>
-            <p>Hiện tại mới có nhiêu đó à, bạn coi đỡ nha :(</p>
+            <p>Hiện tại mới có nhiêu đó à, bạn coi đỡ nha. Hic Hic :(</p>
             <img src={sorryPic} alt="" />
           </div>
         </>
@@ -63,7 +63,7 @@ function FishShop(props) {
             </div>
             <div>
               <h4 className="text-center text-white mt-3">Tên: {item.productName}</h4>
-              <p className="text-center text-white">Giá: {item.productPrice} VND</p>
+              <p className="text-center text-white">Giá: {item.productPrice * 24815.00} VND</p>
             </div>
           </Link>
         </>

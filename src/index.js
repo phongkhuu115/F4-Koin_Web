@@ -18,6 +18,10 @@ import {
 } from "react-router-dom";
 
 const htmlRoot = document.getElementById('root');
+window.addEventListener("beforeunload", () => 
+{  
+    localStorage.removeItem('isLogin')
+});
 htmlRoot.classList.add("h-100")
 const root = ReactDOM.createRoot(htmlRoot);
 root.render(

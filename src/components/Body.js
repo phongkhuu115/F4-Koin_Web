@@ -1,9 +1,10 @@
-import '../Body.css';
+import '../styles/Body.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import fishPic from '../koi.png';
-import foodPic from '../fishfood.jpg';
-import toolPic from '../fishtool.jpg';
+import fishPic from '../assets/koi.png';
+import foodPic from '../assets/fishfood.jpg';
+import toolPic from '../assets/fishtool.jpg';
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react';
 
 
 function Header() {

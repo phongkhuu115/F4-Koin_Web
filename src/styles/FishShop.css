@@ -44,6 +44,21 @@ div.nav > a:hover {
   background: #212529;
 }
 
+.card-img {
+  aspect-ratio: 3/4;
+}
+
+.fish-card {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.fish-card:hover {
+  filter: brightness(115%);
+  cursor: pointer;
+  box-shadow: 0 0 11px rgba(0, 0, 0, 0.5); 
+}
+
 
 .dropdown-item {
   font-size: 15px;
@@ -57,4 +72,8 @@ div.nav > a:hover {
 
 .btn-next:hover,  .btn-prev:hover {
   cursor: pointer;
+}
+
+.main_shop {
+  background-color: #f5f5fa;
 }

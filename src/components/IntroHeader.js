@@ -1,4 +1,4 @@
-import '../IntroHeader.css';
+import '../styles/IntroHeader.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import { Outlet, Link } from 'react-router-dom'

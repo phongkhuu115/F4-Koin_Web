@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import qr from '../momo_qr.jpg'
+import qr from '../assets/momo_qr.jpg'
 
 function Momo(props) {
   const [state, setState] = useState('');

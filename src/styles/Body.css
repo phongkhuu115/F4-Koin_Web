@@ -30,6 +30,10 @@ button {
   animation-fill-mode: forwards;
 }
 
+.Main {
+  background-color: #fff;
+}
+
 @keyframes fade {
   from {opacity: 0}
   to {opacity: 1}

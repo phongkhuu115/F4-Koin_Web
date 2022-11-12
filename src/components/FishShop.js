@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
-import "../FishShop.css";
+import "../styles/FishShop.css";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import sorryPic from '../assets/sorry.png'
 import axios from "axios";
 function FishShop(props) {
   const location = useLocation();
   const [pageNum, setPageNum] = useState(0);
   const [productNumber, setProductNumber] = useState(0);
   const [currentPage, setCurrenPage] = useState(1)
-  let getItem = async (url) => {
+  const [message, setMessage] = useState('');
+  let getItem = async () => {
+    let url = location.state.name === "Koi Fish" ? "https://be.f4koin.cyou/api/getOnlyFish?page=" + currentPage : "https://be.f4koin.cyou/api/getFoodAndTools?page=" + currentPage
     let data = await axios(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -21,10 +24,9 @@ function FishShop(props) {
   function RenderItem() {
     const [items, setItems] = useState([]);
     useEffect(() => {
-      let url = 'http://be.f4koin.cyou/api/getAllItem?page=' + currentPage
-      getItem(url).then(res => {
+      getItem().then(res => {
         setPageNum(res.data.product.last_page);
-        // setItems(res.data.product.data.slice());
+        setMessage(res.data.message);
         if (Array.isArray(res.data.product.data)) {
           setItems(res.data.product.data.slice());
         }
@@ -35,18 +37,35 @@ function FishShop(props) {
         setProductNumber(res.data.product.total);
       })
     }, [currentPage]);
+    if (message === "Waiting" || message === '') {
+      return (
+        <>
+          <p>Loading...</p>
+        </>
+      )
+    }
+    if (items.length === 0 && message === "success") {
+      return (
+        <>
+          <div className='text-center mx-auto'>
+            <p>Hiện tại mới có nhiêu đó à, bạn coi đỡ nha :(</p>
+            <img src={sorryPic} alt="" />
+          </div>
+        </>
+      )
+    }
     return items.map(item => {
       return (
         <>
-          <div className="col order-md-first">
+          <Link className="fish-card col bg-dark pt-3 rounded text-decoration-none" to="/home/product" state={{ id: item.productID }}>
             <div className="card">
-              <img className="card-img w-100 d-block" src={item.imageUrl} alt="" />
+              <img className="card-img d-block h-50" src={item.imageUrl} alt="" />
             </div>
             <div>
-              <h4 className="text-center" >{item.productName}</h4>
-              <p className="text-center">{item.productPrice}</p>
+              <h4 className="text-center text-white mt-3">Tên: {item.productName}</h4>
+              <p className="text-center text-white">Giá: {item.productPrice} VND</p>
             </div>
-          </div>
+          </Link>
         </>
       )
     })
@@ -55,19 +74,19 @@ function FishShop(props) {
     const btns = document.querySelectorAll('.btn.btn-dark.fs-4.mx-3.fw-bold.pt-2');
     for (let i = 0; i < 5; i++) {
       btns[i].addEventListener('click', () => {
+        setMessage("Waiting")
         setCurrenPage(Number(btns[i].innerHTML));
       })
     }
   })
   function RenderPage() {
     let numbers = [];
-    console.log(pageNum)
     for (let i = 0; i < 5; i++) {
-      if (i == 3 && pageNum > 5) {
+      if (i === 3 && pageNum > 5) {
         numbers.push('...');
       }
       else {
-        if (i == 4 && pageNum > 5) { 
+        if (i === 4 && pageNum > 5) {
           numbers.push(pageNum);
         }
         else {
@@ -82,7 +101,7 @@ function FishShop(props) {
   }
   return (
     <>
-      <div className="px-5">
+      <div className="px-5 pb-5 main_shop">
         <div id="pick-item" className="">
           <h1 className="header-1 text-center font-bold display-1 text-uppercase">{location.state.name}</h1>
           <em className="em-2 d-flex justify-content-center">Tất cả mọi thứ đều ở đây</em>
@@ -156,9 +175,9 @@ function FishShop(props) {
           <a className="btn-category-group p-5" href="#top">Clear all</a>
         </div>
 
-        <div className="py-4 py-xl-5">
-          <div className="row gy-4 row-cols-1 row-cols-md-4 w-100">
-            <RenderItem currentPage='1'></RenderItem>
+        <div className="pb-5">
+          <div className="row gy-4 row-cols-1 row-cols-md-4 w-100 m-0 justify-content-between">
+            <RenderItem></RenderItem>
           </div>
         </div>
         <div className="d-flex justify-content-center align-items-center">

@@ -1,6 +1,6 @@
-import '../Signup.css';
+import '../styles/Signup.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import mainPic from '../koi.png';
+import mainPic from '../assets/koi.png';
 import React, { useState, useEffect } from 'react';
 
 

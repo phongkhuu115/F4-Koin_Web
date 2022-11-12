@@ -2,7 +2,7 @@ import React from 'react';
 
 function ShopFooter() {
   return (
-    <div className="footer-section p-5">
+    <div className="footer-section p-5 bg-white">
       <div className='m-5 border-bottom border-top p-5 d-flex justify-content-between'>
         <h1 className='fw-bold text-uppercase'>Koi Store</h1>
         <div>

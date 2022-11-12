@@ -1,8 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../ShopHeader.css';
+import '../styles/ShopHeader.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
-import avatar from '../avt.png';
-import { Outlet, Link } from 'react-router-dom'
+import avatar from '../assets/avt.png';
+import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -29,10 +29,11 @@ function RenderCategory() {
 }
 
 function ShopHeader() {
+  let location = useLocation();
   return (
     <>
       <header className='navbar navbar-expand-lg bg-light justify-content-evenly shadow'>
-        <Link class="navbar-brand fw-bold fs-3 text-uppercase " to = '/home'>Koi Store</Link>
+        <Link class="navbar-brand fw-bold fs-3 text-uppercase" to = '/home'>Koi Store</Link>
         <form action="" className='search-group d-flex'>
           <select id="catergory" name="catergory" className='p-3 bg-transparent fs-4 fw-bold border-0'>
             <option value="1">All Categories</option>
@@ -48,13 +49,8 @@ function ShopHeader() {
           <i class="fa-solid fa-cart-shopping"></i> <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span class="visually-hidden">unread messages</span></span>
         </button>
         <div className="avatar d-flex align-items-center">
-          <img src={avatar} alt="" className='' />
-          <i className="fa-solid fa-caret-down fs-3 ms-4"></i>
+          <p className='mb-0 fs-3'>Xin chào, {location.state.fullname}</p>
         </div>
-        <button type="button" class="btn btn-dark fs-4 py-2">
-          <i class="fa-solid fa-box fs-4 me-3"></i>
-          Browse All Categories
-        </button>
       </header>
       <Outlet></Outlet>
     </>

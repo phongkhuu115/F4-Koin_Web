@@ -28,11 +28,11 @@ root.render(
         <Route exact path="login" element={<RenderLogin />} />
         <Route exact path="signup" element={<RenderSignup />} />
       </Route>
-      <Route path="/home" element={<><ShopHeader /><ShopFooter></ShopFooter></>}>
+      <Route path="/home" element={<><ShopHeader /><ShopFooter /></>}>
         <Route index element={<HomePage />} />
         <Route exact path="shop" element={<FishShop />} />
         <Route exact path='payment' element={<Payment></Payment>} />
-        <Route exact path='product' element={ <Product></Product>}/>
+        <Route exact path='product' element={<Product></Product>} />
       </Route>
     </Routes>
   </BrowserRouter>

@@ -1,0 +1,34 @@
+.value-button:first-child {
+  background-color: #ccc;
+  border-bottom-right-radius: 0 !important; 
+  border-top-right-radius: 0 !important;
+}
+
+.value-button:last-child {
+  background-color: #ccc;
+  border-bottom-left-radius: 0 !important; 
+  border-top-left-radius: 0 !important;
+}
+
+#number {
+  border-radius: 0;
+  border: 1px solid #ccc;
+  max-width: 4rem;
+  text-align: center;
+}
+
+.sticker {
+  aspect-ratio: 1/1;
+  height: 5rem;
+}
+
+.product_img {
+  aspect-ratio: 3/4;
+}
+
+.discount_display {
+  width: 0;
+  height: 0;
+  border-top: 100px solid red;
+  border-right: 100px solid transparent;
+}

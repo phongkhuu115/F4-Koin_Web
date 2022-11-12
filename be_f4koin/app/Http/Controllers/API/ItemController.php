@@ -107,7 +107,7 @@ class ItemController extends Controller
     {
         try {
             $data = Product::where('productID', $request->input('productID'))
-                ->get(['productID', 'productName', 'productPrice', 'imageUrl']);
+                ->get();
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',

@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Hash;
 
+
 class AuthController extends Controller
 {
+    const timeout = 60;
 
     public function register(Request $request)
     {
@@ -40,22 +42,29 @@ class AuthController extends Controller
         return response($response,201);
     }
 
-    public function login(Request $request) 
+    public function login(Request $request)
     {
         $fields = $request->validate([
             'username' => 'required|string|min:3',
             'password' => 'required|min:4',
         ]);
 
-        $user = User::where('username',$fields['username'])->first(); 
+        $user = User::where('username',$fields['username'])->first();
 
         if (!$user || !Hash::check($fields['password'],$user->password)) {
             return response([
                 'message' => 'Invalid username or password'
             ], 401);
         };
-        
+
+        // clear all the token of this user
+        $user->tokens()->delete();
+        // create new token
         $token = $user->createToken('loginToken')->plainTextToken;
+        // add expire time to personal access token
+        // $user->tokens()->where('name','loginToken')->update(['expires_at' => now()->addDay(1)]);
+        $user->tokens()->where('name','loginToken')->update(['expires_at' => now()->addMinute(self::timeout)]);
+
         // remove username field in user data
         $userReturnData = [
             'userID' => $user->userID,
@@ -67,8 +76,9 @@ class AuthController extends Controller
             'userAvatar' => $user->userAvatar,
             'userAddress' => $user->userAddress,
             'userStatus' => $user->userStatus,
+            // 'expiration' => $expiration,
         ];
-      
+
         $response = [
             'user' => $userReturnData,
             'token' => $token,
@@ -76,7 +86,7 @@ class AuthController extends Controller
         ];
 
         return response($response,201);
-        
+
     }
 
     public function logout(User $user)
@@ -87,5 +97,5 @@ class AuthController extends Controller
             'message' => 'User logged out'
         ];
     }
-    
+
 }

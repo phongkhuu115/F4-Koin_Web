@@ -46,7 +46,15 @@ return [
     |
     */
 
-    'expiration' => null,
+    // 'expiration' => null,
+    // One day
+    // 'expiration' => 1440,
+    // One Year
+    // 'expiration' => 525600,
+    // One minute
+    // 'expiration' => 1,
+    // One hour
+    // 'expiration' => 60,
 
     /*
     |--------------------------------------------------------------------------

@@ -57,6 +57,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/updateUser', [UserController::class, 'edit']);
     Route::delete('/deleteUser', [UserController::class, 'destroy']);
     Route::post('/insertUser', [UserController::class, 'create']);
+    // get my profile
+    Route::get('/getMyProfile', [UserController::class, 'getMyProfile']);
+    // Route::get('/getMyProfile', [UserController::class, 'isMySef']);
+
+
 });
 
 

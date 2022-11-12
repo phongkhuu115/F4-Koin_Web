@@ -20,7 +20,7 @@ function RenderLogin() {
     if (isValid) {
       msg.classList.add('d-none')
       try {
-        let response = await axios('http://be.f4koin.cyou/api/login', {
+        let response = await axios('https://be.f4koin.cyou/api/login', {
           method: 'post',
           headers: {
             'Content-Type': 'application/json',
@@ -30,7 +30,6 @@ function RenderLogin() {
             password: password
           }
         }).then(res => {
-          console.log(res);
           localStorage.setItem('auth', res.data.token);
           if (res.data.message === "Login success") {
             localStorage.setItem('isLogin', true);

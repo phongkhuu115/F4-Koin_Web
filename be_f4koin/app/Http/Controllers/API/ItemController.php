@@ -25,6 +25,19 @@ class ItemController extends Controller
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 
+    // replace product detail by category description
+    // Lay cai gi tu trong bien ra thi phai su dung map
+    public function replaceProductDetail($product)
+    {
+        $categoryID = $product->map(function ($item) {
+            return $item->productCategoryID;
+        });
+        $category = Category::where('categoryID', $categoryID)->first();
+        $product->map(function ($item) use ($category) {
+            $item->productDetail = $category->categoryDescription;
+        });
+        return $product;
+    }
 
     // custom imageUrl data for testing
     public function customImageUrl($data)
@@ -106,20 +119,16 @@ class ItemController extends Controller
     public function getbyid(Request $request)
     {
         try {
-            $data = Product::where('productID', $request->input('productID'))
-                ->get();
+            $data = Product::where('productID', $request->input('productID'))->get();
+            $data = $this->replaceProductDetail($data);
         } catch (\Throwable $th) {
             return response()->json([
-                'message' => 'Something went wrong',
-            ], 500);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Something went wrong',
+                'message' => $th->getMessage(),
             ], 500);
         }
         return response()->json([
             'product' =>  $data = $this->customImageUrl($data),
-            'message' => $data != null ?  'success' : 'fail'
+            'message' => $data != null ?  'success' : 'fail',
         ], 200);
     }
     /**
@@ -172,7 +181,6 @@ class ItemController extends Controller
             $product = Product::all();
             // paginate
             $product = $this->paginate($product, 12, $request->input('page'));
-
             return response()->json([
                 'product' => $product,
                 // fail if total is 0

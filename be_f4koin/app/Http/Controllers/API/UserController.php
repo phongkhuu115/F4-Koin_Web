@@ -11,7 +11,9 @@ use PhpParser\Builder\Method as BuilderMethod;
 
 class UserController extends Controller
 {
-    const timeout = 60;
+    // 30day
+    const timeout = 60 * 60 * 24 * 30;
+    // const timeout = 60;
     public function isvalidRequest(Request $request)
     {
         if ($request->all() == null) {

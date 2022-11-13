@@ -46,7 +46,7 @@ return [
     |
     */
 
-    // 'expiration' => null,
+    'expiration' => null,
     // One day
     // 'expiration' => 1440,
     // One Year

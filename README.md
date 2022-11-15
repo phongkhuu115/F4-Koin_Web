@@ -92,7 +92,7 @@ Code mẫu:
 Code mẫu: 
 
 ```
-let response = await axios('http://be.f4koin.cyou/api/login', {
+let response = await axios('https://backend.f4koin.cyou/api/login', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json',

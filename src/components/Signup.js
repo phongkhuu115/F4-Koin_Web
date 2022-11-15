@@ -13,7 +13,7 @@ function RenderSignup() {
   const [confirm, setConfirm] = useState();
 
   async function loginUser(sendData) {
-    return fetch('http://be.f4koin.cyou/api/register', {
+    return fetch('https://backend.f4koin.cyou/api/register', {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(sendData)

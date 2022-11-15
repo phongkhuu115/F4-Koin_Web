@@ -11,7 +11,7 @@ function App(props) {
 
   return (
     <>
-      ReactJS Starter Template by Varun Bardwaj
+      
     </>
   )
 }

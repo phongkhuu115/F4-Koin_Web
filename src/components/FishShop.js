@@ -13,7 +13,7 @@ function FishShop(props) {
   const [currentPage, setCurrenPage] = useState(1)
   const [message, setMessage] = useState('');
   let getItem = async () => {
-    let url = location.state.name === "Koi Fish" ? "https://be.f4koin.cyou/api/getOnlyFish?page=" + currentPage : "https://be.f4koin.cyou/api/getFoodAndTools?page=" + currentPage
+    let url = location.state.name === "Koi Fish" ? "https://backend.f4koin.cyou/api/getOnlyFish?page=" + currentPage : "https://backend.f4koin.cyou/api/getFoodAndTools?page=" + currentPage
     let data = await axios(url, {
       headers: {
         'Content-Type': 'application/json',

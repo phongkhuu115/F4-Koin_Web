@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 var getCategory = async () => {
-  let data = await axios('http://be.f4koin.cyou/api/getAllCategory', {
+  let data = await axios('https://backend.f4koin.cyou/api/getAllCategory', {
     headers: {
       'Content-Type': 'application/json',
     },

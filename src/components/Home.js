@@ -9,7 +9,7 @@ import axios from 'axios';
 import { wait } from '@testing-library/user-event/dist/utils';
 
 var get3lastest = async () => {
-  let data = await axios('https://be.f4koin.cyou/api/get3Latest', {
+  let data = await axios('https://backend.f4koin.cyou/api/get3Latest', {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -52,7 +52,7 @@ function RenderItem() {
   })
 }
 var get6random = async () => {
-  let data = await axios('https://be.f4koin.cyou/api/get6Random', {
+  let data = await axios('https://backend.f4koin.cyou/api/get6Random', {
     headers: {
       'Content-Type': 'application/json',
     },

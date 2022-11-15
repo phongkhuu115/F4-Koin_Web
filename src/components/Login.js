@@ -20,7 +20,7 @@ function RenderLogin() {
     if (isValid) {
       msg.classList.add('d-none')
       try {
-        let response = await axios('https://be.f4koin.cyou/api/login', {
+        let response = await axios('https://backend.f4koin.cyou/api/login', {
           method: 'post',
           headers: {
             'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 function Product(props) {
   const location = useLocation();
   let getItem = async () => {
-    let url = "http://be.f4koin.cyou/api/getSpecifyItem?productID=" + location.state.id;
+    let url = "https://backend.f4koin.cyou/api/getSpecifyItem?productID=" + location.state.id;
     let data = await axios(url, {
       headers: {
         'Content-Type': 'application/json',

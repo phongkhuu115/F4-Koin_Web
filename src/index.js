@@ -11,6 +11,7 @@ import ShopFooter from './components/ShopFooter';
 import FishShop from './components/FishShop';
 import Payment from './components/Payment'
 import Product from './components/Product';
+import Cart from './components/Cart'
 import {
   BrowserRouter,
   Routes,
@@ -37,6 +38,7 @@ root.render(
         <Route exact path="shop" element={<FishShop />} />
         <Route exact path='payment' element={<Payment></Payment>} />
         <Route exact path='product' element={<Product></Product>} />
+        <Route exact path='cart' element= {<Cart></Cart>}/>
       </Route>
     </Routes>
   </BrowserRouter>

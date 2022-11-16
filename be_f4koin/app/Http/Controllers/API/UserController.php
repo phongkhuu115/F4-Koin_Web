@@ -224,7 +224,7 @@ class UserController extends Controller
                 $this->updateExpireTimeOfToken($request);
                 return response()->json(
                     [
-                        'your profile' => $user,
+                        'profile' => $user,
                         'message' => 'success'
                     ],
                     200

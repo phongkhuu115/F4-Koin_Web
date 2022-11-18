@@ -457,4 +457,7 @@ class ItemController extends Controller
             'message' => 'success'
         ], 200);
     }
+    // reduce quantity of product
+
+
 }

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ItemController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\CartController;
 use App\Models\Role;
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,14 @@ Route::get('/getFoodAndTools', [ItemController::class, 'getToolsAndFood']);
 Route::get('/getAllCategory', [CategoryController::class, 'index']);
 
 
+// Route Cart
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/getCart', [CartController::class, 'getCart']);
+    Route::post('/addToCart', [CartController::class, 'addToCart']);
+    Route::post('/deleteFromCart', [CartController::class, 'deleteFromCart']);
+});
+
+
 // Route Product
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/updateItem', [ItemController::class, 'edit']);
@@ -63,6 +72,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 
 });
+
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

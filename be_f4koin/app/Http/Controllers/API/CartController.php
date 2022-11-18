@@ -77,57 +77,70 @@ class CartController extends Controller
     // get item from carts, item_in_carts, products, category with user id, cartegory, product Name, product detail
     public function getCart(Request $request)
     {
-        $userID = $this->getUserID($request);
-        $cart = DB::table('carts')
-            ->join('item_in_carts', 'carts.cartID', '=', 'item_in_carts.id_cart')
-            ->join('products', 'item_in_carts.product_id', '=', 'products.productID')
-            ->where('carts.id_user', $userID)
-            ->select(
-                'products.productID',
-                'products.productName as productName',
-                'products.productPrice as productPrice',
-                'item_in_carts.quantity as quantity',
-                'products.productDetail as productDetail',
-                'products.imageUrl as imageUrl',
-                'productDiscount',
-                'productSex',
-                'productSize',
-            )
-            ->get();
-
-        foreach ($cart as $item) {
-            $productCategory = DB::table('categories')
-                ->join('products', 'categories.categoryID', '=', 'products.productCategoryID')
-                ->where('products.productID', $item->productID)
-                ->select('categories.categoryName as categoryName')
-                ->get();
-            $subCategory = DB::table('fish_have_subcategory')
-                ->join('subcategories', 'fish_have_subcategory.subCategoryID', '=', 'subcategories.subcategoryID')
-                ->select('subcategories.subcategoryID', 'subcategories.subcategoryName')
-                ->where('fish_have_subcategory.productID', $item->productID)
-                ->get();
-            $type = DB::table('type')
-                ->join('products', 'type.typeID', '=', 'products.typeID')
-                ->select('type.typeName as typeName')
-                ->where('products.productID', $item->productID)
+        try {
+            $userID = $this->getUserID($request);
+            $cart = DB::table('carts')
+                ->join('item_in_carts', 'carts.cartID', '=', 'item_in_carts.id_cart')
+                ->join('products', 'item_in_carts.product_id', '=', 'products.productID')
+                ->where('carts.id_user', $userID)
+                ->select(
+                    'products.productID',
+                    'products.productName as productName',
+                    'products.productPrice as productPrice',
+                    'item_in_carts.quantity as quantity',
+                    'products.productDetail as productDetail',
+                    'products.imageUrl as imageUrl',
+                    'productDiscount',
+                    'productSex',
+                    'productSize',
+                )
                 ->get();
 
-            $item->productCategory = null;
-            if (!$productCategory->isEmpty() || !$subCategory->isEmpty()) {
+            foreach ($cart as $item) {
+                $productCategory = DB::table('categories')
+                    ->join('products', 'categories.categoryID', '=', 'products.productCategoryID')
+                    ->where('products.productID', $item->productID)
+                    ->select('categories.categoryName as categoryName')
+                    ->get();
+                $subCategory = DB::table('fish_have_subcategory')
+                    ->join('subcategories', 'fish_have_subcategory.subCategoryID', '=', 'subcategories.subcategoryID')
+                    ->select('subcategories.subcategoryID', 'subcategories.subcategoryName')
+                    ->where('fish_have_subcategory.productID', $item->productID)
+                    ->get();
+                $type = DB::table('type')
+                    ->join('products', 'type.typeID', '=', 'products.typeID')
+                    ->select('type.typeName as typeName')
+                    ->where('products.productID', $item->productID)
+                    ->get();
 
-                foreach ($subCategory as $sub) {
-                    $item->productCategory .=   $sub->subcategoryName . ", ";
+                $item->productCategory = null;
+                if (!$productCategory->isEmpty() || !$subCategory->isEmpty()) {
+
+                    foreach ($subCategory as $sub) {
+                        $item->productCategory .=   $sub->subcategoryName . ", ";
+                    }
+                    $item->productCategory .= $productCategory[0]->categoryName;
+                } else {
+                    $item->productCategory = $type[0]->typeName;
                 }
-                $item->productCategory .= $productCategory[0]->categoryName;
-            } else {
-                $item->productCategory = $type[0]->typeName;
             }
+            if ($cart->isEmpty()) {
+                return response()->json([
+                    'message' => 'success',
+                    'message' => 'Cart is empty',
+                ], 404);
+            }
+            return response()->json([
+                'message' => 'success',
+                'cart' => $cart,
+                // 'categoryName' => $categoryName
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'server error',
+                'error' => $th->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'cart' => $cart,
-            // 'categoryName' => $categoryName
-        ]);
     }
 
     // add item to cart
@@ -152,7 +165,8 @@ class CartController extends Controller
             // check if item is in database
             if (!$product) {
                 return response()->json([
-                    'message' => 'Product not found'
+                    'message' => 'failed',
+                    'error' => 'Product not found'
                 ], 400);
             }
 
@@ -174,9 +188,9 @@ class CartController extends Controller
                 DB::table('products')->where('productID', $productID)->update(['productInventory' => $stock]);
             }
             return response()->json([
-                'message' => 'Add to cart successfully',
-                'cart' => $this->getCart($request),
-                'product in database' => DB::table('products')->where('productID', $productID)->first()
+                'message' => 'success',
+                // 'cart' => $this->getCart($request),
+                // 'product in database' => DB::table('products')->where('productID', $productID)->first()
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
@@ -201,7 +215,8 @@ class CartController extends Controller
             // check if item is in database
             if (!$product) {
                 return response()->json([
-                    'message' => 'Product not found'
+                    'message' => 'failed',
+                    'error' => 'Product not found'
                 ], 400);
             }
 
@@ -212,19 +227,20 @@ class CartController extends Controller
                     $stock += $item->quantity;
                     DB::table('products')->where('productID', $productID)->update(['productInventory' => $stock]);
                 } else {
-                    DB::table('item_in_carts')->where('id_cart', $cartID)->where('product_id', $productID)->update(['quantity' => $item->quantity - $quantity,'updated_at' => Carbon::now()]);
+                    DB::table('item_in_carts')->where('id_cart', $cartID)->where('product_id', $productID)->update(['quantity' => $item->quantity - $quantity, 'updated_at' => Carbon::now()]);
                     $stock += $quantity;
                     DB::table('products')->where('productID', $productID)->update(['productInventory' => $stock]);
                 }
             } else {
                 return response()->json([
-                    'message' => 'Item not found in cart'
+                    'message' => 'failed',
+                    'error' => 'Item is not in cart'
                 ], 400);
             }
             return response()->json([
-                'message' => 'Delete from cart successfully',
-                'cart' => $this->getCart($request),
-                'product in database' => DB::table('products')->where('productID', $productID)->get()
+                'message' => 'success',
+                // 'cart' => $this->getCart($request),
+                // 'product in database' => DB::table('products')->where('productID', $productID)->get()
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

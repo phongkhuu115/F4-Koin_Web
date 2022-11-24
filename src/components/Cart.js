@@ -4,7 +4,11 @@ import koi from '../assets/koi.png'
 import axios from 'axios';
 
 var jwt = localStorage.getItem('auth')
-var token = jwt.substring(2)
+var token;
+if (jwt !== null) {
+  token = jwt.substring(2)
+}
+
 
 let getProduct = async () => {
   let url = "https://backend.f4koin.cyou/api/getCart"

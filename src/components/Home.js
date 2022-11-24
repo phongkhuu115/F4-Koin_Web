@@ -2,13 +2,10 @@ import '../styles/Home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import waitPic from '../assets/waiting.png'
 import axios from 'axios';
-import koiFish from '../assets/communistkoi.jpg'
-import tool from '../assets/tool.jpg'
-import { wait } from '@testing-library/user-event/dist/utils';
+import { MoneyFormat } from '../components/Helper/DataFormat'
 
 var get3lastest = async () => {
   let data = await axios('https://backend.f4koin.cyou/api/get3Latest', {
@@ -46,7 +43,7 @@ function RenderItem() {
           </div>
           <div>
             <h4 className="text-center text-white mt-3" >Tên: {item.productName}</h4>
-            <p className="text-center text-white">Giá: {item.productPrice * 24815.00} VND</p>
+            <p className="text-center text-white">Giá: {MoneyFormat(item.productPrice)} VND</p>
           </div>
         </Link>
       </>
@@ -89,7 +86,7 @@ function RenderPickItem() {
           </div>
           <div>
             <h4 className="text-center text-white mt-3" >Tên: {item.productName}</h4>
-            <p className="text-center text-white">Giá: {item.productPrice * 24815.00} VND</p>
+            <p className="text-center text-white">Giá: {MoneyFormat(item.productPrice)} VND</p>
           </div>
         </Link>
       </>

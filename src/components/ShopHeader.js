@@ -13,7 +13,7 @@ var getCategory = async () => {
   })
   return data;
 }
-var getUserData = async () => { 
+var getUserData = async () => {
   const jwt = localStorage.getItem('auth');
   let token = jwt.substring(2);
   let data = await axios('https://backend.f4koin.cyou/api/getMyProfile', {
@@ -81,9 +81,11 @@ function ShopHeader() {
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
         </form>
-        <button type="button" class="btn-cart btn btn-primary position-relative fs-4">
-          <i class="fa-solid fa-cart-shopping"></i> <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span class="visually-hidden">unread messages</span></span>
-        </button>
+        <Link to='/home/cart'>
+          <button type="button" class="btn-cart btn btn-primary position-relative fs-4">
+            <i class="fa-solid fa-cart-shopping"></i> <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span class="visually-hidden">unread messages</span></span>
+          </button>
+        </Link>
         <RenderUser></RenderUser>
       </header>
       <Outlet></Outlet>

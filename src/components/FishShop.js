@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import sorryPic from '../assets/sorry.png'
 import axios from "axios";
+import { MoneyFormat} from '../components/Helper/DataFormat'
+
+
 function FishShop(props) {
   const location = useLocation();
   const [pageNum, setPageNum] = useState(0);
@@ -83,7 +86,7 @@ function FishShop(props) {
             </div>
             <div>
               <h4 className="text-center text-white mt-3">Tên: {item.productName}</h4>
-              <p className="text-center text-white">Giá: {item.productPrice} VND</p>
+              <p className="text-center text-white">Giá: {MoneyFormat(item.productPrice)} VND</p>
             </div>
             <div onClick={sendtoCart(item.productID)} className="position-absolute top-0 start-0 fs-3 text-white fw-bold btn btn-danger ms-1 mt-1 rounded">+</div>
           </Link>

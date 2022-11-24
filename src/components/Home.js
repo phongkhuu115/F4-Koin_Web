@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import waitPic from '../assets/waiting.png'
 import axios from 'axios';
+import koiFish from '../assets/communistkoi.jpg'
+import tool from '../assets/tool.jpg'
 import { wait } from '@testing-library/user-event/dist/utils';
 
 var get3lastest = async () => {
@@ -25,7 +27,7 @@ function RenderItem() {
       setMessage(res.data.message)
     })
   }, [])
-  if (message === '') { 
+  if (message === '') {
     return (
       <>
         <div className='text-center mx-auto'>
@@ -38,7 +40,7 @@ function RenderItem() {
   return latest.map(item => {
     return (
       <>
-        <Link to='/home/product' className="fish-card order-md-first bg-dark p-3 rounded text-decoration-none new_product position-relative" state={{id: item.productID}}>
+        <Link to='/home/product' className="fish-card order-md-first bg-dark p-3 rounded text-decoration-none new_product position-relative" state={{ id: item.productID }}>
           <div className="card">
             <img className="card_img d-block" src={item.imageUrl} alt="" />
           </div>
@@ -68,7 +70,7 @@ function RenderPickItem() {
       setMessage(res.data.message)
     })
   }, [])
-  if (message === '') { 
+  if (message === '') {
     return (
       <>
         <div className='text-center mx-auto'>
@@ -81,7 +83,7 @@ function RenderPickItem() {
   return random.map(item => {
     return (
       <>
-        <Link to='/home/product' className="fish-card order-md-first bg-dark p-3 rounded mt-3 text-decoration-none position-relative pick" state={{id: item.productID}}>
+        <Link to='/home/product' className="fish-card order-md-first bg-dark p-3 rounded mt-3 text-decoration-none position-relative pick" state={{ id: item.productID }}>
           <div className="card">
             <img className="card_img d-block" src={item.imageUrl} alt="" />
           </div>
@@ -97,13 +99,13 @@ function RenderPickItem() {
 function HomePage() {
   return (
     <>
-      <div className='link-section d-flex h-100'>
-        <div className="link-half w-50 m-5 d-flex">
+      <div className='link-section d-flex h-75'>
+        <div className="link-half w-50 m-5 d-flex position-relative">
           <Link to="/home/shop" className='w-25 m-auto' state={{ name: "Koi Fish" }}>
             <button type="button" class="btn btn-dark fs-2 w-100 btn-redirect">Koi Fish</button>
           </Link>
         </div>
-        <div className="link-half w-50 m-5 d-flex">
+        <div className="link-half w-50 m-5 d-flex position-relative">
           <Link to='/home/shop' className='w-25 m-auto' state={{ name: "Tool & Foods" }}>
             <button type="button" class="btn btn-light fs-2 w-100 btn-redirect" >Tools & Foods</button>
           </Link>

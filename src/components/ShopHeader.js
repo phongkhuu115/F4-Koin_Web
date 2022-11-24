@@ -13,6 +13,17 @@ var getCategory = async () => {
   })
   return data;
 }
+var getUserData = async () => { 
+  const jwt = localStorage.getItem('auth');
+  let token = jwt.substring(2);
+  let data = await axios('https://backend.f4koin.cyou/api/getMyProfile', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    },
+  })
+  return data;
+}
 function RenderCategory() {
   let [category, setCategory] = useState([]);
   useEffect(() => {
@@ -27,12 +38,18 @@ function RenderCategory() {
   })
 }
 function RenderUser() {
-  let location = useLocation();
-  let isLogin = localStorage.getItem('isLogin') === null ? false : localStorage.getItem('isLogin');
-  if (isLogin) {
+  const [userFullName, setFullName] = useState();
+  let [message, setMessage] = useState();
+  useEffect(() => {
+    getUserData().then(res => {
+      setFullName(res.data.profile.userFullName)
+      setMessage(res.data.message);
+    })
+  }, [])
+  if (message === 'success') {
     return (
       <div className="avatar d-flex align-items-center">
-        <p className='mb-0 fs-3'>Xin chào, {location.state.fullname}</p>
+        <p className='mb-0 fs-3'>Xin chào, {userFullName}</p>
       </div>
     )
   }

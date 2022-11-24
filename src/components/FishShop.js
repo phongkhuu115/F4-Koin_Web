@@ -21,6 +21,18 @@ function FishShop(props) {
     })
     return data;
   }
+  let addtoCart = async (url) => {
+    let jwt = localStorage.getItem('auth');
+    let token = jwt.substring(2);
+    let data = await axios(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` 
+      },
+    })
+    return data;
+  }
   function RenderItem() {
     const [items, setItems] = useState([]);
     useEffect(() => {
@@ -54,17 +66,26 @@ function FishShop(props) {
         </>
       )
     }
+    function sendtoCart(productID) {
+      return function (e) {
+        e.preventDefault()
+        let url = `https://backend.f4koin.cyou/api/addToCart?productID=${productID}&quantity=1`
+        console.log(url);
+        addtoCart(url).then(res => console.log(res.data.message));
+      }
+    }
     return items.map(item => {
       return (
         <>
-          <Link className="fish-card col bg-dark pt-3 rounded text-decoration-none" to="/home/product" state={{ id: item.productID }}>
+          <Link className="fish-card col bg-dark pt-3 rounded text-decoration-none position-relative" to="/home/product" state={{ id: item.productID }}>
             <div className="card">
               <img className="card-img d-block h-50" src={item.imageUrl} alt="" />
             </div>
             <div>
               <h4 className="text-center text-white mt-3">Tên: {item.productName}</h4>
-              <p className="text-center text-white">Giá: {item.productPrice * 24815.00} VND</p>
+              <p className="text-center text-white">Giá: {item.productPrice} VND</p>
             </div>
+            <div onClick={sendtoCart(item.productID)} className="position-absolute top-0 start-0 fs-3 text-white fw-bold btn btn-danger ms-1 mt-1 rounded">+</div>
           </Link>
         </>
       )

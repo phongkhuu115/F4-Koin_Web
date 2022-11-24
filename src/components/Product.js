@@ -16,6 +16,24 @@ function Product(props) {
     })
     return data;
   }
+  let AddToCart = async (url) => {
+    let jwt = localStorage.getItem('auth');
+    let token = jwt.substring(2);
+    let data = await axios(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+    })
+    return data;
+  }
+
+  function SendToCart() {
+    let url = `https://backend.f4koin.cyou/api/addToCart?productID=${location.state.id}&quantity=1`
+    console.log(url);
+    AddToCart(url).then(res => console.log(res.data.message));
+  }
   function RenderItem() {
     const [item, setItem] = useState(0);
     useEffect(() => {
@@ -34,7 +52,7 @@ function Product(props) {
             <p className='text-uppercase fs-1'>{item.productName} <span className='fs-3'>(Còn <span className='fw-bold text-danger'>{typeof item.productInventory === 'undefined' ? 0 : item.productInventory}</span> sản phẩm trong kho)</span></p>
             <div className='bg-light p-3 rounded'>
               <p>Giá: <b>{item.productPrice * 24815.00} VND</b></p>
-              <div className='bg-danger d-inline-block text-white fs-2 rounded p-2'>- { item.productDiscount}%</div>
+              <div className='bg-danger d-inline-block text-white fs-2 rounded p-2'>- {item.productDiscount}%</div>
             </div>
             <p>Giới tính: <b>{item.productSex === "Male" ? "Đực" : "Cái"}</b></p>
             <p>Kích thước: <b>{item.productSize}</b></p>
@@ -48,7 +66,7 @@ function Product(props) {
           </div>
           <div className='d-flex position-absolute bottom-0 w-100'>
             <button className='text-uppercase fs-1 btn btn-dark flex-grow-1 mx-3 py-2 fw-bold ms-0'>buy now</button>
-            <button className='text-uppercase fs-1 btn btn-dark flex-grow-1 py-2 fw-bold me-5'>add to cart</button>
+            <button onClick={SendToCart} className='text-uppercase fs-1 btn btn-dark flex-grow-1 py-2 fw-bold me-5'>add to cart</button>
           </div>
           <img src={mainLogo} alt="" className='sticker position-absolute top-0 end-0 ' />
         </div>

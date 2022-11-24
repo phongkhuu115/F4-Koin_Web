@@ -4,13 +4,15 @@ a.footer-link:hover {
 
 .link-half:first-child {
   background-image: url(../assets/communistkoi.jpg);
-  background-size: cover;
+  background-size: contain;
+  background-position:center;
   background-repeat: no-repeat;
 }
 
 .link-half:last-child {
   background-image: url(../assets/tool.jpg);
-  background-size: cover;
+  background-size: contain;
+  background-position:center;
   background-repeat: no-repeat;
 }
 

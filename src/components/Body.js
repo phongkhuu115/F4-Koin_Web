@@ -1,14 +1,11 @@
 import '../styles/Body.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import fishPic from '../assets/koi.png';
-import foodPic from '../assets/fishfood.jpg';
-import toolPic from '../assets/fishtool.jpg';
+import webLogo from '../assets/weblogo.png'
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react';
 
 
 function Header() {
-  const slides = [fishPic, toolPic, foodPic];
   return (
     <>
       <div className="Main container-fluid d-flex justify-content-center align-items-center h-100 position-relative">
@@ -27,18 +24,7 @@ function Header() {
           </Link>
         </div>
         <div className="ms-auto me-5 w-50 h-75" id='slides-container'>
-          {slides.map(slide => {
-            return (
-              <img src={slide} alt="" className='w-100 h-100 fade' id='slidesPic' />
-            );
-          })}
-          <div id="dot-container" className='d-flex justify-content-center mt-4'>
-            {slides.map(slide => {
-              return (
-                <div className='dot rounded-circle p-2 mx-2' id='dot'></div>
-              );
-            })}
-          </div>
+          <img src={webLogo} alt="" className='w-100 h-100' id='' />
         </div>
       </div>
     </>

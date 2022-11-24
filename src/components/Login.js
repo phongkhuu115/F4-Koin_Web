@@ -1,6 +1,6 @@
 import '../styles/Login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import mainPic from '../assets/koi.png';
+import mainPic from '../assets/weblogo.png';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
@@ -32,11 +32,7 @@ function RenderLogin() {
         }).then(res => {
           localStorage.setItem('auth', res.data.token);
           if (res.data.message === "Login success") {
-            localStorage.setItem('isLogin', true);
             navigate('/home', {
-              state: {
-                fullname: res.data.user.userFullName,
-              }
             });
           }
         })
@@ -118,8 +114,8 @@ function RenderLogin() {
         </div>
         <p class="text-danger text-center fs-4 my-2 d-none allvalidate-msg">Thông tin đăng nhập không hợp lệ</p>
         <div className="d-flex justify-content-evenly mt-4">
-          <button type="submit" className='form-button btn btn-outline-dark text-uppercase fw-bold fs-3 border border-2 border-dark' onClick={handleLogin}>Log In</button>
-          <Link to='/signup'><button type="submit" className='form-button btn btn-outline-dark text-uppercase fw-bold fs-3 border border-2 border-dark'>Sign UP</button></Link>
+          <button type="submit" className='login-btn form-button btn btn-outline-dark text-uppercase fw-bold fs-3 border border-2 border-dark' onClick={handleLogin}>Log In</button>
+          <Link to='/signup'><button type="submit" className='login-btn form-button btn btn-outline-dark text-uppercase fw-bold fs-3 border border-2 border-dark'>Sign UP</button></Link>
         </div>
       </form>
       <img src={mainPic} className="main-pic h-75 position-absolute top-50 translate-middle" alt="" />

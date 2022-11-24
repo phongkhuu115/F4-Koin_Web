@@ -30,6 +30,6 @@ img.main-pic {
 
 .signup-button {
   text-transform: uppercase;
-  min-width: 30rem;
+  flex: 1;
   padding: 1.6rem 3.2rem;
 }

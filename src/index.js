@@ -16,6 +16,7 @@ import {
   BrowserRouter,
   Routes,
   Route,
+  HashRouter
 } from "react-router-dom";
 
 const htmlRoot = document.getElementById('root');
@@ -26,7 +27,7 @@ window.addEventListener("beforeunload", () =>
 htmlRoot.classList.add("h-100")
 const root = ReactDOM.createRoot(htmlRoot);
 root.render(
-  <BrowserRouter>
+  <HashRouter>
     <Routes>
       <Route path="/" element={<IntroHeader />}>
         <Route index element={<Body />} />
@@ -41,6 +42,6 @@ root.render(
         <Route exact path='cart' element= {<Cart></Cart>}/>
       </Route>
     </Routes>
-  </BrowserRouter>
+  </HashRouter>
 );
 

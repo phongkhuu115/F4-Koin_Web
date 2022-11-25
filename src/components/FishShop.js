@@ -5,8 +5,9 @@ import "../styles/FishShop.css";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import sorryPic from '../assets/sorry.png'
-import axios from "axios";
-import { MoneyFormat} from '../components/Helper/DataFormat'
+import { MoneyFormat } from '../components/helper/DataFormat'
+import { GetAPINoToken, PostAPINoBody } from '../components/helper/GlobalFunction'
+
 
 
 function FishShop(props) {
@@ -15,31 +16,12 @@ function FishShop(props) {
   const [productNumber, setProductNumber] = useState(0);
   const [currentPage, setCurrenPage] = useState(1)
   const [message, setMessage] = useState('');
-  let getItem = async () => {
-    let url = location.state.name === "Koi Fish" ? "https://backend.f4koin.cyou/api/getOnlyFish?page=" + currentPage : "https://backend.f4koin.cyou/api/getFoodAndTools?page=" + currentPage
-    let data = await axios(url, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    return data;
-  }
-  let addtoCart = async (url) => {
-    let jwt = localStorage.getItem('auth');
-    let token = jwt.substring(2);
-    let data = await axios(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` 
-      },
-    })
-    return data;
-  }
+
   function RenderItem() {
     const [items, setItems] = useState([]);
+    let url = location.state.name === "Koi Fish" ? "https://backend.f4koin.cyou/api/getOnlyFish?page=" + currentPage : "https://backend.f4koin.cyou/api/getFoodAndTools?page=" + currentPage
     useEffect(() => {
-      getItem().then(res => {
+      GetAPINoToken(url).then(res => {
         setPageNum(res.data.product.last_page);
         setMessage(res.data.message);
         if (Array.isArray(res.data.product.data)) {
@@ -73,8 +55,7 @@ function FishShop(props) {
       return function (e) {
         e.preventDefault()
         let url = `https://backend.f4koin.cyou/api/addToCart?productID=${productID}&quantity=1`
-        console.log(url);
-        addtoCart(url).then(res => console.log(res.data.message));
+        PostAPINoBody(url).then(res => console.log(res.data.message));
       }
     }
     return items.map(item => {

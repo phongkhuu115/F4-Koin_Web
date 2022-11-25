@@ -3,6 +3,7 @@ import '../styles/ShopHeader.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react';
+import { GetToken } from '../components/helper/GlobalFunction'
 import axios from 'axios';
 
 var getCategory = async () => {
@@ -14,12 +15,10 @@ var getCategory = async () => {
   return data;
 }
 var getUserData = async () => {
-  const jwt = localStorage.getItem('auth');
-  let token = jwt.substring(2);
   let data = await axios('https://backend.f4koin.cyou/api/getMyProfile', {
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token,
+      'Authorization': 'Bearer ' + GetToken(),
     },
   })
   return data;

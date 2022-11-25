@@ -4,6 +4,7 @@ import mainLogo from '../assets/mainlogo.png'
 import '../styles/Product.css'
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import { GetToken } from '../components/helper/GlobalFunction'
 
 function Product(props) {
   const location = useLocation();
@@ -17,13 +18,11 @@ function Product(props) {
     return data;
   }
   let AddToCart = async (url) => {
-    let jwt = localStorage.getItem('auth');
-    let token = jwt.substring(2);
     let data = await axios(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${GetToken()}`
       },
     })
     return data;

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import waitPic from '../assets/waiting.png'
 import axios from 'axios';
-import { MoneyFormat } from '../components/helper/DataFormat'
+import { MoneyFormat } from '../components/helpers/DataFormat'
 
 var get3lastest = async () => {
   let data = await axios('https://backend.f4koin.cyou/api/get3Latest', {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Cart.css'
-import koi from '../assets/koi.png'
 import axios from 'axios';
 import { MoneyFormat } from './helpers/DataFormat'
 import { GetToken } from './helpers/GlobalFunction'

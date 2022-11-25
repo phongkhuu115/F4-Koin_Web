@@ -4,7 +4,7 @@ import mainLogo from '../assets/mainlogo.png'
 import '../styles/Product.css'
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-import { GetToken } from '../components/helper/GlobalFunction'
+import { GetToken } from '../components/helpers/GlobalFunction'
 
 function Product(props) {
   const location = useLocation();

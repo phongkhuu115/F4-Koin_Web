@@ -3,7 +3,7 @@ import '../styles/ShopHeader.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-import { GetToken } from '../components/helper/GlobalFunction'
+import { GetToken } from '../components/helpers/GlobalFunction'
 import axios from 'axios';
 
 var getCategory = async () => {

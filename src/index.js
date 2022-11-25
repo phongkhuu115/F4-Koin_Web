@@ -12,6 +12,7 @@ import FishShop from './components/FishShop';
 import Payment from './components/Payment'
 import Product from './components/Product';
 import Cart from './components/Cart'
+import AboutUs from './components/AboutUs'
 import {
   BrowserRouter,
   Routes,
@@ -33,6 +34,7 @@ root.render(
         <Route index element={<Body />} />
         <Route exact path="login" element={<RenderLogin />} />
         <Route exact path="signup" element={<RenderSignup />} />
+        <Route exact path="about-us" element={<AboutUs />} />
       </Route>
       <Route path="/home" element={<><ShopHeader /><ShopFooter /></>}>
         <Route index element={<HomePage />} />

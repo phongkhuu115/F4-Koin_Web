@@ -5,8 +5,8 @@ import "../styles/FishShop.css";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import sorryPic from '../assets/sorry.png'
-import { MoneyFormat } from '../components/helper/DataFormat'
-import { GetAPINoToken, PostAPINoBody } from '../components/helper/GlobalFunction'
+import { MoneyFormat } from './helpers/DataFormat'
+import { GetAPINoToken, PostAPINoBody } from './helpers/GlobalFunction'
 
 
 

@@ -17,12 +17,50 @@ use function PHPUnit\Framework\isEmpty;
 
 class OrderController extends Controller
 {
+    public function getUserID(Request $request)
+    {
+        $token = $request->bearerToken();
+        $token = hash('sha256', $token);
+        $token = DB::table('personal_access_tokens')->where('token', $token)->first();
+        return $token->tokenable_id;
+    }
     public function createOrder(Request $request)
     {
-        return response()->json([
-            'message' => 'success',
-            'data' => $request->all()
+        $request->validate([
+            'id' => 'required',
+            'quantity' => 'required',
         ]);
+        $id  = $request->input('id');
+        $quantity = $request->input('quantity');
+        // split id and quantity
+        $id = explode(",", $id);
+        $quantity = explode(",", $quantity);
+        $user_id = $this->getUserID($request);
+        $order = new Order();
+        $order->user_id = $user_id;
+        $order->order_status = 'pending';
+        $order->create_at = now();
+        $isOrderSuccess = $order->save();
+        if ($isOrderSuccess) {
+            $order_id = $order->id;
+            for ($i = 0; $i < count($id); $i++) {
+                $item_in_order = new item_in_order();
+                $item_in_order->order_id = $order_id;
+                $item_in_order->id = $id[$i];
+                $item_in_order->quantity = $quantity[$i];
+                $item_in_order->save();
+            }
+            return response()->json([
+                'message' => 'Create pre-order success',
+                // 'message' => 'success',
+                'order_id' => $order_id,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' =>   'Create pre-order failed',
+                // 'message' => 'failed',
+            ], 400);
+        }
     }
 
 

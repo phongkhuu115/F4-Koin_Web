@@ -84,6 +84,7 @@ class CartController extends Controller
                 ->join('products', 'item_in_carts.product_id', '=', 'products.productID')
                 ->where('carts.id_user', $userID)
                 ->select(
+                    'carts.cartID',
                     'products.productID',
                     'products.productName as productName',
                     'products.productPrice as productPrice',

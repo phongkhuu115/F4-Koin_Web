@@ -13,7 +13,7 @@ class item_in_order extends Model
 {
     use HasApiTokens, HasFactory, Notifiable, UuidTrait;
 
-    protected $table = 'item_in_orders';
+    protected $table = 'item_in_order';
 
     protected $primaryKey = 'id';
 

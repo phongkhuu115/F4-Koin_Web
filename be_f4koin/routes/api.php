@@ -7,6 +7,7 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ItemController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CartController;
+use App\Http\Controllers\API\OrderController;
 use App\Models\Role;
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/deleteFromCart', [CartController::class, 'deleteFromCart']);
 });
 
+// Route Order
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/createOrder', [OrderController::class, 'createOrder']);
+    Route::get('/getOrder', [OrderController::class, 'getOrder']);
+    Route::get('/getOrderDetail', [OrderController::class, 'getOrderDetail']);
+    Route::post('/deleteOrder', [OrderController::class, 'deleteOrder']);
+});
+
 
 // Route Product
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -69,9 +79,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // get my profile
     Route::get('/getMyProfile', [UserController::class, 'getMyProfile']);
     // Route::get('/getMyProfile', [UserController::class, 'isMySef']);
-
-
 });
+
+
 
 
 

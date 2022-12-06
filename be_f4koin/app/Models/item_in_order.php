@@ -8,24 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Order extends Model
+
+class item_in_order extends Model
 {
     use HasApiTokens, HasFactory, Notifiable, UuidTrait;
 
-    protected $table = 'orders';
+    protected $table = 'item_in_orders';
 
-    protected $primaryKey = 'order_id';
+    protected $primaryKey = 'id';
 
     public $timestamps = false;
 
     protected $fillable = [
+        'id',
+        'product_id',
         'order_id',
-        'user_id',
-        'paymen_id',
-        'order_tinhtien',
-        'order_address',
-        'order_note',
-        'order_status',
-        'create_at',
     ];
 }

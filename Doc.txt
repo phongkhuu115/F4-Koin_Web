@@ -1,0 +1,10 @@
+b1: tạo file .eve lấy nội dung từ .env example
+b2: tạo database 
+
+php artisan make:controller API\UserController --model=User 
+php artisan key:generate
+php artisan serve
+
+
+
+	

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom'
 function ShopFooter() {
   return (
     <div className="footer-section p-5 bg-white">
@@ -17,11 +17,11 @@ function ShopFooter() {
         <div>
           <h2>Useful Links</h2>
           <div className='d-flex flex-column mt-4 fs-4'>
-            <a href="" className='footer-link text-decoration-none text-black my-2'>About Us</a>
-            <a href="" className='footer-link text-decoration-none text-black my-2'>Contact</a>
-            <a href="" className='footer-link text-decoration-none text-black my-2'>Hot deals</a>
-            <a href="" className='footer-link text-decoration-none text-black my-2'>Promotions</a>
-            <a href="" className='footer-link text-decoration-none text-black my-2'>New products</a>
+            <a href="" className='footer-link text-decoration-none text-black my-2'><Link to='/about-us' className="footer-link text-decoration-none text-black my-2">About Us</Link></a>
+            <a href="" className='footer-link text-decoration-none text-black my-2'><Link to='/home' className="footer-link text-decoration-none text-black my-2">Contact</Link></a>
+            <a href="" className='footer-link text-decoration-none text-black my-2'><Link to='/home' className="footer-link text-decoration-none text-black my-2">Hot deals</Link></a>
+            <a href="" className='footer-link text-decoration-none text-black my-2'><Link to='/home' className="footer-link text-decoration-none text-black my-2">Promotions</Link></a>
+            <a href="" className='footer-link text-decoration-none text-black my-2'><Link to='/home' className="footer-link text-decoration-none text-black my-2">Home</Link></a>
           </div>
         </div>
         <div>

@@ -23,5 +23,6 @@ class item_in_order extends Model
         'id',
         'product_id',
         'order_id',
+        'quantity',
     ];
 }

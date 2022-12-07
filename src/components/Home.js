@@ -6,20 +6,14 @@ import { Link } from 'react-router-dom';
 import waitPic from '../assets/waiting.png'
 import axios from 'axios';
 import { MoneyFormat } from '../components/helpers/DataFormat'
+import { PostAPIToken, BaseURL, GetAPINoToken } from './helpers/GlobalFunction';
 
-var get3lastest = async () => {
-  let data = await axios('https://backend.f4koin.cyou/api/get3Latest', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  return data;
-}
 function RenderItem() {
+  let latestURL = BaseURL() + "get3Latest";
   let [latest, setLatest] = useState([]);
   let [message, setMessage] = useState('');
   useEffect(() => {
-    get3lastest().then(res => {
+    GetAPINoToken(latestURL).then(res => {
       setLatest(res.data.product.slice());
       setMessage(res.data.message)
     })

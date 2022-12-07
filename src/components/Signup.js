@@ -4,6 +4,7 @@ import mainPic from '../assets/weblogo.png';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { PostAPINoToken, BaseURL } from './helpers/GlobalFunction'
 
 function RenderSignup() {
   const [username, setUsername] = useState();
@@ -15,36 +16,25 @@ function RenderSignup() {
   const navigate = useNavigate();
 
   let handleSignup = async (e) => {
-    // console.log(username)
-    // console.log(userEmail)
-    // console.log(userFullName)
-    // console.log(userTelephone)
-    // console.log(password)
-    // console.log(confirm)
     e.preventDefault();
     let passwordInput = document.getElementById('password').value;
     let confirmPassInput = document.getElementById('confirm-pass').value;
-    // console.log(passwordInput);
-    // console.log(confirmPassInput);
     if (passwordInput !== confirmPassInput) {
       alert('Mật khẩu không trùng khớp')
       return;
     }
-    let response = await axios('https://backend.f4koin.cyou/api/register', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: {
-        username: username,
-        userEmail: userEmail,
-        userFullName: userFullName,
-        userTelephone: userTelephone,
-        password: password,
-        password_confirmation: confirm
-      }
-    }).then(res => {
-      // console.log(res)
+
+    let url = BaseURL() + "register"
+    let body = {
+      username: username,
+      userEmail: userEmail,
+      userFullName: userFullName,
+      userTelephone: userTelephone,
+      password: password,
+      password_confirmation: confirm
+    }
+    PostAPINoToken(url,body).then(res => {
+      console.log(res)
       if (res.status === 201) {
         alert('Đăng ký thành công')
         navigate('/login', {

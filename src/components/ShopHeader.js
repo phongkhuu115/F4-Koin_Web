@@ -4,43 +4,29 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import { GetToken } from '../components/helpers/GlobalFunction'
-import axios from 'axios';
+import { GetAPINoToken, GetAPIToken, BaseURL } from '../components/helpers/GlobalFunction';
 
-var getCategory = async () => {
-  let data = await axios('https://backend.f4koin.cyou/api/getAllCategory', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  return data;
-}
-var getUserData = async () => {
-  let data = await axios('https://backend.f4koin.cyou/api/getMyProfile', {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + GetToken(),
-    },
-  })
-  return data;
-}
 function RenderCategory() {
+  let categoryURL = BaseURL() + "getAllCategory"
   let [category, setCategory] = useState([]);
   useEffect(() => {
-    getCategory().then(res => {
+    GetAPINoToken(categoryURL).then(res => {
       setCategory(res.data.category.slice());
     })
   }, [])
   return category.map(item => {
     return (
-      <option value={item.categoryID}>{item.categoryName}</option>
+      <option key={item.categoryID } value={item.categoryID}>{item.categoryName}</option>
     )
   })
 }
 function RenderUser() {
+  let userURL = BaseURL() + "getMyProfile"
   const [userFullName, setFullName] = useState();
   let [message, setMessage] = useState();
   useEffect(() => {
-    getUserData().then(res => {
+    GetAPIToken(userURL).then(res => {
+      sessionStorage.setItem('user_session', JSON.stringify(res.data.profile))
       setFullName(res.data.profile.userFullName)
       setMessage(res.data.message);
     })
@@ -68,7 +54,7 @@ function ShopHeader() {
   return (
     <>
       <header className='navbar navbar-expand-lg bg-light justify-content-evenly shadow'>
-        <Link class="navbar-brand fw-bold fs-3 text-uppercase" to='/home'>Koi Store</Link>
+        <Link className="navbar-brand fw-bold fs-3 text-uppercase" to='/home'>Koi Store</Link>
         <form action="" className='search-group d-flex'>
           <select id="catergory" name="catergory" className='p-3 bg-transparent fs-4 fw-bold border-0'>
             <option value="1">All Categories</option>
@@ -77,12 +63,12 @@ function ShopHeader() {
           <hr className='border border-dark ms-3' />
           <input type="text" className='search-input form-control fs-4 p-4 bg-transparent' placeholder='Search for items...' />
           <button type="submit" className='search-btn btn btn-dark fs-4'>
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </form>
         <Link to='/home/cart'>
-          <button type="button" class="btn-cart btn btn-primary position-relative fs-4">
-            <i class="fa-solid fa-cart-shopping"></i> <span class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span class="visually-hidden">unread messages</span></span>
+          <button type="button" className="btn-cart btn btn-primary position-relative fs-4">
+            <i className="fa-solid fa-cart-shopping"></i> <span className="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span className="visually-hidden">unread messages</span></span>
           </button>
         </Link>
         <RenderUser></RenderUser>

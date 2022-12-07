@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
+import { PostAPINoToken, BaseURL} from './helpers/GlobalFunction'
 
 function RenderLogin() {
   const [username, setUsername] = useState();
@@ -20,17 +21,13 @@ function RenderLogin() {
     if (isValid) {
       msg.classList.add('d-none')
       try {
-        let response = await axios('https://backend.f4koin.cyou/api/login', {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          data: {
-            username: username,
-            password: password
-          }
-        }).then(res => {
-          localStorage.setItem('auth', res.data.token);
+        let url = BaseURL() + "login"
+        let body = {
+          username: username,
+          password: password
+        }
+        PostAPINoToken(url, body).then(res => {
+          sessionStorage.setItem('auth', res.data.token);
           if (res.data.message === "Login success") {
             navigate('/home', {
             });

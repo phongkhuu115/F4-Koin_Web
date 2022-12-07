@@ -1,70 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
 import '../styles/Cart.css'
-import axios from 'axios';
-import { MoneyFormat } from './helpers/DataFormat'
-import { GetToken } from './helpers/GlobalFunction'
-
-
-let getProduct = async () => {
-  let url = "https://backend.f4koin.cyou/api/getCart"
-  let data = await axios(url, {
-    headers: {
-      'Authorization': `Bearer ${GetToken()}`,
-      'Content-Type': 'application/json',
-    },
-  })
-  return data;
-}
+import { GetAPIToken, BaseURL, PostAPINoBody } from './helpers/GlobalFunction'
+import CartItem from './CartItem';
+import fishingPic from '../assets/gofishing.png'
+import { Link } from 'react-router-dom';
 
 
 
 function App(props) {
+
+  let listID = [];
+  let listQuantities = [];
   function RenderItem() {
+    let cartURL = BaseURL() + "getCart"
     const [product, setProduct] = useState([]);
     useEffect(() => {
-      getProduct().then(res => setProduct(res.data.cart.slice()))
+      GetAPIToken(cartURL).then(res => {
+        setProduct(res.data.cart.slice())
+      })
     }, []);
-    return product.map(item => {
+    if (product.length === 0) {
       return (
         <>
-          <div className='m-5 bg-white p-5 rounded d-flex text-start'>
-            <img src={item.imageUrl} alt="" className='cart__item-img' />
-            <div className='d-flex justify-content-between w-100'>
-              <div className='d-flex flex-column ms-3 my-auto'>
-                <p className='text-uppercase fw-bold' style={{ minWidth: 300 }}>{item.productName}</p>
-                <p>{MoneyFormat(item.productPrice)} vnd</p>
-                <div className='d-flex'><span className='bg-primary text-white fs-3 px-3 py-2 text-uppercase fw-bold rounded'>{item.productSex === "Female" ? "Cái" : "Đực"}</span><span className='bg-danger text-white fs-3 px-3 py-2 text-uppercase fw-bold rounded ms-2'>-{item.productDiscount}%</span><span className='bg-success text-white fs-3 px-3 py-2 text-uppercase fw-bold rounded ms-2'>{item.productSize === null ? 0 : item.productSize} inch</span></div>
-              </div>
-              <div className='me-auto my-auto ms-5'>
-                <div className='d-flex'>
-                  <div id="decrease" onClick={decreaseValue} value="Decrease Value" className='value-button btn fs-3 px-4'>-</div>
-                  <input type="text" id="number" value={item.quantity} className='fs-4' />
-                  <div id="increase" onClick={increaseValue} value="Increase Value" className='value-button btn fs-3 px-4'>+</div>
-                </div>
-              </div>
-              <div className='d-flex align-items-center'>
-                <input type="checkbox" name="pick"></input>
-              </div>
-            </div>
+          <div className='text-center'>
+            <img src={fishingPic} alt="" />
+            <p className='text-center'>Có vẻ bạn chưa chọn sản phẩm nào</p>
+            <p><Link to='/home'>Quay về cửa hàng</Link></p>
           </div>
+        </>
+      )
+    }
+    return product.map(item => {
+      const itemRef = createRef(null)
+      listID.push(item.productID)
+      listQuantities.push(item.quantity)
+      return (
+        <>
+          <CartItem ref={itemRef} imageUrl={item.imageUrl} productName={item.productName} productPrice={item.productPrice} productSex={item.productSex} productDiscount={item.productDiscount} productSize={item.productSize} quantity={item.quantity}></CartItem>
         </>
       )
     })
   }
 
-  function increaseValue() {
-    var value = parseInt(document.getElementById('number').value, 10);
-    value = isNaN(value) ? 0 : value;
-    value++;
-    document.getElementById('number').value = value;
+  function HandlePayment() {
+    let check = document.querySelectorAll('input[type=checkbox]')
+    for (let i = 0; i < check.length; i++) {
+      // console.log("ID " + i + ": " + listID[i])
+      if (check[i].checked) {
+        // console.log("Item " + i + " id: " + listID[i] + "checked")
+      }
+    }
   }
 
-  function decreaseValue() {
-    var value = parseInt(document.getElementById('number').value, 10);
-    value = isNaN(value) ? 0 : value;
-    value--;
-    value = value <= 0 ? 0 : value;
-    document.getElementById('number').value = value;
+  function HandleDelete() {
+    let check = document.querySelectorAll('input[type=checkbox]')
+    if (window.confirm('Xóa các sản phẩm đã chọn ?')) {
+      for (let i = 0; i < check.length; i++) {
+        // console.log("ID " + i + ": " + listID[i])
+        if (check[i].checked) {
+          // console.log("Item " + i + " id: " + listID[i] + "checked")
+          let url = BaseURL() + "deleteFromCart?productID=" + listID[i] + "&quantity=" + listQuantities[i]
+          console.log(url)
+          try {
+            PostAPINoBody(url).then(res => {
+              if (res.data.message === 'success') {
+                window.location.reload()
+              }
+            })
+          } catch (error) {
+            alert('Xóa các sản phẩm thất bại')
+          }
+        }
+      }
+    }
+    else {
+
+    }
   }
 
 
@@ -75,8 +86,8 @@ function App(props) {
         <div className='w-100 text-end'>
           <RenderItem></RenderItem>
           <div className='d-flex justify-content-end'>
-            <div className='btn btn-primary fs-3 d-inline-block me-5'>Loại Bỏ Sản Phẩm</div>
-            <div className='btn btn-primary fs-3 d-inline-block me-5'>Thanh Toán</div>
+            <div className='btn btn-primary fs-3 d-inline-block me-5' onClick={HandleDelete}>Loại Bỏ Sản Phẩm</div>
+            <div className='btn btn-primary fs-3 d-inline-block me-5' onClick={HandlePayment}>Thanh Toán</div>
           </div>
         </div>
       </div>

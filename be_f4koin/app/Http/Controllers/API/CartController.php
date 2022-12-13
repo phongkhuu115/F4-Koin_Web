@@ -161,14 +161,14 @@ class CartController extends Controller
                 return response()->json([
                     'message' => 'failed',
                     'error' => 'out of stock'
-                ], 400);
+                ], 200);
             }
             // check if item is in database
             if (!$product) {
                 return response()->json([
                     'message' => 'failed',
                     'error' => 'Product not found'
-                ], 400);
+                ], 200);
             }
 
             // check if item is already in cart

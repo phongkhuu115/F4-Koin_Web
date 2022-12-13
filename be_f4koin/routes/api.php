@@ -10,6 +10,7 @@ use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\OrderController;
 use App\Models\Role;
 use App\Events\MessageEvent;
+use App\Http\Controllers\API\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +56,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 // Route Order
-
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/createPreOrder', [OrderController::class, 'createPreOrder']);
     Route::get('/getSpecifyOrder', [OrderController::class, 'getSpecifyOrder']);
@@ -85,6 +85,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // get my profile
     Route::get('/getMyProfile', [UserController::class, 'getMyProfile']);
     // Route::get('/getMyProfile', [UserController::class, 'isMySef']);
+});
+
+// Route Report
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/getReportByDay', [ReportController::class, 'getReportByDay']);
+
 });
 
 //Route Chat

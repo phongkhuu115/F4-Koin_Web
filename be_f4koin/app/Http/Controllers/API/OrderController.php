@@ -44,19 +44,18 @@ class OrderController extends Controller
     {
         $string = explode(",", $string);
         // clear array
-       return $string = array_filter($string);
-
+        return $string = array_filter($string);
     }
     public function createPreOrder(Request $request)
     {
         $request->validate([
-            'id' => 'required',
+            'cart_id' => 'required',
+            'product_id' => 'required',
         ]);
 
-        $arrayID  = $this->stringToArray($request->id);
+        $arrayProductID  = $this->stringToArray($request->product_id);
+        $cart_id = $request->cart_id;
 
-        $cart_id = $arrayID[0];
-        $arrayProductID = array_slice($arrayID, 1);
         $user_id = $this->getUserID($request);
 
         // corner case
@@ -135,13 +134,13 @@ class OrderController extends Controller
             $order->save();
             return response()->json([
                 'message' => 'success',
-                'status' => 'Create pre-order success',
+                'status' => 'Create order success',
                 // 'order_id' => $order_id,
             ], 200);
         } else {
             return response()->json([
                 'message' => 'failed',
-                'status' =>   'Create pre-order failed',
+                'status' =>   'Create order failed',
             ], 400);
         }
     }
@@ -182,21 +181,21 @@ class OrderController extends Controller
                 switch ($request->input('action')) {
                     case '1':
                         return  $this->order_delivering($this->stringToArray($request->input('order_id'))) ?
-                        response()->json(['message' => 'success','status' => 'delivering order success', ], 200)  :
-                        response()->json(['message' => 'fail','status' => 'delivering order fail',], 400);
+                            response()->json(['message' => 'success', 'status' => 'delivering order success',], 200)  :
+                            response()->json(['message' => 'fail', 'status' => 'delivering order fail',], 400);
                         break;
                     case '2':
                         return  $this->order_delivering($this->stringToArray($request->input('order_id'))) ?
-                        response()->json(['message' => 'success','status' => 'delivering order success', ], 200)  :
-                        response()->json(['message' => 'fail','status' => 'delivering order fail',], 400);
+                            response()->json(['message' => 'success', 'status' => 'delivering order success',], 200)  :
+                            response()->json(['message' => 'fail', 'status' => 'delivering order fail',], 400);
                         break;
-                        break;
-
-                    default:
+                    case '2':
                         return  $this->order_delivering($this->stringToArray($request->input('order_id'))) ?
-                        response()->json(['message' => 'success','status' => 'delivering order success', ], 200)  :
-                        response()->json(['message' => 'fail','status' => 'delivering order fail',], 400);
+                            response()->json(['message' => 'success', 'status' => 'delivering order success',], 200)  :
+                            response()->json(['message' => 'fail', 'status' => 'delivering order fail',], 400);
                         break;
+                    default:
+                        return response()->json(['message' => 'fail', 'status' => 'action not found',], 400);
                         break;
                 }
 
@@ -204,8 +203,7 @@ class OrderController extends Controller
                     'message' => 'success',
                     'status' => 'accept order success',
                 ], 200);
-            }
-            else {
+            } else {
                 return response()->json([
                     'message' => 'fail',
                     'status' => 'You are not admin',
@@ -219,36 +217,37 @@ class OrderController extends Controller
         }
     }
 
-    public function order_delivering($arrayProductID){
+    public function order_delivering($arrayProductID)
+    {
         foreach ($arrayProductID as $orderID) {
             $order = Order::where('order_id', $orderID)->first();
             $order->order_status = 'delivering';
-           if(!$order->save()){
+            if (!$order->save()) {
                 return false;
-           }
+            }
         }
         return true;
     }
-    public function order_delivered($arrayProductID){
+    public function order_delivered($arrayProductID)
+    {
         foreach ($arrayProductID as $orderID) {
             $order = Order::where('order_id', $orderID)->first();
             $order->order_status = 'delivering';
-           if(!$order->save()){
+            if (!$order->save()) {
                 return false;
-           }
+            }
         }
         return true;
     }
-    public function order_bomb($arrayProductID){
+    public function order_bomb($arrayProductID)
+    {
         foreach ($arrayProductID as $orderID) {
             $order = Order::where('order_id', $orderID)->first();
             $order->order_status = 'delivering';
-           if(!$order->save()){
+            if (!$order->save()) {
                 return false;
-           }
+            }
         }
         return true;
     }
-
-
 }

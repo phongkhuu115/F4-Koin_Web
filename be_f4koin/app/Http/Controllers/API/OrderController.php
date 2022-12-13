@@ -151,13 +151,15 @@ class OrderController extends Controller
         ]);
         $order_id = $request->order_id;
         $order = Order::find($order_id);
+        $order->item_in_order = DB::table('item_in_order')->where('order_id', $order_id)->get();
         return $order ? response()->json([
             'message' => 'success',
             'order' => $order,
         ], 200) : response()->json([
             'message' => 'fail',
             'status' => 'order not found',
-        ], 400);
+        ], 200);
+
 
     }
 

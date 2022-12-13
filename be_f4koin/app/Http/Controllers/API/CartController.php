@@ -129,7 +129,7 @@ class CartController extends Controller
                 return response()->json([
                     'message' => 'success',
                     'message' => 'Cart is empty',
-                ], 404);
+                ], 200);
             }
             return response()->json([
                 'message' => 'success',
@@ -140,7 +140,7 @@ class CartController extends Controller
             return response()->json([
                 'message' => 'server error',
                 'error' => $th->getMessage(),
-            ], 500);
+            ], 200);
         }
     }
 

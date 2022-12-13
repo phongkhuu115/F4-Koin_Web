@@ -9,6 +9,8 @@ use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\OrderController;
 use App\Models\Role;
+use App\Events\MessageEvent;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -80,6 +82,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/getMyProfile', [UserController::class, 'getMyProfile']);
     // Route::get('/getMyProfile', [UserController::class, 'isMySef']);
 });
+
+//Route Chat
+// Route::post('new-message', function (Request $request) {
+//     // 2
+//     event(new MessageEvent($request->user, $request->message));
+//     return 'ok';
+// });
 
 
 

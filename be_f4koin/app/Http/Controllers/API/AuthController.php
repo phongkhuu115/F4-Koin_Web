@@ -56,7 +56,7 @@ class AuthController extends Controller
         if (!$user || !Hash::check($fields['password'],$user->password)) {
             return response([
                 'message' => 'Invalid username or password'
-            ], 401);
+            ], 200);
         };
 
         // clear all the token of this user

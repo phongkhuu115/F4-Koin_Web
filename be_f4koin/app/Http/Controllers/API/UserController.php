@@ -71,7 +71,7 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'message' => 'You have no permission'
-            ], 401);
+            ], 200);
         }
     }
 
@@ -133,7 +133,7 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'message' => 'You have no permission'
-            ], 401);
+            ], 200);
         }
     }
 
@@ -164,13 +164,13 @@ class UserController extends Controller
                 return response()->json([
                     // 'request' => $request->all(),
                     'message' => 'You have no permission'
-                ], 401);
+                ], 200);
             }
         } catch (\Throwable $th) {
             return response()->json([
                 'request' => $request->all(),
                 'message' => $th->getMessage()
-            ], 401);
+            ], 200);
         }
     }
 
@@ -190,7 +190,7 @@ class UserController extends Controller
                 if ($user == null || $user->count() == 0) {
                     return response()->json([
                         'message' => 'User not found'
-                    ], 404);
+                    ], 200);
                 } else {
                     return response()->json([
                         'user deleted' => $user->get(),
@@ -200,7 +200,7 @@ class UserController extends Controller
             } else {
                 return response()->json([
                     'message' => 'You have no permission'
-                ], 401);
+                ], 200);
             }
         }
     }
@@ -232,12 +232,12 @@ class UserController extends Controller
             } else {
                 return response()->json([
                     'message' => 'You Are Not Your Self, Who Are You?, What are you going to do :)?'
-                ], 401);
+                ], 200);
             }
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage()
-            ], 401);
+            ], 200);
         }
     }
 }

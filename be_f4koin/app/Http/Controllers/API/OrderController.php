@@ -64,7 +64,7 @@ class OrderController extends Controller
             return response()->json([
                 'message' => 'fail',
                 'status' => 'Please select orders',
-            ], 400);
+            ], 200);
         }
 
         // check duplicate orders
@@ -72,7 +72,7 @@ class OrderController extends Controller
             return response()->json([
                 'message' => 'fail',
                 'status' => 'product duplicate!!',
-            ], 400);
+            ], 200);
         }
         // check valid item in cart
         $item_in_cart = DB::table('item_in_carts')->where('id_cart', $cart_id)->whereIn('product_id', $arrayProductID)->get();
@@ -82,7 +82,7 @@ class OrderController extends Controller
                 'status' => 'some orders_id is no longer existing in cart',
                 'product_id' => $arrayProductID,
                 'item_in_cart' => $item_in_cart,
-            ], 400);
+            ], 200);
         }
 
 
@@ -110,7 +110,7 @@ class OrderController extends Controller
                         return response()->json([
                             'message' => 'fail',
                             'status' => 'add item in order fail',
-                        ], 400);
+                        ], 200);
                     }
                     if (DB::table('item_in_carts')->where('id_cart', $cart_id)->where('product_id', $arrayProductID[$i])->delete() == 0) {
                         // rollback
@@ -118,7 +118,7 @@ class OrderController extends Controller
                         return response()->json([
                             'message' => 'fail',
                             'status' => 'remove item in cart fail',
-                        ], 400);
+                        ], 200);
                     }
                 } catch (\Throwable $th) {
                     // rollback
@@ -127,7 +127,7 @@ class OrderController extends Controller
                         'message' => 'fail',
                         // 'status' => 'orders ' . $item_in_order->product_id . ' not found',
                         'status' => $th->getMessage(),
-                    ], 400);
+                    ], 200);
                 }
             }
             $order->order_tinhtien = $order_tinhtien;
@@ -141,7 +141,7 @@ class OrderController extends Controller
             return response()->json([
                 'message' => 'failed',
                 'status' =>   'Create order failed',
-            ], 400);
+            ], 200);
         }
     }
 
@@ -178,13 +178,13 @@ class OrderController extends Controller
             } catch (\Throwable $th) {
                 return response()->json([
                     'message' => 'Something went wrong',
-                ], 500);
+                ], 200);
             }
         } else {
             return response()->json([
                 'message' => 'fail',
                 'status' => 'You are not admin',
-            ], 401);
+            ], 200);
         }
     }
 
@@ -200,25 +200,25 @@ class OrderController extends Controller
                     case '1':
                         return  $this->order_pending($this->stringToArray($request->input('order_id'))) ?
                             response()->json(['message' => 'success', 'status' => 'Pending order success',], 200)  :
-                            response()->json(['message' => 'fail', 'status' => 'Delivering order fail',], 400);
+                            response()->json(['message' => 'fail', 'status' => 'Delivering order fail',], 200);
                         break;
                     case '2':
                         return  $this->order_delivering($this->stringToArray($request->input('order_id'))) ?
                             response()->json(['message' => 'success', 'status' => 'Delivering order success',], 200)  :
-                            response()->json(['message' => 'fail', 'status' => 'Delivering order fail',], 400);
+                            response()->json(['message' => 'fail', 'status' => 'Delivering order fail',], 200);
                         break;
                     case '3':
                         return  $this->order_delivered($this->stringToArray($request->input('order_id'))) ?
                             response()->json(['message' => 'success', 'status' => 'Delivered order success',], 200)  :
-                            response()->json(['message' => 'fail', 'status' => 'Delivered order fail',], 400);
+                            response()->json(['message' => 'fail', 'status' => 'Delivered order fail',], 200);
                         break;
                     case '4':
                         return  $this->order_bomb($this->stringToArray($request->input('order_id'))) ?
                             response()->json(['message' => 'success', 'status' => 'Bomb order success',], 200)  :
-                            response()->json(['message' => 'fail', 'status' => 'Bomb order fail',], 400);
+                            response()->json(['message' => 'fail', 'status' => 'Bomb order fail',], 200);
                         break;
                     default:
-                        return response()->json(['message' => 'fail', 'status' => 'action not found',], 400);
+                        return response()->json(['message' => 'fail', 'status' => 'action not found',], 200);
                         break;
                 }
 
@@ -230,13 +230,13 @@ class OrderController extends Controller
                 return response()->json([
                     'message' => 'fail',
                     'status' => 'You are not admin',
-                ], 401);
+                ], 200);
             }
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
                 'status' => $th->getMessage(),
-            ], 500);
+            ], 200);
         }
     }
 

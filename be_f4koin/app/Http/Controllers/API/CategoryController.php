@@ -22,7 +22,7 @@ class CategoryController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
-            ], 500);
+            ], 200);
         }
         return response()->json([
             'category' => $categories,

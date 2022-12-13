@@ -218,7 +218,7 @@ class CartController extends Controller
                 return response()->json([
                     'message' => 'failed',
                     'error' => 'Product not found'
-                ], 400);
+                ], 200);
             }
 
             // check if item is already in cart
@@ -236,7 +236,7 @@ class CartController extends Controller
                 return response()->json([
                     'message' => 'failed',
                     'error' => 'Item is not in cart'
-                ], 400);
+                ], 200);
             }
             return response()->json([
                 'message' => 'success',

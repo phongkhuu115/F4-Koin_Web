@@ -67,7 +67,7 @@ class ItemController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
-            ], 500);
+            ], 200);
         }
         return response()->json([
             'product' =>  $items = $this->customImageUrl($items),
@@ -83,7 +83,7 @@ class ItemController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
-            ], 500);
+            ], 200);
         }
 
         return response()->json([
@@ -99,7 +99,7 @@ class ItemController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
-            ], 500);
+            ], 200);
         }
 
         //  temp modify for MrFong to test Layout
@@ -124,7 +124,7 @@ class ItemController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage(),
-            ], 500);
+            ], 200);
         }
         return response()->json([
             'product' =>  $data = $this->customImageUrl($data),
@@ -160,12 +160,12 @@ class ItemController extends Controller
                 return response()->json([
                     // 'role' => $request->user()->userRoleID,
                     'message' => 'You have no permission'
-                ], 401);
+                ], 200);
             }
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
-            ], 500);
+            ], 200);
         }
     }
 
@@ -189,7 +189,7 @@ class ItemController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
-            ], 500);
+            ], 200);
         }
     }
 
@@ -226,12 +226,12 @@ class ItemController extends Controller
                 return response()->json([
                     // 'role' => $request->user()->userRoleID,
                     'message' => 'You have no permission'
-                ], 401);
+                ], 200);
             }
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
-            ], 500);
+            ], 200);
         }
     }
 
@@ -255,12 +255,12 @@ class ItemController extends Controller
                 return response()->json([
                     // 'role' => $request->user()->userRoleID,
                     'message' => 'You have no permission'
-                ], 401);
+                ], 200);
             }
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
-            ], 500);
+            ], 200);
         }
     }
 
@@ -274,7 +274,7 @@ class ItemController extends Controller
             return response()->json([
                 'message' => 'Category not found',
                 'error' => $th
-            ], 404);
+            ], 200);
         }
 
         return response()->json([
@@ -297,7 +297,7 @@ class ItemController extends Controller
             return response()->json([
                 'message' => 'Something went wrong',
                 'error' => $th
-            ], 500);
+            ], 200);
         }
         return response()->json([
             'product' =>  $product,
@@ -319,7 +319,7 @@ class ItemController extends Controller
             return response()->json([
                 'message' => 'Something went wrong',
                 'error' => $th
-            ], 500);
+            ], 200);
         }
         return response()->json([
             'subcategory' =>  $subcategory,
@@ -342,7 +342,7 @@ class ItemController extends Controller
                 'color' => $color,
                 'message' => 'Something went wrong',
                 'error' => $th
-            ], 500);
+            ], 200);
         }
         // return unique item
 
@@ -361,7 +361,7 @@ class ItemController extends Controller
             return response()->json([
                 'message' => 'Something went wrong',
                 'error' => $th
-            ], 500);
+            ], 200);
         }
         return response()->json([
             'category' => $category,
@@ -382,7 +382,7 @@ class ItemController extends Controller
             return response()->json([
                 'message' => 'Something went wrong',
                 'error' => $th
-            ], 500);
+            ], 200);
         }
         return response()->json([
             'subcategory' => $subcategories,
@@ -399,7 +399,7 @@ class ItemController extends Controller
             return response()->json([
                 'message' => 'Something went wrong',
                 'error' => $th
-            ], 500);
+            ], 200);
         }
         return response()->json([
             'product' =>  $items = $this->customImageUrl($items),
@@ -416,7 +416,7 @@ class ItemController extends Controller
             return response()->json([
                 'message' => 'Something went wrong',
                 'error' => $th
-            ], 500);
+            ], 200);
         }
         return response()->json([
             'product' =>  $items = $this->customImageUrl($items),
@@ -433,7 +433,7 @@ class ItemController extends Controller
             return response()->json([
                 'message' => 'Something went wrong',
                 'error' => $th
-            ], 500);
+            ], 200);
         }
         return response()->json([
             'product' =>  $items = $this->customImageUrl($items),
@@ -450,7 +450,7 @@ class ItemController extends Controller
             return response()->json([
                 'message' => 'Something went wrong',
                 'error' => $th
-            ], 500);
+            ], 200);
         }
         return response()->json([
             'product' =>  $items = $this->customImageUrl($items),

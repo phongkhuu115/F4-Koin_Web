@@ -196,17 +196,22 @@ class OrderController extends Controller
                 ]);
                 switch ($request->input('action')) {
                     case '1':
-                        return  $this->order_delivering($this->stringToArray($request->input('order_id'))) ?
-                            response()->json(['message' => 'success', 'status' => 'Delivering order success',], 200)  :
+                        return  $this->order_pending($this->stringToArray($request->input('order_id'))) ?
+                            response()->json(['message' => 'success', 'status' => 'Pending order success',], 200)  :
                             response()->json(['message' => 'fail', 'status' => 'Delivering order fail',], 400);
                         break;
                     case '2':
                         return  $this->order_delivering($this->stringToArray($request->input('order_id'))) ?
+                            response()->json(['message' => 'success', 'status' => 'Delivering order success',], 200)  :
+                            response()->json(['message' => 'fail', 'status' => 'Delivering order fail',], 400);
+                        break;
+                    case '3':
+                        return  $this->order_delivered($this->stringToArray($request->input('order_id'))) ?
                             response()->json(['message' => 'success', 'status' => 'Delivered order success',], 200)  :
                             response()->json(['message' => 'fail', 'status' => 'Delivered order fail',], 400);
                         break;
-                    case '2':
-                        return  $this->order_delivering($this->stringToArray($request->input('order_id'))) ?
+                    case '4':
+                        return  $this->order_bomb($this->stringToArray($request->input('order_id'))) ?
                             response()->json(['message' => 'success', 'status' => 'Bomb order success',], 200)  :
                             response()->json(['message' => 'fail', 'status' => 'Bomb order fail',], 400);
                         break;
@@ -260,6 +265,17 @@ class OrderController extends Controller
         foreach ($arrayProductID as $orderID) {
             $order = Order::where('order_id', $orderID)->first();
             $order->order_status = 'Bomb';
+            if (!$order->save()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public function order_pending($arrayProductID)
+    {
+        foreach ($arrayProductID as $orderID) {
+            $order = Order::where('order_id', $orderID)->first();
+            $order->order_status = 'Pending';
             if (!$order->save()) {
                 return false;
             }

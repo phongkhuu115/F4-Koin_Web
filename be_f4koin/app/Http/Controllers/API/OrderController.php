@@ -135,7 +135,7 @@ class OrderController extends Controller
             return response()->json([
                 'message' => 'success',
                 'status' => 'Create order success',
-                // 'order_id' => $order_id,
+                'recent_id' => $order_id,
             ], 200);
         } else {
             return response()->json([
@@ -145,6 +145,21 @@ class OrderController extends Controller
         }
     }
 
+    public function getSpecifyOrder(Request $request){
+        $request->validate([
+            'order_id' => 'required',
+        ]);
+        $order_id = $request->order_id;
+        $order = Order::find($order_id);
+        return $order ? response()->json([
+            'message' => 'success',
+            'order' => $order,
+        ], 200) : response()->json([
+            'message' => 'fail',
+            'status' => 'order not found',
+        ], 400);
+
+    }
 
     public function index(Request $request)
     {
@@ -176,23 +191,24 @@ class OrderController extends Controller
         try {
             if ($this->isAdmin($request)) {
                 $request->validate([
+                    'action' => 'required',
                     'order_id' => 'required',
                 ]);
                 switch ($request->input('action')) {
                     case '1':
                         return  $this->order_delivering($this->stringToArray($request->input('order_id'))) ?
-                            response()->json(['message' => 'success', 'status' => 'delivering order success',], 200)  :
-                            response()->json(['message' => 'fail', 'status' => 'delivering order fail',], 400);
+                            response()->json(['message' => 'success', 'status' => 'Delivering order success',], 200)  :
+                            response()->json(['message' => 'fail', 'status' => 'Delivering order fail',], 400);
                         break;
                     case '2':
                         return  $this->order_delivering($this->stringToArray($request->input('order_id'))) ?
-                            response()->json(['message' => 'success', 'status' => 'delivering order success',], 200)  :
-                            response()->json(['message' => 'fail', 'status' => 'delivering order fail',], 400);
+                            response()->json(['message' => 'success', 'status' => 'Delivered order success',], 200)  :
+                            response()->json(['message' => 'fail', 'status' => 'Delivered order fail',], 400);
                         break;
                     case '2':
                         return  $this->order_delivering($this->stringToArray($request->input('order_id'))) ?
-                            response()->json(['message' => 'success', 'status' => 'delivering order success',], 200)  :
-                            response()->json(['message' => 'fail', 'status' => 'delivering order fail',], 400);
+                            response()->json(['message' => 'success', 'status' => 'Bomb order success',], 200)  :
+                            response()->json(['message' => 'fail', 'status' => 'Bomb order fail',], 400);
                         break;
                     default:
                         return response()->json(['message' => 'fail', 'status' => 'action not found',], 400);
@@ -221,7 +237,7 @@ class OrderController extends Controller
     {
         foreach ($arrayProductID as $orderID) {
             $order = Order::where('order_id', $orderID)->first();
-            $order->order_status = 'delivering';
+            $order->order_status = 'Delivering';
             if (!$order->save()) {
                 return false;
             }
@@ -232,7 +248,7 @@ class OrderController extends Controller
     {
         foreach ($arrayProductID as $orderID) {
             $order = Order::where('order_id', $orderID)->first();
-            $order->order_status = 'delivering';
+            $order->order_status = 'Delivered';
             if (!$order->save()) {
                 return false;
             }
@@ -243,7 +259,7 @@ class OrderController extends Controller
     {
         foreach ($arrayProductID as $orderID) {
             $order = Order::where('order_id', $orderID)->first();
-            $order->order_status = 'delivering';
+            $order->order_status = 'Bomb';
             if (!$order->save()) {
                 return false;
             }

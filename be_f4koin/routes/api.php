@@ -58,6 +58,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/createPreOrder', [OrderController::class, 'createPreOrder']);
+    Route::get('/getSpecifyOrder', [OrderController::class, 'getSpecifyOrder']);
     Route::get('/getAllOrder', [OrderController::class, 'index']);
 
     Route::post('/orderAction', [OrderController::class, 'orderAction']);

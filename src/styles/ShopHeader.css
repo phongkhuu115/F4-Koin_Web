@@ -38,9 +38,12 @@ button > img {
 }
 
 .btn-logout {
-  display: none;
   bottom: -5rem;
   right: 0;
   z-index: 3;
   width: 100%;
+}
+
+.hide {
+  display: none;
 }

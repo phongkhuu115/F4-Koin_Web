@@ -43,7 +43,12 @@ function RenderUser() {
 
   function popup() {
     let btnLogout = document.querySelector('.btn-logout')
-    btnLogout.style.display = 'block'
+    if (btnLogout.classList.contains('hide')) {
+      btnLogout.classList.remove('hide')
+    }
+    else {
+      btnLogout.classList.add('hide')
+    }
     btnLogout.addEventListener('click', logout)
   }
   if (message === 'success') {
@@ -52,7 +57,7 @@ function RenderUser() {
         <div className="avatar d-flex align-items-center">
           <p className='mb-0 fs-3 position-relative' onClick={popup}>
             Xin chào, {userFullName}
-            <div className="btn btn-light fs-3 btn-logout position-absolute ">Log out</div>
+            <div className="btn btn-light fs-3 btn-logout position-absolute hide">Log out</div>
           </p>
         </div>
       </>

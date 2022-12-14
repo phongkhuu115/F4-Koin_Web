@@ -6,3 +6,22 @@
 .main-cart {
   background-color: #f5f5fa;
 }
+
+.confirm-popup {
+  display: none;
+  top: -9rem;
+  right: 25%;
+  padding: 5rem 2rem;
+  background-color: #fff;
+  border-radius: 16px;
+}
+
+.confirm-popup::before {
+  content: '';
+  position: absolute;
+  top: -1rem;
+  right: 8.25rem;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 20px solid white;
+}

@@ -11,7 +11,7 @@ function AboutUs() {
     return (
         <>
 
-        
+
 
             <div className="bg-dark">
                 <div className="container py-5">
@@ -62,14 +62,12 @@ function AboutUs() {
                             {/* <i className="fa fa-bar-chart fa-2x mb-3 text-primary"></i> */}
                             <h2 className="font-weight-light">NGUYỄN ANH TÀI</h2>
                             <p className="font-italic text-muted mb-4">Ông hoàng Framework, chúa tể frontend, kẻ huỷ diệt CTF</p>
-                            <a href="https://www.facebook.com/profile.php?tai.9029" className="btn btn-dark px-5 rounded-pill lh-1 fs-3">Contact</a>
+                            <a href="https://www.facebook.com/tai.9029" className="btn btn-dark px-5 rounded-pill lh-1 fs-3">Contact</a>
                         </div>
                         <div className="col-lg-5 px-5 mx-auto order-1 order-lg-2"><img src={n4t41} alt="" className="img-fluid mb-4 mb-lg-0" /></div>
                     </div>
                 </div>
             </div>
-
-
 
         </>
     )

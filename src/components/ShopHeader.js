@@ -1,9 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/ShopHeader.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
-import { Outlet, Link, useLocation } from 'react-router-dom'
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-import { GetToken } from '../components/helpers/GlobalFunction'
+import { GetToken, PostAPINoBody } from '../components/helpers/GlobalFunction'
 import { GetAPINoToken, GetAPIToken, BaseURL } from '../components/helpers/GlobalFunction';
 
 function RenderCategory() {
@@ -16,7 +16,7 @@ function RenderCategory() {
   }, [])
   return category.map(item => {
     return (
-      <option key={item.categoryID } value={item.categoryID}>{item.categoryName}</option>
+      <option key={item.categoryID} value={item.categoryID}>{item.categoryName}</option>
     )
   })
 }
@@ -24,18 +24,38 @@ function RenderUser() {
   let userURL = BaseURL() + "getMyProfile"
   const [userFullName, setFullName] = useState();
   let [message, setMessage] = useState();
+  const navigate = useNavigate()
   useEffect(() => {
     GetAPIToken(userURL).then(res => {
-      sessionStorage.setItem('user_session', JSON.stringify(res.data.profile))
       setFullName(res.data.profile.userFullName)
       setMessage(res.data.message);
     })
   }, [])
+  function logout() {
+    let url = BaseURL() + "logout"
+    PostAPINoBody(url).then(res => {
+      if (res.status === 200) {
+        sessionStorage.removeItem('auth')
+        navigate('/login')
+      }
+    })
+  }
+
+  function popup() {
+    let btnLogout = document.querySelector('.btn-logout')
+    btnLogout.style.display = 'block'
+    btnLogout.addEventListener('click', logout)
+  }
   if (message === 'success') {
     return (
-      <div className="avatar d-flex align-items-center">
-        <p className='mb-0 fs-3'>Xin chào, {userFullName}</p>
-      </div>
+      <>
+        <div className="avatar d-flex align-items-center">
+          <p className='mb-0 fs-3 position-relative' onClick={popup}>
+            Xin chào, {userFullName}
+            <div className="btn btn-light fs-3 btn-logout position-absolute ">Log out</div>
+          </p>
+        </div>
+      </>
     )
   }
   else {
@@ -51,6 +71,15 @@ function RenderUser() {
 }
 
 function ShopHeader() {
+  const navigate = useNavigate()
+  function GotoCart() {
+    if (sessionStorage.getItem('auth') !== null) {
+      navigate('/home/cart')
+    }
+    else {
+      alert('Bạn phải đăng nhập để sử dụng chức năng này')
+    }
+  }
   return (
     <>
       <header className='navbar navbar-expand-lg bg-light justify-content-evenly shadow'>
@@ -66,11 +95,11 @@ function ShopHeader() {
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </form>
-        <Link to='/home/cart'>
+        <div onClick={GotoCart}>
           <button type="button" className="btn-cart btn btn-primary position-relative fs-4">
             <i className="fa-solid fa-cart-shopping"></i> <span className="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span className="visually-hidden">unread messages</span></span>
           </button>
-        </Link>
+        </div>
         <RenderUser></RenderUser>
       </header>
       <Outlet></Outlet>

@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import sorryPic from '../assets/sorry.png'
 import { MoneyFormat } from './helpers/DataFormat'
 import { GetAPINoToken, PostAPINoBody } from './helpers/GlobalFunction'
+import outStock from '../assets/213498-200.png'
 
 
 
@@ -51,11 +52,30 @@ function FishShop(props) {
         </>
       )
     }
-    function sendtoCart(productID) {
+    function sendtoCart(productID, productName) {
       return function (e) {
         e.preventDefault()
         let url = `https://backend.f4koin.cyou/api/addToCart?productID=${productID}&quantity=1`
-        PostAPINoBody(url).then(res => console.log(res.data.message));
+        PostAPINoBody(url).then(res => {
+          if (res.data.message === 'success') {
+            let popup = document.querySelector('.confirm-popup')
+            popup.innerHTML = productName + " đã được thêm vào giỏ hàng";
+            popup.style.display = 'block'
+            popup.classList.add('fadeout')
+            setTimeout(() => {
+              popup.classList.remove('fadeout');
+              popup.style.display = 'none'
+            }, 7000)
+          }
+          else {
+            let overlay = document.querySelector('.overlay')
+            let overlayItems = document.querySelector('.overlay > .popup')
+            overlay.style.display = 'flex'
+            overlay.addEventListener('click', () => {
+              overlay.style.display = 'none'
+            })
+          }
+        });
       }
     }
     return items.map(item => {
@@ -69,7 +89,7 @@ function FishShop(props) {
               <h4 className="text-center text-white mt-3">Tên: {item.productName}</h4>
               <p className="text-center text-white">Giá: {MoneyFormat(item.productPrice)} VND</p>
             </div>
-            <div onClick={sendtoCart(item.productID)} className="position-absolute top-0 start-0 fs-3 text-white fw-bold btn btn-danger ms-1 mt-1 rounded">+</div>
+            <div onClick={sendtoCart(item.productID, item.productName)} className="position-absolute top-0 start-0 fs-3 text-white fw-bold btn btn-danger ms-1 mt-1 rounded">+</div>
           </Link>
         </>
       )
@@ -98,7 +118,6 @@ function FishShop(props) {
           numbers.push(i + 1);
         }
       }
-      // numbers.push(i + 1);
     }
     return numbers.map(number => (
       <button className="btn btn-dark fs-4 mx-3 fw-bold pt-2" type="button">{number}</button>
@@ -106,7 +125,7 @@ function FishShop(props) {
   }
   return (
     <>
-      <div className="px-5 pb-5 main_shop">
+      <div className="px-5 pb-5 main_shop position-relative">
         <div id="pick-item" className="">
           <h1 className="header-1 text-center font-bold display-1 text-uppercase">{location.state.name}</h1>
           <em className="em-2 d-flex justify-content-center">Tất cả mọi thứ đều ở đây</em>
@@ -190,6 +209,21 @@ function FishShop(props) {
           <RenderPage></RenderPage>
           <i className="fa fa-arrow-right btn-prev fs-2 ms-3"></i>
         </div>
+        <div className="position-absolute confirm-popup fs-4">
+          <p>Sản phẩm confirm</p>
+        </div>
+      </div>
+      <div className="overlay">
+        <p className="bg-white rounded p-5 text-center position-relative">
+          <i class="fa-solid fa-xmark position-absolute top-0 end-0"></i>
+          <i className="fa-solid fa-circle-xmark text-danger"></i>
+          <br />
+          Thêm sản phẩm thất bại!
+          <br />
+          Sản phẩm đã hết hàng hoặc ngừng kinh doanh
+          <br />
+          <img src={ outStock} alt="" className="me-5"/>
+        </p>
       </div>
     </>
   );

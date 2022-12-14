@@ -8,3 +8,7 @@ export function MoneyFormat(cash) {
     return ((index % 3) ? next : (next + ',')) + prev
   })
 }
+
+export function UUID_Format(uuid) { 
+  return uuid.split('-')[0]
+}

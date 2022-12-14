@@ -13,6 +13,7 @@ import Payment from './components/Payment'
 import Product from './components/Product';
 import Cart from './components/Cart'
 import AboutUs from './components/AboutUs'
+import DashBoard from './components/admin/Dashboard';
 import {
   BrowserRouter,
   Routes,
@@ -21,9 +22,8 @@ import {
 } from "react-router-dom";
 
 const htmlRoot = document.getElementById('root');
-window.addEventListener("beforeunload", () => 
-{  
-    localStorage.removeItem('isLogin')
+window.addEventListener("beforeunload", () => {
+  localStorage.removeItem('isLogin')
 });
 htmlRoot.classList.add("h-100")
 const root = ReactDOM.createRoot(htmlRoot);
@@ -41,8 +41,9 @@ root.render(
         <Route exact path="shop" element={<FishShop />} />
         <Route exact path='payment' element={<Payment></Payment>} />
         <Route exact path='product' element={<Product></Product>} />
-        <Route exact path='cart' element= {<Cart></Cart>}/>
+        <Route exact path='cart' element={<Cart></Cart>} />
       </Route>
+      <Route exact path='/admin' element={<DashBoard></DashBoard>}></Route>
     </Routes>
   </HashRouter>
 );

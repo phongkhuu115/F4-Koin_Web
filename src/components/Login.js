@@ -28,7 +28,11 @@ function RenderLogin() {
         }
         PostAPINoToken(url, body).then(res => {
           sessionStorage.setItem('auth', res.data.token);
-          if (res.data.message === "Login success") {
+          if (res.data.user.userRoleID === "1" && res.data.message === "Login success") { 
+            navigate('/admin', {
+            });
+          }
+          if (res.data.user.userRoleID !== "1" && res.data.message === "Login success") {
             navigate('/home', {
             });
           }

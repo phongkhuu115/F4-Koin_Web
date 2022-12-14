@@ -1,23 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { ReactDOM } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import Bank from './BankPayment';
 import Momo from './MomoPayment';
 import Cash from './CashPayment';
+import { BaseURL, GetAPIToken } from './helpers/GlobalFunction';
+import { MoneyFormat } from './helpers/DataFormat';
 
 
 
 function App(props) {
   const [hasRender, setRender] = useState();
+  const [orderID, setOrderID] = useState('');
+  const [orderSum, setOrderSum] = useState('10000000');
+  const location = useLocation();
   const onShow = React.useCallback((e) => setRender(e.target.id), []);
+  useEffect(() => {
+    let url = BaseURL() + "getSpecifyOrder?order_id=" + location.state.id;
+    GetAPIToken(url).then(res => {
+      if (res.data.message === "success") {
+        console.log(res.data)
+        setOrderID(res.data.order.order_id)
+        setOrderSum(res.data.order.order_tinhtien)
+      }
+    })
+  }, [])
   function RenderMethod(e) {
-    if (hasRender === 'Bank') { 
+    if (hasRender === 'Bank') {
       return <Bank></Bank>
     }
-    if (hasRender === 'Momo') { 
+    if (hasRender === 'Momo') {
       return <Momo></Momo>
     }
-    if (hasRender === 'Cash') { 
+    if (hasRender === 'Cash') {
       return <Cash></Cash>
     }
   }
@@ -38,19 +53,19 @@ function App(props) {
                 </label>
               </div>
               <div class="form-check mx-5 fs-4">
-                <input class="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Momo" onChange={onShow}/>
+                <input class="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Momo" onChange={onShow} />
                 <label class="form-check-label" for="Momo">
                   Momo
                 </label>
               </div>
               <div class="form-check fs-4">
-                <input class="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Cash" onChange={onShow}/>
+                <input class="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Cash" onChange={onShow} />
                 <label class="form-check-label" for="Cash">
                   Tiền mặt
                 </label>
               </div>
             </div>
-          {hasRender && <RenderMethod></RenderMethod>}
+            {hasRender && <RenderMethod></RenderMethod>}
           </div>
           <div>
             <button type="button" class="btn btn-success py-2 w-100 fs-4 mb-3">Thanh Toán</button>
@@ -61,7 +76,10 @@ function App(props) {
           </div>
         </form>
         <div class="col bg-light border-start ms-5 ps-5">
-          <h1 class="fw-bold fs-2">Order Summary</h1>
+          <div className='d-flex justify-content-between'>
+            <h1 class="fw-bold fs-2">Order ID:</h1>
+            <h1 class="fw-bold fs-2">{orderID}</h1>
+          </div>
           <hr />
           <div class="container py-4">
             <div class="row fs-4">
@@ -79,20 +97,20 @@ function App(props) {
           <div class="container fs-4 py-3">
             <div class="row">
               <div class="col-sm-8 fw-bold ps-0">Subtotal</div>
-              <div class="col-sm-4 fw-bold">VND</div>
+              <div class="col-sm-4 fw-bold">{MoneyFormat(orderSum)} VND</div>
             </div>
           </div>
           <div class="container fs-4 py-3">
             <div class="row">
               <div class="col-sm-8 fw-bold ps-0">Shipping</div>
-              <div class="col-sm-4 fw-bold">VND</div>
+              <div class="col-sm-4 fw-bold">10 tỷ VND</div>
             </div>
           </div>
           <hr />
           <div class="container pt-4">
             <div class="row fs-4">
               <div class="col-sm-8 fw-bold ps-0">Total</div>
-              <div class="col-sm-4 fw-bold fs-2">VND</div>
+              <div class="col-sm-4 fw-bold fs-2">{MoneyFormat(orderSum)} VND</div>
             </div>
           </div>
         </div>

@@ -215,7 +215,7 @@ function FishShop(props) {
       </div>
       <div className="overlay">
         <p className="bg-white rounded p-5 text-center position-relative">
-          <i class="fa-solid fa-xmark position-absolute top-0 end-0"></i>
+          <i className="fa-solid fa-xmark position-absolute top-0 end-0"></i>
           <i className="fa-solid fa-circle-xmark text-danger"></i>
           <br />
           Thêm sản phẩm thất bại!

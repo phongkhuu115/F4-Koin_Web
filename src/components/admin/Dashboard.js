@@ -71,7 +71,7 @@ function DashBoard(props) {
           </div>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__focus">
             <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
-              <i class="fa-solid fa-house"></i>
+              <i className="fa-solid fa-house"></i>
               Trang chính
             </p>
           </div>
@@ -80,13 +80,13 @@ function DashBoard(props) {
           </p>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
             <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
-              <i class="fa-solid fa-fish"></i>
+              <i className="fa-solid fa-fish"></i>
               Xem tất cả cá
             </p>
           </div>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
             <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
-              <i class="fa-solid fa-box"></i>
+              <i className="fa-solid fa-box"></i>
               Xem tất cả sản phẩm
             </p>
           </div>
@@ -95,13 +95,13 @@ function DashBoard(props) {
           </p>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
             <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
-              <i class="fa-solid fa-users"></i>
+              <i className="fa-solid fa-users"></i>
               Xem tất cả người dùng
             </p>
           </div>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
             <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
-              <i class="fa-solid fa-message"></i>
+              <i className="fa-solid fa-message"></i>
               Xem tin nhắn
             </p>
           </div>
@@ -109,7 +109,7 @@ function DashBoard(props) {
         <div className='d-flex dashboard-content'>
           <div className='orders-section col-sm-6 bg-white rounded m-5 p-3 shadow-sm'>
             <div className="profile d-flex justify-content-around align-items-center p-4 mx-3 mt-3 rounded position-relative">
-              <i class="fa-solid fa-truck-fast truck"></i>
+              <i className="fa-solid fa-truck-fast truck"></i>
               <p className='text-secondary m-0'>Quản lý đơn hàng</p>
             </div>
             <p className='text-secondary fs-3 fw-semibold text-uppercase mb-0'>Đơn Hàng</p>
@@ -135,7 +135,7 @@ function DashBoard(props) {
           </div>
           <div className='col-sm-3 statistic bg-white rounded m-5 p-3 shadow-sm'>
             <div className="profile d-flex justify-content-around align-items-center p-4 mx-3 mt-3 rounded position-relative">
-              <i class="fa-solid fa-chart-simple ms-2 position-absolute chart"></i>
+              <i className="fa-solid fa-chart-simple ms-2 position-absolute chart"></i>
               <p className='text-muted m-0'>
                 Thống kê doanh thu
               </p>
@@ -144,7 +144,7 @@ function DashBoard(props) {
               <p className='text-muted fw-semibold m-0 text-center'>Hôm nay</p>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>
-                  <i class="fa-solid fa-credit-card me-3 text-success"></i>
+                  <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
                 <p className='m-0 fs-2'>10 tỷ</p>
@@ -154,7 +154,7 @@ function DashBoard(props) {
               </div>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>
-                  <i class="fa-solid fa-clipboard me-3 text-info"></i>
+                  <i className="fa-solid fa-clipboard me-3 text-info"></i>
                   Số lượng đơn hàng bán được
                 </p>
                 <p className='m-0 fs-2'>10 tỷ</p>
@@ -167,7 +167,7 @@ function DashBoard(props) {
               <p className='text-muted fw-semibold m-0 text-center'>Trong tháng này</p>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>
-                  <i class="fa-solid fa-credit-card me-3 text-success"></i>
+                  <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
                 <p className='m-0 fs-2'>10 tỷ</p>
@@ -177,7 +177,7 @@ function DashBoard(props) {
               </div>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>
-                  <i class="fa-solid fa-clipboard me-3 text-info"></i>
+                  <i className="fa-solid fa-clipboard me-3 text-info"></i>
                   Số lượng đơn hàng bán được
                 </p>
                 <p className='m-0 fs-2'>10 tỷ</p>
@@ -190,7 +190,7 @@ function DashBoard(props) {
               <p className='text-muted fw-semibold m-0 text-center'>Trong năm nay</p>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>
-                  <i class="fa-solid fa-credit-card me-3 text-success"></i>
+                  <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
                 <p className='m-0 fs-2'>10 tỷ</p>
@@ -200,7 +200,7 @@ function DashBoard(props) {
               </div>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>
-                  <i class="fa-solid fa-clipboard me-3 text-info"></i>
+                  <i className="fa-solid fa-clipboard me-3 text-info"></i>
                   Số lượng đơn hàng bán được
                 </p>
                 <p className='m-0 fs-2'>10 tỷ</p>

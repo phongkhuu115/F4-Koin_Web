@@ -28,12 +28,12 @@ function IntroHeader() {
             <li className="nav-item me-5 border-0 rounded hoverEffect"><Link to='/about-us' className="nav-link px-4 py-2 fs-4">About Us</Link></li>
             <li className="nav-item me-5 border-0 rounded hoverEffect"><Link to='/' className="nav-link px-4 py-2 fs-4">Sale</Link></li>
           </ul>
-          <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle me-5 fs-4 position-relative" type="button" aria-expanded="false" onClick={openMenu}>
-              <i class="fa-regular fa-user"></i>
-              <ul class="action-menu dropdown-menu dropdown-menu-primary position-absolute mt-3 rounded-3 p-2">
-                <li><Link class="dropdown-item fs-4" to='/login'>Log In</Link></li>
-                <li><Link class="dropdown-item fs-4" to='/signup'>Sign Up</Link></li>
+          <div className="dropdown">
+            <button className="btn btn-primary dropdown-toggle me-5 fs-4 position-relative" type="button" aria-expanded="false" onClick={openMenu}>
+              <i className="fa-regular fa-user"></i>
+              <ul className="action-menu dropdown-menu dropdown-menu-primary position-absolute mt-3 rounded-3 p-2">
+                <li><Link className="dropdown-item fs-4" to='/login'>Log In</Link></li>
+                <li><Link className="dropdown-item fs-4" to='/signup'>Sign Up</Link></li>
               </ul>
             </button>
           </div>

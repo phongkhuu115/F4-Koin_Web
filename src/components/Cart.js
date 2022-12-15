@@ -69,7 +69,6 @@ function App(props) {
       cart_id: cartID,
       product_id: ids
     }
-    console.log(body)
     PostAPIToken(url, body).then(res => {
       console.log(res.data);
       if (res.data.message = "success") {

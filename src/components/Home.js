@@ -93,12 +93,12 @@ function HomePage() {
       <div className='link-section d-flex h-75'>
         <div className="link-half w-50 m-5 d-flex position-relative">
           <Link to="/home/shop" className='w-25 m-auto' state={{ name: "Koi Fish" }}>
-            <button type="button" class="btn btn-dark fs-2 w-100 btn-redirect">Koi Fish</button>
+            <button type="button" className="btn btn-dark fs-2 w-100 btn-redirect">Koi Fish</button>
           </Link>
         </div>
         <div className="link-half w-50 m-5 d-flex position-relative">
           <Link to='/home/shop' className='w-25 m-auto' state={{ name: "Tool & Foods" }}>
-            <button type="button" class="btn btn-light fs-2 w-100 btn-redirect" >Tools & Foods</button>
+            <button type="button" className="btn btn-light fs-2 w-100 btn-redirect" >Tools & Foods</button>
           </Link>
         </div>
       </div>

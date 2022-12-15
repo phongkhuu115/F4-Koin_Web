@@ -57,7 +57,7 @@ function RenderUser() {
         <div className="avatar d-flex align-items-center">
           <p className='mb-0 fs-3 position-relative' onClick={popup}>
             Xin chào, {userFullName}
-            <div className="btn btn-light fs-3 btn-logout position-absolute hide">Log out</div>
+            <span className="btn btn-light fs-3 btn-logout position-absolute hide">Log out</span>
           </p>
         </div>
       </>

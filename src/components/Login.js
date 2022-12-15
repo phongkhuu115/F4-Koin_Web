@@ -113,7 +113,7 @@ function RenderLogin() {
           </div>
           <a href="" className='fs-4'>Forgot Password ?</a>
         </div>
-        <p class="text-danger text-center fs-4 my-2 d-none allvalidate-msg">Thông tin đăng nhập không hợp lệ</p>
+        <p className="text-danger text-center fs-4 my-2 d-none allvalidate-msg">Thông tin đăng nhập không hợp lệ</p>
         <div className="d-flex justify-content-evenly mt-4">
           <button type="submit" className='login-btn form-button btn btn-outline-dark text-uppercase fw-bold fs-3 border border-2 border-dark' onClick={handleLogin}>Log In</button>
           <Link to='/signup'><button type="submit" className='login-btn form-button btn btn-outline-dark text-uppercase fw-bold fs-3 border border-2 border-dark'>Sign UP</button></Link>

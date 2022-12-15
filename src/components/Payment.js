@@ -23,7 +23,6 @@ function App(props) {
     let url = BaseURL() + "getSpecifyOrder?order_id=" + location.state.id;
     GetAPIToken(url).then(res => {
       if (res.data.message === "success") {
-        console.log(res.data)
         setOrderID(res.data.order.order_id)
         setOrderSum(res.data.order.order_tinhtien)
         setOrderItems(res.data.order.item_in_order.slice())
@@ -43,29 +42,29 @@ function App(props) {
   }
 
   return (
-    <div class="container my-5 h-75">
-      <div class="row mx-auto h-100">
-        <form class="col d-flex flex-column justify-content-between h-100">
+    <div className="container my-5 h-75">
+      <div className="row mx-auto h-100">
+        <form className="col d-flex flex-column justify-content-between h-100">
           <div id='payment-section'>
-            <h1 class="fw-bold fs-2">Thanh Toán</h1>
+            <h1 className="fw-bold fs-2">Thanh Toán</h1>
             <hr />
-            <p class="fw-bold fs-3 pt-3">Hình thức thanh toán:</p>
+            <p className="fw-bold fs-3 pt-3">Hình thức thanh toán:</p>
             <div className='d-flex pb-4'>
-              <div class="form-check fs-4">
-                <input class="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Bank" onChange={onShow} />
-                <label class="form-check-label" for="Bank">
+              <div className="form-check fs-4">
+                <input className="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Bank" onChange={onShow} />
+                <label className="form-check-label" htmlFor="Bank">
                   Ngân hàng
                 </label>
               </div>
-              <div class="form-check mx-5 fs-4">
-                <input class="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Momo" onChange={onShow} />
-                <label class="form-check-label" for="Momo">
+              <div className="form-check mx-5 fs-4">
+                <input className="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Momo" onChange={onShow} />
+                <label className="form-check-label" htmlFor="Momo">
                   Momo
                 </label>
               </div>
-              <div class="form-check fs-4">
-                <input class="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Cash" onChange={onShow} />
-                <label class="form-check-label" for="Cash">
+              <div className="form-check fs-4">
+                <input className="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Cash" onChange={onShow} />
+                <label className="form-check-label" htmlFor="Cash">
                   Tiền mặt
                 </label>
               </div>
@@ -73,27 +72,27 @@ function App(props) {
             {hasRender && <RenderMethod></RenderMethod>}
           </div>
           <div>
-            <button type="button" class="btn btn-success py-2 w-100 fs-4 mb-3">Thanh Toán</button>
-            <p class="text-muted fs-5">
+            <button type="button" className="btn btn-success py-2 w-100 fs-4 mb-3">Thanh Toán</button>
+            <p className="text-muted fs-5">
               Your personal data will be used to process your order, support your experience
               throughout this website, and for other purposes described in our privacy policy.
             </p>
           </div>
         </form>
-        <div class="col bg-light border-start ms-5 ps-5">
-          <div className='d-flex justify-content-between'>
-            <h1 class="fw-bold fs-2">Mã Đơn Hàng</h1>
-            <h1 class="fw-bold fs-2">{orderID}</h1>
+        <div className="col bg-light border-start ms-5 px-5">
+          <div className='d-flex justify-content-between mt-4'>
+            <h1 className="fw-bold fs-2">Mã Đơn Hàng</h1>
+            <h1 className="fw-bold fs-2">{orderID}</h1>
           </div>
           <hr />
           <p className='text-muted fs-2 mb-0'>Sản phẩm đã mua</p>
-          <div class="container py-4">
-            <div class="row fs-4">
+          <div className="container py-4">
+            <div className="row fs-4">
               {orderItems.map(item => {
                 return (
                   <>
-                    <div class="col-sm-8 ps-0">{item.productName}</div>
-                    <div class="col-sm-4 fw-bold">{item.productPrice} VND</div>
+                    <div className="col-sm-8 ps-0">{item.productName}</div>
+                    <div className="col-sm-4 fw-bold">{item.productPrice} VND</div>
                   </>
                 )
               })}
@@ -101,23 +100,23 @@ function App(props) {
           </div>
           <hr />
           <p className='fs-2 text-muted mb-0'>Mã giảm giá</p>
-          <div class="mb-3 d-flex py-4">
-            <input type="text" class="form-control p-2 me-2 fs-4 px-4" placeholder="Gift or discount code"
+          <div className="mb-3 d-flex py-4">
+            <input type="text" className="form-control p-2 me-2 fs-4 px-4" placeholder="Gift or discount code"
               aria-label="discount" aria-describedby="button-addon2" />
-            <button type="button" class="btn btn-secondary fs-5 px-5 fw-bold lh-lg py-0">Apply</button>
+            <button type="button" className="btn btn-secondary fs-5 px-5 fw-bold lh-lg py-0">Apply</button>
           </div>
           <hr />
-          <div class="container fs-4 py-3">
-            <div class="row">
-              <div class="col-sm-8 fw-bold ps-0">Tạm tính</div>
-              <div class="col-sm-4 fw-bold">{MoneyFormat(orderSum)} VND</div>
+          <div className="container fs-4 py-3">
+            <div className="row">
+              <div className="col-sm-8 fw-bold ps-0">Tạm tính</div>
+              <div className="col-sm-4 fw-bold">{MoneyFormat(orderSum)} VND</div>
             </div>
           </div>
           <hr />
-          <div class="container pt-4">
-            <div class="row fs-4">
-              <div class="col-sm-8 fw-bold ps-0">Thành tiền</div>
-              <div class="col-sm-4 fw-bold fs-2">{MoneyFormat(orderSum)} VND</div>
+          <div className="container pt-4">
+            <div className="row fs-4">
+              <div className="col-sm-8 fw-bold ps-0">Thành tiền</div>
+              <div className="col-sm-4 fw-bold fs-2">{MoneyFormat(orderSum)} VND</div>
             </div>
           </div>
         </div>

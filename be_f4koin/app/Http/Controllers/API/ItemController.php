@@ -393,7 +393,9 @@ class ItemController extends Controller
     public function getFish(Request $request)
     {
         try {
-            $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 1)->get();
+            // $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 1)->get();
+            $items = Product::where('typeID', 1)->get();
+
             $items = $this->paginate($items, 12, $request->input('page'));
         } catch (\Throwable $th) {
             return response()->json([
@@ -410,7 +412,9 @@ class ItemController extends Controller
     public function getFood(Request $request)
     {
         try {
-            $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 3)->get();
+            // $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 3)->get();
+            $items = Product::where('typeID', 3)->get();
+
             $items = $this->paginate($items, 12, $request->input('page'));
         } catch (\Throwable $th) {
             return response()->json([
@@ -427,7 +431,8 @@ class ItemController extends Controller
     public function getTool(Request $request)
     {
         try {
-            $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 2)->get();
+            // $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 2)->get();
+            $items = Product::where('typeID', 2)->get();
             $items = $this->paginate($items, 12, $request->input('page'));
         } catch (\Throwable $th) {
             return response()->json([
@@ -444,7 +449,8 @@ class ItemController extends Controller
     public function getToolsAndFood(Request $request)
     {
         try {
-            $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 2)->orWhere('typeID', 3)->get();
+            // $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 2)->orWhere('typeID', 3)->get();
+            $items = Product::where('typeID', 2)->orWhere('typeID', 3)->get();
             $items = $this->paginate($items, 12, $request->input('page'));
         } catch (\Throwable $th) {
             return response()->json([

@@ -96,11 +96,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 //Route Chat
-// Route::post('new-message', function (Request $request) {
-//     // 2
-//     event(new MessageEvent($request->user, $request->message));
-//     return 'ok';
-// });
+Route::post('new-message', function (Request $request) {
+    // 2
+    event(new MessageEvent($request->user, $request->message));
+    return 'ok';
+});
 
 
 

@@ -40,8 +40,8 @@ Route::get('/getCategoryOfItem', [ItemController::class, 'getCategoryOfItem']);
 Route::get('/getSubCategoryOfItem', [ItemController::class, 'getSubCategoryOfItem']);
 
 Route::get('/getOnlyFish', [ItemController::class, 'getFish']);
-// Route::get('/getOnlyFood', [ItemController::class, 'getFood']);
-// Route::get('/getOnlyTool', [ItemController::class, 'getTool']);
+Route::get('/getOnlyFood', [ItemController::class, 'getFood']);
+Route::get('/getOnlyTool', [ItemController::class, 'getTool']);
 Route::get('/getFoodAndTools', [ItemController::class, 'getToolsAndFood']);
 
 //Route Public category

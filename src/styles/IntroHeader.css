@@ -1,3 +1,11 @@
+.IntroHeader {
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  margin-bottom: 70px;
+  height: 7rem;
+}
+
 .hoverEffect {
   transition: 0.2s;
 }

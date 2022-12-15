@@ -34,8 +34,8 @@ root.render(
         <Route index element={<Body />} />
         <Route exact path="login" element={<RenderLogin />} />
         <Route exact path="signup" element={<RenderSignup />} />
-        <Route exact path="about-us" element={<AboutUs />} />
       </Route>
+      <Route exact path="/about-us" element={<AboutUs />} />
       <Route path="/home" element={<><ShopHeader /><ShopFooter /></>}>
         <Route index element={<HomePage />} />
         <Route exact path="shop" element={<FishShop />} />

@@ -39,7 +39,7 @@ function IntroHeader() {
           </div>
         </header>
       </div>
-      <Outlet />
+      <Outlet className='mt-5' />
     </>
   );
 }

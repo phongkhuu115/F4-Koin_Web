@@ -8,8 +8,8 @@ import { useEffect } from 'react';
 function Header() {
   return (
     <>
-      <div className="Main container-fluid d-flex justify-content-center align-items-center h-100 position-relative">
-        <div className="d-flex flex-column mb-auto mt-auto position-absolute description">
+      <div className="Main container-fluid d-flex justify-content-around align-items-center h-100 position-relative">
+        <div className="d-flex flex-column description">
           <h3 className='fw-bold'>Shop Bán cá Koi nè mua đi mua đi</h3>
           <br />
           <p className=''>Ở đây không chỉ có cá Koi
@@ -23,9 +23,7 @@ function Header() {
             <button className='btn btn-dark fs-1 fw-bold rounded-4'>Shop Now</button>
           </Link>
         </div>
-        <div className="ms-auto me-5 w-50 h-75" id='slides-container'>
-          <img src={webLogo} alt="" className='w-100 h-100' id='' />
-        </div>
+        <img src={webLogo} alt="" className='web__logo' id='' />
       </div>
     </>
   );

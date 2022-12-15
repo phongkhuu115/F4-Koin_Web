@@ -11,16 +11,7 @@ button {
 }
 
 .description {
-  top: 25%;
-  left: 10%;
-}
-
-#slidesPic {
-  display: none;
-}
-
-#slidesPic > img {
-  transition: 0.5s;
+  margin-left: 6rem;
 }
 
 .fade {
@@ -32,18 +23,10 @@ button {
 
 .Main {
   background-color: #fff;
+  overflow: hidden;
 }
 
-@keyframes fade {
-  from {opacity: 0}
-  to {opacity: 1}
-}
-
-@keyframes fadeOut {
-  from {opacity: 1}
-  to {opacity: 0}
-}
-
-#dot {
-  background-color: #ccc;
+.web__logo {
+  width: 35rem;
+  margin-right: 35rem;
 }

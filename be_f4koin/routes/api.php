@@ -92,7 +92,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/getReportByDay', [ReportController::class, 'getReportByDay']);
     Route::get('/getReportByMonth', [ReportController::class, 'getReportByMonth']);
     Route::get('/getReportByYear', [ReportController::class, 'getReportByYear']);
-
 });
 
 //Route Chat

@@ -1,10 +1,15 @@
 // 1
 import React, { Component } from 'react';
 export default function Messagebox({ message }) {
-    const formatDate = (value) => {
-        if (!value) return '';
-        return new Date(value).toLocalTimeString();
-    };
+
+    function formatTime(time, prefix = "") {
+        // get only time
+        if (typeof time == "string") {
+            time = time.split(" ")[1];
+        }
+        let res = typeof time == "object" ? prefix + time.toLocaleDateString() : time;
+        return res;
+    }
     // 2
     return (
         <div>
@@ -13,7 +18,7 @@ export default function Messagebox({ message }) {
                     <b>{message.user}</b>
                 </p>
                 <p>{message.message}</p>
-                <p>{formatDate(message.createdAt)}</p>
+                <p>{formatTime(message.createdAt)}</p>
             </div>
         </div>
     );

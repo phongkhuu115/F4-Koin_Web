@@ -71,10 +71,11 @@ function App(props) {
     }
     console.log(body)
     PostAPIToken(url, body).then(res => {
+      console.log(res.data);
       if (res.data.message = "success") {
         navigate('/home/payment', {
           state: {
-            id: res.data.recent_id
+            id: res.data.recent_order
           }
         })
       }

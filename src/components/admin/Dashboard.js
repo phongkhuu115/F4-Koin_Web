@@ -7,7 +7,7 @@ import { Navigate, redirect, useNavigate } from 'react-router-dom';
 
 function DashBoard(props) {
   const [profile, setProfile] = useState({
-    userFullName: "Khưu Minh Phong",
+    userFullName: "admin",
     userAvatar: "https://img.freepik.com/premium-vector/cute-kitten-sticker-red-cat-avatar-cartoon-face-style-kawaii-vector-illustration_361213-995.jpg?w=2000",
   });
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,6 +19,7 @@ function DashBoard(props) {
     let url = BaseURL() + "getMyProfile"
     GetAPIToken(url).then(res => {
       setProfile(res.data.profile)
+      console.log(res.data.profile.userFullName)
       if (profile.userFullName !== 'admin') {
         navigate('/home')
       }
@@ -60,76 +61,153 @@ function DashBoard(props) {
   return (
     <>
       <div className='dashboard d-flex'>
-        <div className='col'>
-          <div className="profile d-flex justify-content-around align-items-center p-4 bg-black mx-3 mt-3 mb-5 rounded h-25">
+        <div className='menu col bg-white shadow-sm p-2 d-flex flex-column'>
+          <div className="profile d-flex align-items-center p-4 mx-3 mt-3 mb-5 rounded">
             <img src={profile.userAvatar} alt="" className="profile__avt rounded-circle" />
-            <div>
-              <p className='m-0 text-white'>{profile.userFullName}</p>
-              <p className='m-0 text-danger'>Super Admin</p>
+            <div className='col ms-5'>
+              <p className='m-0 fs-3'>{profile.userFullName}</p>
+              <p className='m-0 text-danger fs-3'>Super Admin</p>
             </div>
           </div>
-          <div className="profile d-flex justify-content-around p-4 m-3 rounded btn btn-primary">
-            <p className='text-white m-0'>Trang chính</p>
+          <div className="profile menu__btn text-center p-3 m-3 rounded menu__focus">
+            <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
+              <i class="fa-solid fa-house"></i>
+              Trang chính
+            </p>
           </div>
-          <div className="profile d-flex justify-content-around p-4 m-3 rounded btn btn-primary">
-            <p className='text-white m-0'>Xem tất cả cá</p>
+          <p className='text-secondary ms-2 fs-4 text-uppercase mb-0'>
+            Sản phẩm
+          </p>
+          <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
+            <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
+              <i class="fa-solid fa-fish"></i>
+              Xem tất cả cá
+            </p>
           </div>
-          <div className="profile d-flex justify-content-around p-4 m-3 rounded btn btn-primary">
-            <p className='text-white m-0'>Xem tất cả sản phẩm</p>
+          <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
+            <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
+              <i class="fa-solid fa-box"></i>
+              Xem tất cả sản phẩm
+            </p>
           </div>
-          <div className="profile d-flex justify-content-around p-4 m-3 rounded btn btn-primary">
-            <p className='text-white m-0'>Xem tất cả người dùng</p>
+          <p className='text-secondary ms-2 fs-4 text-uppercase mb-0'>
+            Người dùng
+          </p>
+          <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
+            <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
+              <i class="fa-solid fa-users"></i>
+              Xem tất cả người dùng
+            </p>
           </div>
-          <div className="profile d-flex justify-content-around p-4 m-3 rounded btn btn-primary">
-            <p className='text-white m-0'>Xem tin nhắn</p>
+          <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
+            <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
+              <i class="fa-solid fa-message"></i>
+              Xem tin nhắn
+            </p>
           </div>
         </div>
-        <div className='col-sm-6'>
-          <div className="profile d-flex justify-content-around align-items-center p-4 bg-black mx-3 mt-3 mb-5 rounded h-25">
-            <p className='text-white m-0'>Đơn Hàng</p>
-          </div>
-          <div className="profile d-flex justify-content-between align-items-center p-4 bg-black m-3 rounded">
-            <p className='text-white m-0 col text-center'>ID</p>
-            <p className='text-white m-0 col text-center'>Trạng thái</p>
-            <p className='text-white m-0 col text-center'>Thành tiền</p>
-          </div>
-          <ListOrder number='1'></ListOrder>
-        </div>
-        <div className='col-sm-3'>
-          <div className="profile d-flex justify-content-around align-items-center p-4 bg-black mx-3 mt-3 mb-5 rounded h-25">
-            <p className='text-white m-0'>Doanh thu</p>
-          </div>
-          <div className="profile d-flex flex-column p-4 bg-black mx-3 mt-3 mb-5 rounded h-25">
-            <p className='text-white m-0 text-center'>Theo ngày</p>
-            <div className='d-flex justify-content-between'>
-              <p className='m-0 text-white'>Tổng doanh thu:</p>
-              <p className='m-0 text-white'>10 tỷ</p>
+        <div className='d-flex dashboard-content'>
+          <div className='orders-section col-sm-6 bg-white rounded m-5 p-3 shadow-sm'>
+            <div className="profile d-flex justify-content-around align-items-center p-4 mx-3 mt-3 rounded position-relative">
+              <i class="fa-solid fa-truck-fast truck"></i>
+              <p className='text-secondary m-0'>Quản lý đơn hàng</p>
             </div>
-            <div className='d-flex justify-content-between'>
-              <p className='m-0 text-white'>Số lượng đơn hàng bán được:</p>
-              <p className='m-0 text-white'>10 tỷ</p>
+            <p className='text-secondary fs-3 fw-semibold text-uppercase mb-0'>Đơn Hàng</p>
+            <div className="profile d-flex justify-content-between align-items-center p-4 border-bottom position-relative">
+              <p className='text-secondary fs-2 fw-semibold m-0 col text-center'>ID</p>
+              <p className='text-secondary fs-2 fw-semibold m-0 col text-center'>Trạng thái</p>
+              <p className='text-secondary fs-2 fw-semibold m-0 col text-center'>Thành tiền</p>
+              <input type="checkbox" name="" id="" className='position-absolute top-50 end-0 translate-middle me-4' />
             </div>
-          </div>
-          <div className="profile d-flex flex-column p-4 bg-black mx-3 mt-3 mb-5 rounded h-25">
-            <p className='text-white m-0 text-center'>Theo tháng</p>
-            <div className='d-flex justify-content-between'>
-              <p className='m-0 text-white'>Tổng doanh thu:</p>
-              <p className='m-0 text-white'>10 tỷ</p>
+            <ListOrder number='1'></ListOrder>
+            <div className='d-flex align-items-center justify-content-center mt-4'>
+              <i className="fa fa-arrow-left btn-next fs-2 me-3"></i>
+              <input type="text" name="" id="page__number" defaultValue={1} className='fs-3 text-center'/>
+              <i className="fa fa-arrow-right btn-prev fs-2 ms-3"></i>
             </div>
+            <p className='text-secondary fs-3 fw-semibold text-uppercase my-4'>Hành động</p>
             <div className='d-flex justify-content-between'>
-              <p className='m-0 text-white'>Số lượng đơn hàng bán được:</p>
-              <p className='m-0 text-white'>10 tỷ</p>
+              <div className="action__btn fs-3 fw-semibold btn btn-outline-warning">Đang chờ</div>
+              <div className="action__btn fs-3 fw-semibold btn btn-outline-primary">Đang giao</div>
+              <div className="action__btn fs-3 fw-semibold btn btn-outline-success">Đã giao</div>
+              <div className="action__btn fs-3 fw-semibold btn btn-outline-danger">Hủy</div>
             </div>
           </div>
-          <div className="profile d-flex flex-column p-4 bg-black mx-3 mt-3 mb-5 rounded h-25">
-            <p className='text-white m-0 text-center'>Theo năm</p>
-            <div className='d-flex justify-content-between'>
-              <p className='m-0 text-white'>Tổng doanh thu:</p>
-              <p className='m-0 text-white'>10 tỷ</p>
+          <div className='col-sm-3 statistic bg-white rounded m-5 p-3 shadow-sm'>
+            <div className="profile d-flex justify-content-around align-items-center p-4 mx-3 mt-3 rounded position-relative">
+              <i class="fa-solid fa-chart-simple ms-2 position-absolute chart"></i>
+              <p className='text-muted m-0'>
+                Thống kê doanh thu
+              </p>
             </div>
-            <div className='d-flex justify-content-between'>
-              <p className='m-0 text-white'>Số lượng đơn hàng bán được:</p>
-              <p className='m-0 text-white'>10 tỷ</p>
+            <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">
+              <p className='text-muted fw-semibold m-0 text-center'>Hôm nay</p>
+              <div className='d-flex justify-content-between'>
+                <p className='m-0 fs-2'>
+                  <i class="fa-solid fa-credit-card me-3 text-success"></i>
+                  Tổng doanh thu
+                </p>
+                <p className='m-0 fs-2'>10 tỷ</p>
+              </div>
+              <div className='fs-3 fw-semibold text-success mb-0'>
+                + 10 tỷ VND
+              </div>
+              <div className='d-flex justify-content-between'>
+                <p className='m-0 fs-2'>
+                  <i class="fa-solid fa-clipboard me-3 text-info"></i>
+                  Số lượng đơn hàng bán được
+                </p>
+                <p className='m-0 fs-2'>10 tỷ</p>
+              </div>
+              <div className='fs-3 fw-semibold text-success mb-0'>
+                + 10 tỷ VND
+              </div>
+            </div>
+            <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">
+              <p className='text-muted fw-semibold m-0 text-center'>Trong tháng này</p>
+              <div className='d-flex justify-content-between'>
+                <p className='m-0 fs-2'>
+                  <i class="fa-solid fa-credit-card me-3 text-success"></i>
+                  Tổng doanh thu
+                </p>
+                <p className='m-0 fs-2'>10 tỷ</p>
+              </div>
+              <div className='fs-3 fw-semibold text-success mb-0'>
+                + 10 tỷ VND
+              </div>
+              <div className='d-flex justify-content-between'>
+                <p className='m-0 fs-2'>
+                  <i class="fa-solid fa-clipboard me-3 text-info"></i>
+                  Số lượng đơn hàng bán được
+                </p>
+                <p className='m-0 fs-2'>10 tỷ</p>
+              </div>
+              <div className='fs-3 fw-semibold text-success mb-0'>
+                + 10 tỷ VND
+              </div>
+            </div>
+            <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">
+              <p className='text-muted fw-semibold m-0 text-center'>Trong năm nay</p>
+              <div className='d-flex justify-content-between'>
+                <p className='m-0 fs-2'>
+                  <i class="fa-solid fa-credit-card me-3 text-success"></i>
+                  Tổng doanh thu
+                </p>
+                <p className='m-0 fs-2'>10 tỷ</p>
+              </div>
+              <div className='fs-3 fw-semibold text-success mb-0'>
+                + 10 tỷ VND
+              </div>
+              <div className='d-flex justify-content-between'>
+                <p className='m-0 fs-2'>
+                  <i class="fa-solid fa-clipboard me-3 text-info"></i>
+                  Số lượng đơn hàng bán được
+                </p>
+                <p className='m-0 fs-2'>10 tỷ</p>
+              </div>
+              <div className='fs-3 fw-semibold text-success mb-0'>
+                + 10 tỷ VND
+              </div>
             </div>
           </div>
         </div>

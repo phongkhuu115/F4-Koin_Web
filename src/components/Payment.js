@@ -13,6 +13,10 @@ function App(props) {
   const [hasRender, setRender] = useState();
   const [orderID, setOrderID] = useState('');
   const [orderSum, setOrderSum] = useState('10000000');
+  const [orderItems, setOrderItems] = useState([{
+    productName: "Test Product",
+    productPrice: "9999999"
+  }])
   const location = useLocation();
   const onShow = React.useCallback((e) => setRender(e.target.id), []);
   useEffect(() => {
@@ -22,6 +26,7 @@ function App(props) {
         console.log(res.data)
         setOrderID(res.data.order.order_id)
         setOrderSum(res.data.order.order_tinhtien)
+        setOrderItems(res.data.order.item_in_order.slice())
       }
     })
   }, [])
@@ -77,17 +82,25 @@ function App(props) {
         </form>
         <div class="col bg-light border-start ms-5 ps-5">
           <div className='d-flex justify-content-between'>
-            <h1 class="fw-bold fs-2">Order ID:</h1>
+            <h1 class="fw-bold fs-2">Mã Đơn Hàng</h1>
             <h1 class="fw-bold fs-2">{orderID}</h1>
           </div>
           <hr />
+          <p className='text-muted fs-2 mb-0'>Sản phẩm đã mua</p>
           <div class="container py-4">
             <div class="row fs-4">
-              <div class="col-sm-8 ps-0">Cá koi 1</div>
-              <div class="col-sm-4 fw-bold">VND</div>
+              {orderItems.map(item => {
+                return (
+                  <>
+                    <div class="col-sm-8 ps-0">{item.productName}</div>
+                    <div class="col-sm-4 fw-bold">{item.productPrice} VND</div>
+                  </>
+                )
+              })}
             </div>
           </div>
           <hr />
+          <p className='fs-2 text-muted mb-0'>Mã giảm giá</p>
           <div class="mb-3 d-flex py-4">
             <input type="text" class="form-control p-2 me-2 fs-4 px-4" placeholder="Gift or discount code"
               aria-label="discount" aria-describedby="button-addon2" />
@@ -96,20 +109,14 @@ function App(props) {
           <hr />
           <div class="container fs-4 py-3">
             <div class="row">
-              <div class="col-sm-8 fw-bold ps-0">Subtotal</div>
+              <div class="col-sm-8 fw-bold ps-0">Tạm tính</div>
               <div class="col-sm-4 fw-bold">{MoneyFormat(orderSum)} VND</div>
-            </div>
-          </div>
-          <div class="container fs-4 py-3">
-            <div class="row">
-              <div class="col-sm-8 fw-bold ps-0">Shipping</div>
-              <div class="col-sm-4 fw-bold">10 tỷ VND</div>
             </div>
           </div>
           <hr />
           <div class="container pt-4">
             <div class="row fs-4">
-              <div class="col-sm-8 fw-bold ps-0">Total</div>
+              <div class="col-sm-8 fw-bold ps-0">Thành tiền</div>
               <div class="col-sm-4 fw-bold fs-2">{MoneyFormat(orderSum)} VND</div>
             </div>
           </div>

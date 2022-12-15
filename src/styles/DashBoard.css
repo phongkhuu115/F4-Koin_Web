@@ -1,8 +1,92 @@
 .dashboard {
-  background-color: #f5f5fa;
+}
+
+.dashboard-content {
+  padding-left: 30.25rem;
+  flex: 1;
+  overflow: auto;
+  height: 100%;
 }
 
 .profile__avt {
   width: 75px;
   height: 75px;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 30.25rem
+}
+
+.orders-section {
+  overflow: auto;
+  background-color: #f5f5f9;
+}
+
+.statistic {
+  flex: 1;
+  overflow: auto;
+  background-color: #f5f5f9;
+}
+
+p > i.fa-solid {
+  width: 20px;
+  margin-right: 25px;
+}
+
+.text-orange {
+  color: rgb(255, 89, 0);
+}
+
+.text-blue {
+  color: rgb(23, 23, 238);
+}
+
+.text-green {
+  color: rgba(35, 243, 35, 0.876);
+}
+
+.text-red {
+  color: rgb(154, 6, 6);
+}
+
+.action__btn {
+  min-width: 16rem;
+}
+
+.menu__btn {
+  cursor: pointer;
+  color: #566a7f;
+}
+
+.menu__focus {
+  color: #696cff;
+  background-color: #696cff29;
+}
+
+
+.menu__hover:hover {
+  background-color: #4359710a;
+}
+
+.chart {
+  top: 0.2em;
+  right: 0.2em;
+  font-size: 2.3rem;
+  color: #696cff;
+}
+
+.truck {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  font-size: 2.3rem;
+  color: #696cff;
+}
+
+#page__number {
+  width: 3.5rem;
 }

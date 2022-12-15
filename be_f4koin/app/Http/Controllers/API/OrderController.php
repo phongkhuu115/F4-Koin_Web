@@ -135,7 +135,7 @@ class OrderController extends Controller
             return response()->json([
                 'message' => 'success',
                 'status' => 'Create order success',
-                'recent_id' => $order_id,
+                'recent_order' => $order_id,
             ], 200);
         } else {
             return response()->json([
@@ -151,7 +151,7 @@ class OrderController extends Controller
         ]);
         $order_id = $request->order_id;
         $order = Order::find($order_id);
-        $order->item_in_order = DB::table('item_in_order')->where('order_id', $order_id)->get();
+        $order->item_in_order = DB::table('item_in_order')->join('products', 'item_in_order.product_id', '=', 'products.productID')->where('order_id', $order_id)->select('item_in_order.*', 'products.productName', 'products.productPrice')->get();
         return $order ? response()->json([
             'message' => 'success',
             'order' => $order,

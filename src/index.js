@@ -20,6 +20,7 @@ import {
   Route,
   HashRouter
 } from "react-router-dom";
+import ProductsAdmin from './components/admin/ProductsAdmin';
 
 const htmlRoot = document.getElementById('root');
 window.addEventListener("beforeunload", () => {
@@ -43,7 +44,10 @@ root.render(
         <Route exact path='product' element={<Product></Product>} />
         <Route exact path='cart' element={<Cart></Cart>} />
       </Route>
-      <Route exact path='/admin' element={<DashBoard></DashBoard>}></Route>
+      <Route path='/admin'>
+        <Route index element={ <DashBoard></DashBoard>}></Route>
+        <Route exact path='fish' element={<ProductsAdmin></ProductsAdmin>} />
+      </Route>
     </Routes>
   </HashRouter>
 );

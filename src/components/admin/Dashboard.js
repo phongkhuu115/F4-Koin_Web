@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/DashBoard.css'
 import { BaseURL, GetAPIToken } from '../helpers/GlobalFunction';
 import { MoneyFormat, UUID_Format } from '../helpers/DataFormat';
 import Order from './Order'
 import { Navigate, redirect, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { } from '../../components/helpers/GlobalFunction'
 
 function DashBoard(props) {
   const [profile, setProfile] = useState({
@@ -11,34 +13,76 @@ function DashBoard(props) {
     userAvatar: "https://img.freepik.com/premium-vector/cute-kitten-sticker-red-cat-avatar-cartoon-face-style-kawaii-vector-illustration_361213-995.jpg?w=2000",
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [dayProfit, setDayProfit] = useState(1);
+  const [monthProfit, setMonthProfit] = useState(1);
+  const [yearProfit, setYearProfit] = useState(1);
+  const [pageNum, setPageNum] = useState(0)
+  const inputRef = useRef(null)
   const navigate = useNavigate()
   let listID = [];
   let checkBoxs = [];
+
+  const Pending = 'bg-warning text-orange'
+  const Delivering = 'bg-info text-blue'
+  const Delivered = 'bg-success text-green'
+  const Bomb = 'bg-danger text-red'
 
   useEffect(() => {
     let url = BaseURL() + "getMyProfile"
     GetAPIToken(url).then(res => {
       setProfile(res.data.profile)
-      console.log(res.data.profile.userFullName)
       if (profile.userFullName !== 'admin') {
         navigate('/home')
       }
     })
   }, [])
 
-  function ListOrder(props) {
+  const [orders, setOrders] = useState([{
+    order_id: "1",
+    order_status: "Waiting",
+    order_tinhtien: "200000"
+  }, {
+    order_id: "1",
+    order_status: "Waiting",
+    order_tinhtien: "200000"
+  }]);
+  useEffect(() => {
     let url = BaseURL() + "getAllOrder?page=" + currentPage
-    const [orders, setOrders] = useState([{
-      order_id: "1",
-      order_status: "Waiting",
-      order_tinhtien: "200000"
-    }, {
-      order_id: "1",
-      order_status: "Waiting",
-      order_tinhtien: "200000"
-    }]);
+    GetAPIToken(url).then(res => {
+      setPageNum(res.data.orders.last_page);
+      if (Array.isArray(res.data.orders.data)) {
+        setOrders(res.data.orders.data)
+      }
+      else {
+        let array = Object.values(res.data.orders.data);
+        setOrders(array.slice());
+      }
+    })
+  }, [])
+  function nextPage() {
+    let value = Number(inputRef.current.value) + 1
+    if (value > pageNum) {
+      return
+    }
+    let url = "https://backend.f4koin.cyou/api/getAllOrder?page=" + value;
+    GetAPIToken(url).then(res => {
+      if (Array.isArray(res.data.orders.data)) {
+        setOrders(res.data.orders.data)
+      }
+      else {
+        let array = Object.values(res.data.orders.data);
+        setOrders(array.slice());
+      }
+      inputRef.current.value = value
+    })
+  }
 
-    useEffect(() => {
+  function gotoPage(e) {
+    if (e.keyCode === 13) {
+      if (e.target.value > pageNum || e.target.value < 1) {
+        return
+      }
+      let url = "https://backend.f4koin.cyou/api/getAllOrder?page=" + e.target.value;
       GetAPIToken(url).then(res => {
         if (Array.isArray(res.data.orders.data)) {
           setOrders(res.data.orders.data)
@@ -47,15 +91,42 @@ function DashBoard(props) {
           let array = Object.values(res.data.orders.data);
           setOrders(array.slice());
         }
+        inputRef.current.value = e.target.value
       })
-    }, [])
-    return orders.map(item => {
-      listID.push(item.order_id)
-      return (
-        <>
-          <Order order_id={item.order_id} order_status={item.order_status} order_tinhtien={item.order_tinhtien}></Order>
-        </>
-      )
+    }
+  }
+
+  function selectAll(e) {
+    let checkBoxs = document.querySelectorAll('.item-box')
+    console.log(e)
+    if (e === true) {
+      for (let i = 0; i < checkBoxs.length; i++) {
+        checkBoxs[i].checked = true;
+      }
+    }
+    else {
+      for (let i = 0; i < checkBoxs.length; i++) {
+        checkBoxs[i].checked = false;
+      }
+    }
+  }
+
+  function prevPage() {
+
+    let value = Number(inputRef.current.value) - 1
+    if (value < 1) {
+      return
+    }
+    let url = "https://backend.f4koin.cyou/api/getAllOrder?page=" + value;
+    GetAPIToken(url).then(res => {
+      if (Array.isArray(res.data.orders.data)) {
+        setOrders(res.data.orders.data)
+      }
+      else {
+        let array = Object.values(res.data.orders.data);
+        setOrders(array.slice());
+      }
+      inputRef.current.value = value
     })
   }
   return (
@@ -70,40 +141,40 @@ function DashBoard(props) {
             </div>
           </div>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__focus">
-            <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
+            <Link className='text-decoration-none text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-house"></i>
               Trang chính
-            </p>
+            </Link>
           </div>
           <p className='text-secondary ms-2 fs-4 text-uppercase mb-0'>
             Sản phẩm
           </p>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
-            <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
+            <Link to='/admin/fish' className='text-decoration-none text-muted fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-fish"></i>
               Xem tất cả cá
-            </p>
+            </Link>
           </div>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
-            <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
+            <Link className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-box"></i>
               Xem tất cả sản phẩm
-            </p>
+            </Link>
           </div>
           <p className='text-secondary ms-2 fs-4 text-uppercase mb-0'>
             Người dùng
           </p>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
-            <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
+            <Link className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-users"></i>
               Xem tất cả người dùng
-            </p>
+            </Link>
           </div>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
-            <p className='text-mute fw-semibold m-0 fs-3 d-flex align-items-center'>
+            <Link className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-message"></i>
               Xem tin nhắn
-            </p>
+            </Link>
           </div>
         </div>
         <div className='d-flex dashboard-content'>
@@ -117,13 +188,21 @@ function DashBoard(props) {
               <p className='text-secondary fs-2 fw-semibold m-0 col text-center'>ID</p>
               <p className='text-secondary fs-2 fw-semibold m-0 col text-center'>Trạng thái</p>
               <p className='text-secondary fs-2 fw-semibold m-0 col text-center'>Thành tiền</p>
-              <input type="checkbox" name="" id="" className='position-absolute top-50 end-0 translate-middle me-4' />
+              <input onClick={(e) => selectAll(e.target.checked)} type="checkbox" name="mainBox" id="mainBox" className='position-absolute top-50 end-0 translate-middle me-4' />
             </div>
-            <ListOrder number='1'></ListOrder>
+            {/* <ListOrder number='1'></ListOrder> */}
+            {orders.map(item => {
+              listID.push(item.order_id)
+              return (
+                <>
+                  <Order order_id={item.order_id} order_status={item.order_status} order_tinhtien={item.order_tinhtien}></Order>
+                </>
+              )
+            })}
             <div className='d-flex align-items-center justify-content-center mt-4'>
-              <i className="fa fa-arrow-left btn-next fs-2 me-3"></i>
-              <input type="text" name="" id="page__number" defaultValue={1} className='fs-3 text-center'/>
-              <i className="fa fa-arrow-right btn-prev fs-2 ms-3"></i>
+              <i className="fa fa-arrow-left btn-next fs-2 me-3" onClick={prevPage}></i>
+              <input ref={inputRef} onKeyDown={e=> gotoPage(e)} type="text" name="" id="page__number" defaultValue={1} className='fs-3 text-center' />
+              <i className="fa fa-arrow-right btn-prev fs-2 ms-3" onClick={nextPage}></i>
             </div>
             <p className='text-secondary fs-3 fw-semibold text-uppercase my-4'>Hành động</p>
             <div className='d-flex justify-content-between'>
@@ -147,7 +226,7 @@ function DashBoard(props) {
                   <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
-                <p className='m-0 fs-2'>10 tỷ</p>
+                <p className='m-0 fs-2'>{dayProfit}</p>
               </div>
               <div className='fs-3 fw-semibold text-success mb-0'>
                 + 10 tỷ VND
@@ -170,7 +249,7 @@ function DashBoard(props) {
                   <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
-                <p className='m-0 fs-2'>10 tỷ</p>
+                <p className='m-0 fs-2'>{monthProfit}</p>
               </div>
               <div className='fs-3 fw-semibold text-success mb-0'>
                 + 10 tỷ VND
@@ -193,7 +272,7 @@ function DashBoard(props) {
                   <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
-                <p className='m-0 fs-2'>10 tỷ</p>
+                <p className='m-0 fs-2'>{yearProfit}</p>
               </div>
               <div className='fs-3 fw-semibold text-success mb-0'>
                 + 10 tỷ VND

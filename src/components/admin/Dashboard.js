@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/DashBoard.css'
-import { BaseURL, GetAPIToken } from '../helpers/GlobalFunction';
+import { BaseURL, GetAPIToken, PostAPINoBody } from '../helpers/GlobalFunction';
 import { MoneyFormat, UUID_Format } from '../helpers/DataFormat';
 import Order from './Order'
 import { Navigate, redirect, useNavigate } from 'react-router-dom';
@@ -129,6 +129,17 @@ function DashBoard(props) {
       inputRef.current.value = value
     })
   }
+
+  function logOut(e) {
+    e.preventDefault();
+    let url = BaseURL() + "logout"
+    PostAPINoBody(url).then(res => {
+      if (res.status === 200) {
+        sessionStorage.removeItem('auth')
+        navigate('/login')
+      }
+    })
+  }
   return (
     <>
       <div className='dashboard d-flex'>
@@ -176,6 +187,15 @@ function DashBoard(props) {
               Xem tin nhắn
             </Link>
           </div>
+          <p className='text-secondary ms-2 fs-4 text-uppercase mb-0'>
+            Cá nhân
+          </p>
+          <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
+            <Link onClick={e=> logOut(e) } className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
+              <i class="fa-solid fa-person-running"></i>
+              Đăng xuất
+            </Link>
+          </div>
         </div>
         <div className='d-flex dashboard-content'>
           <div className='orders-section col-sm-6 bg-white rounded m-5 p-3 shadow-sm'>
@@ -201,7 +221,7 @@ function DashBoard(props) {
             })}
             <div className='d-flex align-items-center justify-content-center mt-4'>
               <i className="fa fa-arrow-left btn-next fs-2 me-3" onClick={prevPage}></i>
-              <input ref={inputRef} onKeyDown={e=> gotoPage(e)} type="text" name="" id="page__number" defaultValue={1} className='fs-3 text-center' />
+              <input ref={inputRef} onKeyDown={e => gotoPage(e)} type="text" name="" id="page__number" defaultValue={1} className='fs-3 text-center' />
               <i className="fa fa-arrow-right btn-prev fs-2 ms-3" onClick={nextPage}></i>
             </div>
             <p className='text-secondary fs-3 fw-semibold text-uppercase my-4'>Hành động</p>

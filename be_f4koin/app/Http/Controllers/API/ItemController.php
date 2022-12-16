@@ -165,6 +165,7 @@ class ItemController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
+                'error' => $th->getMessage()
             ], 200);
         }
     }
@@ -206,16 +207,17 @@ class ItemController extends Controller
             if ($this->isAdmin($request)) {
                 $productFound =  Product::where('productID', $request->productID);
                 return response()->json([
-
                     'message' =>  $productFound->update([
                         'productName' => $request->productName,
-                        'productType' => $request->productType,
+                        'TypeID' => $request->TypeID,
                         'productDetail' => $request->productDetail,
                         'productPrice' => $request->productPrice,
                         'productCategoryID' => $request->productCategoryID,
                         'productInventory' => $request->productInentory,
+                        'productSex' => $request->productSex,
+                        'productBorn' => $request->productBorn,
                         'productDiscountID' => $request->productDiscountID,
-                        'productThumbnail' => $request->productThumbnail,
+                        'imageUrl' => $request->productThumbnail,
                         'update_at' => now()
                     ]) ? 'Product updated successfully' : 'Product update failed',
                     //product updated
@@ -234,23 +236,25 @@ class ItemController extends Controller
             ], 200);
         }
     }
+    public function stringToArray($string)
+    {
+        $string = explode(",", $string);
+        // clear array
+        return $string = array_filter($string);
+    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
         try {
             if ($this->isAdmin($request)) {
-
-                $productFound = Product::where('productID', $request->productID);
+                $productIDArray = $this->stringToArray($request->id);
+                $productFound =  Product::whereIn('productID', $productIDArray);
                 return response()->json([
-                    'product' => $productFound->get()->count() != 0  ? $productFound->get() : 'Product not found',
-                    'message' =>  $productFound->delete() ? 'Product deleted successfully' : 'Product delete failed',
+                    'message' =>  $productFound->delete() ? 'success' : 'fail',
+                    'status' => $productFound->get()->count() != 0 ? $productFound->get() : 'Product not found',
                 ], 200);
+
+
             } else {
                 return response()->json([
                     // 'role' => $request->user()->userRoleID,

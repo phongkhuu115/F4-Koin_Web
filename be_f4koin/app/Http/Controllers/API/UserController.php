@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Mockery\Generator\Method;
 use PhpParser\Builder\Method as BuilderMethod;
+use App\Models\Cart;
 
 class UserController extends Controller
 {
@@ -48,6 +49,14 @@ class UserController extends Controller
         } else {
             return false;
         }
+    }
+
+    // revoke token
+    public function revokeToken($userID)
+    {
+        $token = DB::table('personal_access_tokens')->where('tokenable_id', $userID);
+        $token->delete();
+        return $token;
     }
 
     public function isAdmin(Request $request)
@@ -174,29 +183,36 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
+    public function stringToArray($string)
+    {
+        $string = explode(",", $string);
+        // clear array
+        return $string = array_filter($string);
+    }
+
     public function destroy(Request $request)
     {
         // valid request
         if ($this->isvalidRequest($request)) {
             // check admin
             if ($this->isAdmin($request)) {
-                $user = User::where('username', $request->username);
-                if ($user == null || $user->count() == 0) {
-                    return response()->json([
-                        'message' => 'User not found'
-                    ], 200);
-                } else {
-                    return response()->json([
-                        'user deleted' => $user->get(),
-                        'status' => $user->delete() ?  'success' : 'fail'
-                    ], 200);
+                $userIDArr = $this->stringToArray($request->id);
+
+                foreach ($userIDArr as $userID) {
+                    $this->revokeToken($userID);
                 }
+                  // delete all cart have userID in cart table
+                $isSuccess1 = DB::table('carts')->whereIn('id_user', $userIDArr)->delete();
+                // delete all order have userID in order table
+                $isSuccess2 = DB::table('orders')->whereIn('user_id', $userIDArr)->delete();
+                // delete all user have userID in user table
+                $isSuccess3 = User::destroy($userIDArr);
+
+                return response()->json([
+                    'message' =>  $isSuccess3 ?  'success' : 'fail',
+                    'user deleted' => $userIDArr
+                ], 200);
+
             } else {
                 return response()->json([
                     'message' => 'You have no permission'

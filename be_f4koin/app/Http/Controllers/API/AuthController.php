@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 
 class AuthController extends Controller
@@ -14,6 +15,16 @@ class AuthController extends Controller
     // const timeout = 60;
     // 30 days
     const timeout = 60 * 60 * 24 * 30;
+    // update expire time of token
+    public function updateExpireTimeOfToken($token)
+    {
+        try {
+            $token = hash('sha256', $token);
+            // update expire time
+            DB::table('personal_access_tokens')->where('token', $token)->update(['expires_at' => now()->addMinute(self::timeout)]);
+        } catch (\Throwable $th) {
+        }
+    }
 
     public function register(Request $request)
     {
@@ -35,13 +46,13 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('myToken')->plainTextToken;
-
+        $this->updateExpireTimeOfToken(substr($token, 2));
         $response = [
             'user' => $user,
-            'token' => $token
+            'token' => $token,
         ];
 
-        return response($response,201);
+        return response($response, 201);
     }
 
     public function login(Request $request)
@@ -51,9 +62,9 @@ class AuthController extends Controller
             'password' => 'required|min:4',
         ]);
 
-        $user = User::where('username',$fields['username'])->first();
+        $user = User::where('username', $fields['username'])->first();
 
-        if (!$user || !Hash::check($fields['password'],$user->password)) {
+        if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
                 'message' => 'Invalid username or password'
             ], 200);
@@ -65,7 +76,7 @@ class AuthController extends Controller
         $token = $user->createToken('loginToken')->plainTextToken;
         // add expire time to personal access token
         // $user->tokens()->where('name','loginToken')->update(['expires_at' => now()->addDay(1)]);
-        $user->tokens()->where('name','loginToken')->update(['expires_at' => now()->addMinute(self::timeout)]);
+        $user->tokens()->where('name', 'loginToken')->update(['expires_at' => now()->addMinute(self::timeout)]);
 
         // remove username field in user data
         $userReturnData = [
@@ -87,8 +98,7 @@ class AuthController extends Controller
             'message' => 'Login success'
         ];
 
-        return response($response,201);
-
+        return response($response, 201);
     }
 
     public function logout(User $user)
@@ -99,5 +109,4 @@ class AuthController extends Controller
             'message' => 'User logged out'
         ];
     }
-
 }

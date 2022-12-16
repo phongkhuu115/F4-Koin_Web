@@ -72,7 +72,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/updateItem', [ItemController::class, 'edit']);
     Route::post('/insertItem', [ItemController::class, 'insert']);
-    Route::delete('/deleteItem', [ItemController::class, 'destroy']);
+    Route::post('/deleteItem', [ItemController::class, 'destroy']);
 });
 
 // Route User
@@ -80,7 +80,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/getAllUser', [UserController::class, 'index']);
     Route::get('/getSpecifyUser', [UserController::class, 'getbyid']);
     Route::put('/updateUser', [UserController::class, 'edit']);
-    Route::delete('/deleteUser', [UserController::class, 'destroy']);
+    Route::post('/deleteUser', [UserController::class, 'destroy']);
     Route::post('/insertUser', [UserController::class, 'create']);
     // get my profile
     Route::get('/getMyProfile', [UserController::class, 'getMyProfile']);

@@ -55,8 +55,15 @@ class ReportController extends Controller
                 'Sumary' => $TodayTurnover,
                 'ArbitrageTurnOver' => $ArbitrageTurnOver,
                 'ArbitrageOrder' => $ArbitrageOrder,
-                'today' => $today . ': TodayTurnover: ' . $TodayTurnover . ' todayAmountOfOrder: ' . $todayAmountOfOrder,
-                'yesterday' => $yesterday . ': YesterdayTurnover: ' . $YesterdayTurnover . ' yesterdayAmountOfOrder: ' . $yesterdayAmountOfOrder,
+
+                'today' => $today,
+                'TodayTurnover' => $TodayTurnover,
+                'todayAmountOfOrder' => $todayAmountOfOrder,
+
+                'yesterday' => $yesterday,
+                'YesterdayTurnover' => $YesterdayTurnover,
+                'yesterdayAmountOfOrder' => $yesterdayAmountOfOrder,
+
                 'message' => 'success',
             ], 200);
         } catch (\Throwable $th) {
@@ -108,9 +115,15 @@ class ReportController extends Controller
                 'Sumary' => $thisMonthTurnover,
                 'ArbitrageTurnOver' =>  $ArbitrageTurnOver,
                 'ArbitrageOrder' => $ArbitrageOrder,
-                'Amount' => $thisMonthAmountOfOrder,
-                'thisMonth' => $monthYear . ': thisMonthTurnover: ' . $thisMonthTurnover,
-                'lastMonth' => $lastMonth . ': lastMonthTurnover: ' . $lastMonthTurnover,
+
+                'thisMonth' => $monthYear ,
+                'thisMonthTurnover' => $thisMonthTurnover,
+                'thisMonthAmountOfOrder' => $thisMonthAmountOfOrder,
+
+                'lastMonth' => $lastMonth,
+                'lastMonthTurnover' => $lastMonthTurnover,
+                'lastMonthAmountOfOrder' => $lastMonthAmountOfOrder,
+
                 'message' => 'success',
             ], 200);
         } catch (\Throwable $th) {
@@ -156,8 +169,16 @@ class ReportController extends Controller
                 'Sumary' => $thisYearTurnover,
                 'ArbitrageTurnOver' => $ArbitrageTurnOver,
                 'ArbitrageOrder' => $ArbitrageOrder,
-                'thisYear' => $Year . ': thisYearTurnover: ' . $thisYearTurnover,
-                'lastYear' => $lastYear . ': lastYearTurnover: ' . $lastYearTurnover,
+
+                'thisYear' => $Year,
+                'thisYearTurnover' => $thisYearTurnover,
+                'thisYearAmountOfOrder' => $thisYearAmountOfOrder,
+
+                'lastYear' => $lastYear,
+                'lastYearTurnover' => $lastYearTurnover,
+                'lastYearAmountOfOrder' => $lastYearAmountOfOrder,
+
+
                 'message' => 'success',
             ], 200);
         } catch (\Throwable $th) {

@@ -39,15 +39,24 @@ class ReportController extends Controller
 
             $yesterday = date('Y-m-d', strtotime($rawdate . ' -1 day'));
 
+            $todayAmountOfOrder = DB::table('orders')->where('create_at', 'like', $today . '%')->get()->count();
+
+            $yesterdayAmountOfOrder = DB::table('orders')->where('create_at', 'like', $yesterday . '%')->get()->count();
+
+            $ArbitrageOrder = $todayAmountOfOrder - $yesterdayAmountOfOrder;
+
             $TodayTurnover = DB::table('orders')->where('create_at', 'like', $today . '%')->get()->sum('order_tinhtien');
 
             $YesterdayTurnover = DB::table('orders')->where('create_at', 'like', $yesterday . '%')->get()->sum('order_tinhtien');
 
+            $ArbitrageTurnOver = $TodayTurnover - $YesterdayTurnover;
+
             return response()->json([
                 'Sumary' => $TodayTurnover,
-                'Arbitrage' => $TodayTurnover - $YesterdayTurnover,
-                'today' => $today . ': TodayTurnover: ' . $TodayTurnover,
-                'yesterday' => $yesterday . ': YesterdayTurnover: ' . $YesterdayTurnover,
+                'ArbitrageTurnOver' => $ArbitrageTurnOver,
+                'ArbitrageOrder' => $ArbitrageOrder,
+                'today' => $today . ': TodayTurnover: ' . $TodayTurnover . ' todayAmountOfOrder: ' . $todayAmountOfOrder,
+                'yesterday' => $yesterday . ': YesterdayTurnover: ' . $YesterdayTurnover . ' yesterdayAmountOfOrder: ' . $yesterdayAmountOfOrder,
                 'message' => 'success',
             ], 200);
         } catch (\Throwable $th) {
@@ -83,13 +92,23 @@ class ReportController extends Controller
             }
             $lastMonth = date('Y-m', strtotime($rawdate . ' -1 month'));
 
+            $thisMonthAmountOfOrder = DB::table('orders')->where('create_at', 'like', $monthYear . '%')->get()->count();
+
+            $lastMonthAmountOfOrder = DB::table('orders')->where('create_at', 'like', $lastMonth . '%')->get()->count();
+
+            $ArbitrageOrder = $thisMonthAmountOfOrder - $lastMonthAmountOfOrder;
+
             $thisMonthTurnover = DB::table('orders')->where('create_at', 'like', $monthYear . '%')->get()->sum('order_tinhtien');
 
             $lastMonthTurnover = DB::table('orders')->where('create_at', 'like', $lastMonth . '%')->get()->sum('order_tinhtien');
 
+            $ArbitrageTurnOver = $thisMonthTurnover - $lastMonthTurnover;
+
             return response()->json([
                 'Sumary' => $thisMonthTurnover,
-                'Arbitrage' => $thisMonthTurnover - $lastMonthTurnover,
+                'ArbitrageTurnOver' =>  $ArbitrageTurnOver,
+                'ArbitrageOrder' => $ArbitrageOrder,
+                'Amount' => $thisMonthAmountOfOrder,
                 'thisMonth' => $monthYear . ': thisMonthTurnover: ' . $thisMonthTurnover,
                 'lastMonth' => $lastMonth . ': lastMonthTurnover: ' . $lastMonthTurnover,
                 'message' => 'success',
@@ -121,13 +140,22 @@ class ReportController extends Controller
 
             $lastYear = date('Y', strtotime($rawdate . ' -1 year'));
 
+            $thisYearAmountOfOrder = DB::table('orders')->where('create_at', 'like', $Year . '%')->get()->count();
+
+            $lastYearAmountOfOrder = DB::table('orders')->where('create_at', 'like', $lastYear . '%')->get()->count();
+
+            $ArbitrageOrder = $thisYearAmountOfOrder - $lastYearAmountOfOrder;
+
             $thisYearTurnover = DB::table('orders')->where('create_at', 'like', $Year . '%')->get()->sum('order_tinhtien');
 
             $lastYearTurnover = DB::table('orders')->where('create_at', 'like', $lastYear . '%')->get()->sum('order_tinhtien');
 
+            $ArbitrageTurnOver = $thisYearTurnover - $lastYearTurnover;
+
             return response()->json([
                 'Sumary' => $thisYearTurnover,
-                'Arbitrage' => $thisYearTurnover - $lastYearTurnover,
+                'ArbitrageTurnOver' => $ArbitrageTurnOver,
+                'ArbitrageOrder' => $ArbitrageOrder,
                 'thisYear' => $Year . ': thisYearTurnover: ' . $thisYearTurnover,
                 'lastYear' => $lastYear . ': lastYearTurnover: ' . $lastYearTurnover,
                 'message' => 'success',

@@ -14,18 +14,19 @@ function DashBoard(props) {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [dayProfit, setDayProfit] = useState(1);
+  const [dayArbitrage, setDayArbitrage] = useState(1);
   const [monthProfit, setMonthProfit] = useState(1);
+  const [monthArbitrage, setMonthArbitrage] = useState(1);
   const [yearProfit, setYearProfit] = useState(1);
+  const [yearArbitrage, setYearArbitrage] = useState(1);
   const [pageNum, setPageNum] = useState(0)
   const inputRef = useRef(null)
   const navigate = useNavigate()
   let listID = [];
   let checkBoxs = [];
 
-  const Pending = 'bg-warning text-orange'
-  const Delivering = 'bg-info text-blue'
-  const Delivered = 'bg-success text-green'
-  const Bomb = 'bg-danger text-red'
+  const up = 'text-success'
+  const down = 'text-danger'
 
   useEffect(() => {
     let url = BaseURL() + "getMyProfile"
@@ -34,6 +35,48 @@ function DashBoard(props) {
       if (profile.userFullName !== 'admin') {
         navigate('/home')
       }
+    })
+  }, [])
+
+  useEffect(() => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = yyyy + '-' + mm + '-' + dd;
+    console.log(today)
+    let url = BaseURL() + "getReportByDay?date=" + today
+    GetAPIToken(url).then(res => {
+      setDayProfit(res.data.Sumary)
+      setDayArbitrage(res.data.Arbitrage)
+    })
+  }, [])
+
+  useEffect(() => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = yyyy + '-' + mm;
+    console.log(today)
+    let url = BaseURL() + "getReportByMonth?date=" + today
+    GetAPIToken(url).then(res => {
+      setMonthProfit(res.data.Sumary)
+      setMonthArbitrage(res.data.Arbitrage)
+    })
+  }, [])
+
+  useEffect(() => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = yyyy;
+    console.log(today)
+    let url = BaseURL() + "getReportByYear?date=" + today
+    GetAPIToken(url).then(res => {
+      setYearProfit(res.data.Sumary)
+      setYearArbitrage(res.data.Arbitrage)
     })
   }, [])
 
@@ -163,13 +206,13 @@ function DashBoard(props) {
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
             <Link to='/admin/fish' className='text-decoration-none text-muted fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-fish"></i>
-              Xem tất cả cá
+              Cá
             </Link>
           </div>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
             <Link className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-box"></i>
-              Xem tất cả sản phẩm
+              Dụng Cụ
             </Link>
           </div>
           <p className='text-secondary ms-2 fs-4 text-uppercase mb-0'>
@@ -178,20 +221,20 @@ function DashBoard(props) {
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
             <Link className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-users"></i>
-              Xem tất cả người dùng
+              Xem người dùng
             </Link>
           </div>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
             <Link className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-message"></i>
-              Xem tin nhắn
+              Tin nhắn
             </Link>
           </div>
           <p className='text-secondary ms-2 fs-4 text-uppercase mb-0'>
             Cá nhân
           </p>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
-            <Link onClick={e=> logOut(e) } className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
+            <Link onClick={e => logOut(e)} className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i class="fa-solid fa-person-running"></i>
               Đăng xuất
             </Link>
@@ -246,10 +289,10 @@ function DashBoard(props) {
                   <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
-                <p className='m-0 fs-2'>{dayProfit}</p>
+                <p className='m-0 fs-2'>{dayProfit} vnd</p>
               </div>
-              <div className='fs-3 fw-semibold text-success mb-0'>
-                + 10 tỷ VND
+              <div className={`fs-3 fw-semibold text-success mb-0 ${dayArbitrage > 0 ? up : down}`}>
+                { dayArbitrage > 0 ? '+' + dayArbitrage : dayArbitrage} vnd
               </div>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>
@@ -269,10 +312,10 @@ function DashBoard(props) {
                   <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
-                <p className='m-0 fs-2'>{monthProfit}</p>
+                <p className='m-0 fs-2'>{monthProfit} vnd</p>
               </div>
-              <div className='fs-3 fw-semibold text-success mb-0'>
-                + 10 tỷ VND
+              <div className={`fs-3 fw-semibold text-success mb-0 ${monthArbitrage > 0 ? up : down}`}>
+                { monthArbitrage > 0 ? '+' + monthArbitrage : monthArbitrage} vnd
               </div>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>
@@ -292,10 +335,10 @@ function DashBoard(props) {
                   <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
-                <p className='m-0 fs-2'>{yearProfit}</p>
+                <p className='m-0 fs-2'>{yearProfit} vnd</p>
               </div>
-              <div className='fs-3 fw-semibold text-success mb-0'>
-                + 10 tỷ VND
+              <div className={`fs-3 fw-semibold text-success mb-0 ${yearArbitrage > 0 ? up : down}`}>
+                { yearArbitrage > 0 ? '+' + yearArbitrage : yearArbitrage} vnd
               </div>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>

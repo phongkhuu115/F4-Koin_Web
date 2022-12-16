@@ -19,6 +19,12 @@ function DashBoard(props) {
   const [monthArbitrage, setMonthArbitrage] = useState(1);
   const [yearProfit, setYearProfit] = useState(1);
   const [yearArbitrage, setYearArbitrage] = useState(1);
+  const [dayOrder, setDayOrder] = useState(1)
+  const [dayMore, setDayMore] = useState(1)
+  const [monthOrder, setMonthOrder] = useState(1)
+  const [monthMore, setMonthMore] = useState(1)
+  const [yearOrder, setYearOrder] = useState(1)
+  const [yearMore, setYearMore] = useState(1)
   const [pageNum, setPageNum] = useState(0)
   const inputRef = useRef(null)
   const navigate = useNavigate()
@@ -47,8 +53,11 @@ function DashBoard(props) {
     console.log(today)
     let url = BaseURL() + "getReportByDay?date=" + today
     GetAPIToken(url).then(res => {
+      console.log(res.data.Sumary)
       setDayProfit(res.data.Sumary)
-      setDayArbitrage(res.data.Arbitrage)
+      setDayArbitrage(res.data.ArbitrageTurnOver)
+      setDayOrder(res.data.todayAmountOfOrder)
+      setDayMore(res.data.ArbitrageOrder)
     })
   }, [])
 
@@ -62,7 +71,9 @@ function DashBoard(props) {
     let url = BaseURL() + "getReportByMonth?date=" + today
     GetAPIToken(url).then(res => {
       setMonthProfit(res.data.Sumary)
-      setMonthArbitrage(res.data.Arbitrage)
+      setMonthArbitrage(res.data.ArbitrageTurnOver)
+      setMonthOrder(res.data.thisMonthAmountOfOrder)
+      setMonthMore(res.data.ArbitrageOrder)
     })
   }, [])
 
@@ -76,7 +87,9 @@ function DashBoard(props) {
     let url = BaseURL() + "getReportByYear?date=" + today
     GetAPIToken(url).then(res => {
       setYearProfit(res.data.Sumary)
-      setYearArbitrage(res.data.Arbitrage)
+      setYearArbitrage(res.data.ArbitrageTurnOver)
+      setYearOrder(res.data.thisYearAmountOfOrder)
+      setYearMore(res.data.ArbitrageOrder)
     })
   }, [])
 
@@ -299,10 +312,10 @@ function DashBoard(props) {
                   <i className="fa-solid fa-clipboard me-3 text-info"></i>
                   Số lượng đơn hàng bán được
                 </p>
-                <p className='m-0 fs-2'>10 tỷ</p>
+                <p className='m-0 fs-2'>{dayOrder} đơn</p>
               </div>
-              <div className='fs-3 fw-semibold text-success mb-0'>
-                + 10 tỷ VND
+              <div className={`fs-3 fw-semibold text-success mb-0 ${dayMore > 0 ? up : down}`}>
+              { dayMore > 0 ? '+' + dayMore : dayMore} đơn
               </div>
             </div>
             <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">
@@ -322,10 +335,10 @@ function DashBoard(props) {
                   <i className="fa-solid fa-clipboard me-3 text-info"></i>
                   Số lượng đơn hàng bán được
                 </p>
-                <p className='m-0 fs-2'>10 tỷ</p>
+                <p className='m-0 fs-2'>{monthOrder} đơn</p>
               </div>
-              <div className='fs-3 fw-semibold text-success mb-0'>
-                + 10 tỷ VND
+              <div className={`fs-3 fw-semibold text-success mb-0 ${monthMore > 0 ? up : down}`}>
+                { monthMore > 0 ? '+' + monthMore : monthMore} đơn
               </div>
             </div>
             <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">
@@ -345,10 +358,10 @@ function DashBoard(props) {
                   <i className="fa-solid fa-clipboard me-3 text-info"></i>
                   Số lượng đơn hàng bán được
                 </p>
-                <p className='m-0 fs-2'>10 tỷ</p>
+                <p className='m-0 fs-2'>{ yearOrder}</p>
               </div>
-              <div className='fs-3 fw-semibold text-success mb-0'>
-                + 10 tỷ VND
+              <div className={`fs-3 fw-semibold text-success mb-0 ${yearMore > 0 ? up : down}`}>
+                { yearMore > 0 ? '+' + yearMore : yearMore} đơn
               </div>
             </div>
           </div>

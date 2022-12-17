@@ -20,7 +20,7 @@ use Psy\Readline\Hoa\Console;
 
 class OrderController extends Controller
 {
-    const timeout = 1;
+    const timeout = 10;
     public function removeExpirePreOrder($user_id)
     {
         $pre_order = DB::table('orders')->where('order_status', 'Pre-order')->where('user_id', $user_id)->get();

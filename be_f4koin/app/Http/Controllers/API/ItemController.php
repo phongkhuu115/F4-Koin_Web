@@ -162,8 +162,11 @@ class ItemController extends Controller
                 $product->productSize = $request->productSize;
                 $product->productCategoryID = $request->productCategoryID;
                 $product->productInventory = $request->productInventory;
+                $product->productSex = $request->productSex;
+                $product->productBorn = $request->productBorn;
                 $product->productDiscount = $request->productDiscount;
                 $product->imageUrl = $request->imageUrl;
+
                 $product->create_at = now();
                 $product->update_at = now();
                 return response()->json([

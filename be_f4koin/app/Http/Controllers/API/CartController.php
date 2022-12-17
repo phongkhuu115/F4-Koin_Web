@@ -155,6 +155,7 @@ class CartController extends Controller
             return response()->json([
                 'message' => 'failed',
                 'error' => $th->getCode() == 23000 ? 'Product is not exist in DB' : $th->getMessage(),
+                'user_id' => $userID,
             ]);
         }
     }

@@ -201,7 +201,7 @@ class UserController extends Controller
                         $query->select('cartID')->from('carts')->where('id_user', $userID);
                     })->delete();
                     // delete all item_in_order of user
-                    $isSuccess5 = DB::table('item_in_orders')->whereIn('id_order', function ($query) use ($userID) {
+                    $isSuccess5 = DB::table('item_in_order')->whereIn('id_order', function ($query) use ($userID) {
                         $query->select('order_id')->from('orders')->where('user_id', $userID);
                     })->delete();
                 }

@@ -157,7 +157,11 @@ class OrderController extends Controller
 
     public function removeItemInCart($order_id, $user_id)
     {
-        $cart_id = DB::table('carts')->where('id_user', $user_id)->first()->cartID;
+        $cart_id = DB::table('carts')->where('id_user', $user_id)->first();
+        if ($cart_id == null) {
+            return true;
+        }
+        $cart_id = $cart_id->cartID;
         $item_in_order = DB::table('item_in_order')->where('order_id', $order_id)->get();
         foreach ($item_in_order as $item) {
             $item_in_cart = DB::table('item_in_carts')->where('id_cart', $cart_id)->where('product_id', $item->product_id)->first();
@@ -177,6 +181,7 @@ class OrderController extends Controller
     {
         $request->validate([
             'order_id' => 'required',
+            'payment_method' => 'required|in:Momo,Bank,Cash',
         ]);
         $order_id = $request->order_id;
         $order = Order::find($order_id);
@@ -195,6 +200,7 @@ class OrderController extends Controller
                 ], 200);
             }
             $order->order_status = 'Pending';
+            $order->payment_method = $request->payment_method;
             if (!$order->save()) {
                 return response()->json([
                     'message' => 'fail',
@@ -269,6 +275,8 @@ class OrderController extends Controller
             ], 200);
         }
     }
+
+
 
     public function orderAction(Request $request)
     {

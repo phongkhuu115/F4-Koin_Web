@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GetAPINoToken } from '../helpers/GlobalFunction';
 import Item from './Item'
+import { BaseURL, PostAPIToken } from '../helpers/GlobalFunction';
 
 function ProductsAdmin(props) {
   const [items, setItems] = useState([]);
@@ -9,6 +10,7 @@ function ProductsAdmin(props) {
   const [productNumber, setProductNumber] = useState(0);
   const [message, setMessage] = useState('');
   const inputRef = useRef(null)
+  let listID = []
 
   function closePopup() {
     const overlay = document.querySelector('.edit-popup')
@@ -54,7 +56,7 @@ function ProductsAdmin(props) {
   // const [newName, setNewName] = useState('')
   // const [newName, setNewName] = useState('')
 
-  function nextPage() { 
+  function nextPage() {
     let value = Number(inputRef.current.value) + 1
     if (value > pageNum) {
       return
@@ -117,6 +119,33 @@ function ProductsAdmin(props) {
     }
   }
 
+  function handleDelete() {
+    let url = BaseURL() + "deleteItem"
+    let ids = ""
+    // console.log(listID);
+    let checkBoxs = document.querySelectorAll('.item-box')
+    for (let i = 0; i < checkBoxs.length; i++) {
+      if (checkBoxs[i].checked === true) {
+        if (ids === "") {
+          ids = listID[i];
+        }
+        else {
+          ids = ids + "," + listID[i]
+        }
+      }
+    }
+    let body = {
+      id: ids
+    }
+    console.log(ids)
+    PostAPIToken(url, body).then(res => {
+      console.log(res.data)
+      if (res.data.message === "success") {
+        window.location.reload();
+      }
+    })
+  }
+
   return (
     <>
       <div className='d-flex bg-white justify-content-between align-items-center'>
@@ -125,7 +154,7 @@ function ProductsAdmin(props) {
       <p className='m-5'>Sản phẩm</p>
       <div className='bg-white m-5 rounded-1 p-4'>
         <div className='btn btn-primary fs-3'>Thêm Sản Phẩm</div>
-        <div className='ms-3 btn btn-danger fs-3'>Xóa Sản Phẩm</div>
+        <div onClick={handleDelete} className='ms-3 btn btn-danger fs-3'>Xóa Sản Phẩm</div>
         <div className='d-flex align-items-center mt-4 border-bottom border-top'>
           <input onClick={(e) => selectAll(e.target.checked)} type="checkbox" name="main-checkbox" id="main-checkbox" className='me-5' />
           <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center'>Tên</p>
@@ -139,6 +168,7 @@ function ProductsAdmin(props) {
           <p className='text-muted fs-2 fw-semibold mb-0'>&ensp;</p>
         </div>
         {items.map(item => {
+          listID.push(item.productID)
           return (
             <Item id={item.productID} name={item.productName} sex={item.productSex} size={item.productSize} quantity={item.productSupplierID} status={item.productSupplierID > 0 ? "Còn hàng" : "Hết hàng"} price={item.productPrice}></Item>
           )

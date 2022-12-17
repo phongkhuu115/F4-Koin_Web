@@ -146,6 +146,7 @@ class ItemController extends Controller
                 $product->typeID = $request->typeID;
                 $product->productDetail = $request->productDetail;
                 $product->productPrice = $request->productPrice;
+                $product->productSize = $request->producSize;
                 $product->productCategoryID = $request->productCategoryID;
                 $product->productInventory = $request->productInventory;
                 $product->productDiscount = $request->productDiscountID;
@@ -167,7 +168,7 @@ class ItemController extends Controller
             // if fk_pro_cat is exist
             return response()->json([
                 'message' => 'Something went wrong',
-                'error' => strpos($error, 'fk_pro_cat') ? 'Category must come from Category Table' : 'Something went wrong'
+                'error' => strpos($error, 'fk_pro_cat') ? 'Category must come from Category Table' : $error,
             ], 200);
         }
     }

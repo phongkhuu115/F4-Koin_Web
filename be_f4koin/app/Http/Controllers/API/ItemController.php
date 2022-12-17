@@ -143,13 +143,13 @@ class ItemController extends Controller
             if ($this->isAdmin($request)) {
                 $product = new Product;
                 $product->productName = $request->productName;
-                $product->productType = $request->productType;
+                $product->typeID = $request->typeID;
                 $product->productDetail = $request->productDetail;
                 $product->productPrice = $request->productPrice;
                 $product->productCategoryID = $request->productCategoryID;
                 $product->productInventory = $request->productInventory;
-                $product->productDiscountID = $request->productDiscountID;
-                $product->productThumbnail = $request->productThumbnail;
+                $product->productDiscount = $request->productDiscountID;
+                $product->imageUrl = $request->imageUrl;
                 $product->create_at = now();
                 $product->update_at = now();
                 return response()->json([
@@ -165,7 +165,7 @@ class ItemController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
-                'error' => $th->getMessage()
+                // 'error' => $th->getMessage()->strpos('category') ? 'category not found' : 'something went wrong',
             ], 200);
         }
     }
@@ -249,9 +249,14 @@ class ItemController extends Controller
             if ($this->isAdmin($request)) {
                 $productIDArray = $this->stringToArray($request->id);
                 $productFound =  Product::whereIn('productID', $productIDArray);
+                $item_in_order = DB::table('item_in_order')->whereIn('product_id', $productIDArray)->get();
+                // delete item in order
+                if ($item_in_order->count() != 0) {
+                    DB::table('item_in_order')->whereIn('product_id', $productIDArray)->delete();
+                }
+
                 return response()->json([
                     'message' =>  $productFound->delete() ? 'success' : 'fail',
-                    'status' => $productFound->get()->count() != 0 ? $productFound->get() : 'Product not found',
                 ], 200);
 
 
@@ -264,6 +269,7 @@ class ItemController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
+                'error' => $th->getMessage()
             ], 200);
         }
     }

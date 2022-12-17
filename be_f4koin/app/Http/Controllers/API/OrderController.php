@@ -13,7 +13,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\JsonableInterface;
 use function PHPUnit\Framework\isEmpty;
-
+use App\Models\Product;
 
 class OrderController extends Controller
 {
@@ -145,7 +145,8 @@ class OrderController extends Controller
         }
     }
 
-    public function getSpecifyOrder(Request $request){
+    public function getSpecifyOrder(Request $request)
+    {
         $request->validate([
             'order_id' => 'required',
         ]);
@@ -159,8 +160,6 @@ class OrderController extends Controller
             'message' => 'fail',
             'status' => 'order not found',
         ], 200);
-
-
     }
 
     public function index(Request $request)
@@ -265,9 +264,17 @@ class OrderController extends Controller
     public function order_bomb($arrayProductID)
     {
         foreach ($arrayProductID as $orderID) {
+            $item_in_order = DB::table('item_in_order')->where('order_id', $orderID)->get();
+            foreach ($item_in_order as $item) {
+                $product = Product::where('productID', $item->product_id)->first();
+                $product->productInventory += $item->quantity;
+                if (!$product->save()) {
+                    return false;
+                }
+            }
+            $item_in_order = DB::table('item_in_order')->where('order_id', $orderID)->delete();
             $order = Order::where('order_id', $orderID)->first();
-            $order->order_status = 'Bomb';
-            if (!$order->save()) {
+            if (!$order->delete()) {
                 return false;
             }
         }

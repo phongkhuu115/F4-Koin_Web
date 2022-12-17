@@ -180,7 +180,7 @@ class ItemController extends Controller
             $error = $th->getMessage();
             // if fk_pro_cat is exist
             return response()->json([
-                'message' => 'Something went wrong',
+                'message' => 'fail',
                 'error' => strpos($error, 'fk_pro_cat') ? 'Category must come from Category Table' : $error,
             ], 200);
         }

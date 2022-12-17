@@ -258,7 +258,7 @@ function DashBoard(props) {
             Người dùng
           </p>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
-            <Link className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
+            <Link to='/admin/users' className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-users"></i>
               Xem người dùng
             </Link>

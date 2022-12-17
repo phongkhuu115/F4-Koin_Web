@@ -22,6 +22,7 @@ import {
 } from "react-router-dom";
 import FishesAdmin from './components/admin/FishesAdmin';
 import ProductsAdmin from './components/admin/ProductsAdmin';
+import UsersAdmin from './components/admin/UsersAdmin'
 
 const htmlRoot = document.getElementById('root');
 window.addEventListener("beforeunload", () => {
@@ -49,6 +50,7 @@ root.render(
         <Route index element={ <DashBoard></DashBoard>}></Route>
         <Route exact path='fish' element={<FishesAdmin></FishesAdmin>} />
         <Route exact path='products' element={<ProductsAdmin></ProductsAdmin>} />
+        <Route exact path='users' element={<UsersAdmin></UsersAdmin>} />
       </Route>
     </Routes>
   </HashRouter>

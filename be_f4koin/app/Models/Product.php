@@ -20,10 +20,20 @@ class Product extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'productID',       
+        'productID',
+        'productName',
+        'productDetail',
+        'productPrice',
+        'typeID',
+        'imageUrl',
         'productCategoryID',
-        'productDiscountID',
+        'productInventory',
+        'productDiscount',
+        'productSupplierID',
+        'productSize',
+        'productSex',
+        'productBorn',
+        'create_at',
+        'update_at',
     ];
-
-
 }

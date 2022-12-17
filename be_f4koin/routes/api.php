@@ -11,6 +11,7 @@ use App\Http\Controllers\API\OrderController;
 use App\Models\Role;
 use App\Events\MessageEvent;
 use App\Http\Controllers\API\ReportController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,12 +96,24 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 //Route Chat
-Route::post('new-message', function (Request $request) {
-    // 2
-    event(new MessageEvent($request->user, $request->message));
-    return 'ok';
+Route::get('/getChat', [ChatController::class, 'getChat']);
+Route::post('/sendChat', [ChatController::class, 'sendChat']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
+// Route::post('new-message', function (Request $request) {
+//     // 2
+//     event(new MessageEvent($request->user, $request->message, $request->channel));
+//     return 'ok';
+// });
+
+
+
+// Route::middleware('throttle:60,1')->post('/public-event', function (Request $request) {
+//     $channelName = $request->post('channelName');
+//     $message = $request->post('message');
+//     broadcast(new MessageEvent( $channelName, $message ));
+// });
 
 
 

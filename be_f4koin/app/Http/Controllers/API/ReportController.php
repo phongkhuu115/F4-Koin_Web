@@ -39,15 +39,15 @@ class ReportController extends Controller
 
             $yesterday = date('Y-m-d', strtotime($rawdate . ' -1 day'));
 
-            $todayAmountOfOrder = DB::table('orders')->where('create_at', 'like', $today . '%')->get()->count();
+            $todayAmountOfOrder = DB::table('orders')->where('create_at', 'like', $today . '%')->where('order_status', 'like', 'Delivered')->get()->count();
 
-            $yesterdayAmountOfOrder = DB::table('orders')->where('create_at', 'like', $yesterday . '%')->get()->count();
+            $yesterdayAmountOfOrder = DB::table('orders')->where('create_at', 'like', $yesterday . '%')->where('order_status', 'like', 'Delivered')->get()->count();
 
             $ArbitrageOrder = $todayAmountOfOrder - $yesterdayAmountOfOrder;
 
-            $TodayTurnover = DB::table('orders')->where('create_at', 'like', $today . '%')->get()->sum('order_tinhtien');
+            $TodayTurnover = DB::table('orders')->where('create_at', 'like', $today . '%')->where('order_status', 'like', 'Delivered')->get()->sum('order_tinhtien');
 
-            $YesterdayTurnover = DB::table('orders')->where('create_at', 'like', $yesterday . '%')->get()->sum('order_tinhtien');
+            $YesterdayTurnover = DB::table('orders')->where('create_at', 'like', $yesterday . '%')->where('order_status', 'like', 'Delivered')->get()->sum('order_tinhtien');
 
             $ArbitrageTurnOver = $TodayTurnover - $YesterdayTurnover;
 
@@ -99,15 +99,15 @@ class ReportController extends Controller
             }
             $lastMonth = date('Y-m', strtotime($rawdate . ' -1 month'));
 
-            $thisMonthAmountOfOrder = DB::table('orders')->where('create_at', 'like', $monthYear . '%')->get()->count();
+            $thisMonthAmountOfOrder = DB::table('orders')->where('create_at', 'like', $monthYear . '%')->where('order_status', 'like', 'Delivered')->get()->count();
 
-            $lastMonthAmountOfOrder = DB::table('orders')->where('create_at', 'like', $lastMonth . '%')->get()->count();
+            $lastMonthAmountOfOrder = DB::table('orders')->where('create_at', 'like', $lastMonth . '%')->where('order_status', 'like', 'Delivered')->get()->count();
 
             $ArbitrageOrder = $thisMonthAmountOfOrder - $lastMonthAmountOfOrder;
 
-            $thisMonthTurnover = DB::table('orders')->where('create_at', 'like', $monthYear . '%')->get()->sum('order_tinhtien');
+            $thisMonthTurnover = DB::table('orders')->where('create_at', 'like', $monthYear . '%')->where('order_status', 'like', 'Delivered')->get()->sum('order_tinhtien');
 
-            $lastMonthTurnover = DB::table('orders')->where('create_at', 'like', $lastMonth . '%')->get()->sum('order_tinhtien');
+            $lastMonthTurnover = DB::table('orders')->where('create_at', 'like', $lastMonth . '%')->where('order_status', 'like', 'Delivered')->get()->sum('order_tinhtien');
 
             $ArbitrageTurnOver = $thisMonthTurnover - $lastMonthTurnover;
 
@@ -116,7 +116,7 @@ class ReportController extends Controller
                 'ArbitrageTurnOver' =>  $ArbitrageTurnOver,
                 'ArbitrageOrder' => $ArbitrageOrder,
 
-                'thisMonth' => $monthYear ,
+                'thisMonth' => $monthYear,
                 'thisMonthTurnover' => $thisMonthTurnover,
                 'thisMonthAmountOfOrder' => $thisMonthAmountOfOrder,
 
@@ -153,15 +153,15 @@ class ReportController extends Controller
 
             $lastYear = date('Y', strtotime($rawdate . ' -1 year'));
 
-            $thisYearAmountOfOrder = DB::table('orders')->where('create_at', 'like', $Year . '%')->get()->count();
+            $thisYearAmountOfOrder = DB::table('orders')->where('create_at', 'like', $Year . '%')->where('order_status', 'like', 'Delivered')->get()->count();
 
-            $lastYearAmountOfOrder = DB::table('orders')->where('create_at', 'like', $lastYear . '%')->get()->count();
+            $lastYearAmountOfOrder = DB::table('orders')->where('create_at', 'like', $lastYear . '%')->where('order_status', 'like', 'Delivered')->get()->count();
 
             $ArbitrageOrder = $thisYearAmountOfOrder - $lastYearAmountOfOrder;
 
-            $thisYearTurnover = DB::table('orders')->where('create_at', 'like', $Year . '%')->get()->sum('order_tinhtien');
+            $thisYearTurnover = DB::table('orders')->where('create_at', 'like', $Year . '%')->get()->where('order_status', 'like', 'Delivered')->sum('order_tinhtien');
 
-            $lastYearTurnover = DB::table('orders')->where('create_at', 'like', $lastYear . '%')->get()->sum('order_tinhtien');
+            $lastYearTurnover = DB::table('orders')->where('create_at', 'like', $lastYear . '%')->get()->where('order_status', 'like', 'Delivered')->sum('order_tinhtien');
 
             $ArbitrageTurnOver = $thisYearTurnover - $lastYearTurnover;
 

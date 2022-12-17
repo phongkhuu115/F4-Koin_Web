@@ -10,6 +10,7 @@ export default function PublicMessagesPage() {
     const [user, setUser] = useState('');
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
+    const [channel, setChannel] = useState('');
     async function handleSendMessage(e) {
         // 1
         e.preventDefault();
@@ -23,16 +24,39 @@ export default function PublicMessagesPage() {
             alert('Please add a message');
             return;
         }
+        if (!channel) {
+            alert('Please add a channel');
+            return;
+        }
         try {
             // 4
-            await Axios.post('/new-message', {
+            await Axios.post('/sendChat', {
                 user: user,
                 message: message,
+                channel: 'public.room',
             });
         } catch (error) {
             console.error(error, error.response, error.response.data);
         }
     }
+    async function handleJoinChannel(e) {
+        // 1
+        e.preventDefault();
+        // 2
+        if (!channel) {
+            alert('Please add a channel');
+            return;
+        }
+        try {
+            // 3
+            await Axios.post('/joinChannel', {
+                channel: channel,
+            });
+        } catch (error) {
+            console.error(error, error.response, error.response.data);
+        }
+    }
+    
     useEffect(() => {
         // 2
         Axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
@@ -45,18 +69,7 @@ export default function PublicMessagesPage() {
             disableStats: true,
             encrypted: true,
         });
-        // // 4
-        echo
-            .channel('public.room')
-            .subscribed(() => {
-                console.log('You are subscribed');
-            })
-            // 5
-            .listen('.message.new', (data) => {
-                // 6
-                setMessages((oldMessages) => [...oldMessages, data]);
-                setMessage('');
-            });
+
     }, []);
     // 4
     return (
@@ -72,6 +85,16 @@ export default function PublicMessagesPage() {
                     ))}
                 </div>
                 <div>
+                    <form onSubmit={(e) => handleJoinChannel(e)}>
+                        <input
+                            type="text"
+                            placeholder="Set your channel name"
+                            value={channel}
+                            onChange={(e) => setChannel(e.target.value)}
+                            required
+                        />
+                        <button onClick={(e) => handleJoinChannel(e)}>Join</button>
+                    </form>
                     <form onSubmit={(e) => handleSendMessage(e)}>
                         <input
                             type="text"

@@ -14,11 +14,12 @@ use Illuminate\Support\Str;
 class MessageEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    private $user, $message;
+    private $user, $message, $channel;
     // 2
-    public function __construct($user, $message)
+    public function __construct($user, $message, $channel)
     {
         $this->user = $user;
+        $this->channel = $channel;
         $this->message = $message;
     }
     // 3
@@ -28,6 +29,7 @@ class MessageEvent implements ShouldBroadcast
             'id' => Str::orderedUuid(),
             'user' => $this->user,
             'message' => $this->message,
+            'channel' => $this->channel,
             'createdAt' => now()->toDateTimeString(),
         ];
     }
@@ -39,6 +41,7 @@ class MessageEvent implements ShouldBroadcast
     // 5
     public function broadcastOn()
     {
-        return new Channel('public.room');
+        // return new Channel('public.room');
+        return new Channel($this->channel);
     }
 }

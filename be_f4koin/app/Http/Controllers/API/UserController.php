@@ -9,9 +9,19 @@ use Illuminate\Support\Facades\DB;
 use Mockery\Generator\Method;
 use PhpParser\Builder\Method as BuilderMethod;
 use App\Models\Cart;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 class UserController extends Controller
 {
+    // panigating for returning data
+    public function paginate($items, $perPage, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
     // 30day
     const timeout = 60 * 60 * 24 * 30;
     // const timeout = 60;
@@ -67,16 +77,18 @@ class UserController extends Controller
             return false;
         }
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
         if ($this->isAdmin($request)) {
             $user = User::all();
-            return response()->json($user);
+            return response()->json(
+                [
+                    'user' => $this->paginate($user, 10),
+                    'message' => 'success',
+                ],
+                200
+            );
         } else {
             return response()->json([
                 'message' => 'You have no permission'
@@ -84,11 +96,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create(Request $request)
     {
         if ($this->isAdmin($request)) {
@@ -201,7 +208,7 @@ class UserController extends Controller
                 foreach ($userIDArr as $userID) {
                     $this->revokeToken($userID);
                 }
-                  // delete all cart have userID in cart table
+                // delete all cart have userID in cart table
                 $isSuccess1 = DB::table('carts')->whereIn('id_user', $userIDArr)->delete();
                 // delete all order have userID in order table
                 $isSuccess2 = DB::table('orders')->whereIn('user_id', $userIDArr)->delete();
@@ -212,7 +219,6 @@ class UserController extends Controller
                     'message' =>  $isSuccess3 ?  'success' : 'fail',
                     'user deleted' => $userIDArr
                 ], 200);
-
             } else {
                 return response()->json([
                     'message' => 'You have no permission'

@@ -39,12 +39,10 @@ Route::get('/getSpecifyItem', [ItemController::class, 'getbyid']);
 Route::get('/getItemBySubcategoryName', [ItemController::class, 'getItemBySubCategoryName']);
 Route::get('/getCategoryOfItem', [ItemController::class, 'getCategoryOfItem']);
 Route::get('/getSubCategoryOfItem', [ItemController::class, 'getSubCategoryOfItem']);
-
 Route::get('/getOnlyFish', [ItemController::class, 'getFish']);
 Route::get('/getOnlyFood', [ItemController::class, 'getFood']);
 Route::get('/getOnlyTool', [ItemController::class, 'getTool']);
 Route::get('/getFoodAndTools', [ItemController::class, 'getToolsAndFood']);
-
 //Route Public category
 Route::get('/getAllCategory', [CategoryController::class, 'index']);
 
@@ -71,7 +69,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 // Route Product
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::put('/updateItem', [ItemController::class, 'edit']);
+    Route::post('/updateItem', [ItemController::class, 'edit']);
     Route::post('/insertItem', [ItemController::class, 'insert']);
     Route::post('/deleteItem', [ItemController::class, 'destroy']);
 });

@@ -163,9 +163,11 @@ class ItemController extends Controller
                 ], 200);
             }
         } catch (\Throwable $th) {
+            $error = $th->getMessage();
+            // if fk_pro_cat is exist
             return response()->json([
                 'message' => 'Something went wrong',
-                // 'error' => $th->getMessage()->strpos('category') ? 'category not found' : 'something went wrong',
+                'error' => strpos($error, 'fk_pro_cat') ? 'Category must come from Category Table' : 'Something went wrong'
             ], 200);
         }
     }
@@ -209,17 +211,17 @@ class ItemController extends Controller
                 return response()->json([
                     'message' =>  $productFound->update([
                         'productName' => $request->productName,
-                        'TypeID' => $request->TypeID,
+                        'typeID' => $request->typeID,
                         'productDetail' => $request->productDetail,
                         'productPrice' => $request->productPrice,
                         'productCategoryID' => $request->productCategoryID,
-                        'productInventory' => $request->productInentory,
+                        'productInventory' => $request->productInventory,
                         'productSex' => $request->productSex,
                         'productBorn' => $request->productBorn,
-                        'productDiscountID' => $request->productDiscountID,
-                        'imageUrl' => $request->productThumbnail,
+                        'productDiscount' => $request->productDiscount,
+                        'imageUrl' => $request->imageUrl,
                         'update_at' => now()
-                    ]) ? 'Product updated successfully' : 'Product update failed',
+                    ]) ? 'success' : 'fail',
                     //product updated
                     'product' => $productFound->get()->count() != 0 ? $productFound->get() : 'Product not found',
 
@@ -231,8 +233,12 @@ class ItemController extends Controller
                 ], 200);
             }
         } catch (\Throwable $th) {
+            $error = strpos($th->getMessage(), 'fk_pro_cat') ? 'Category must come from Category Table' : 'Something went wrong';
+            // if fk_pro_cat is exist
+
             return response()->json([
                 'message' => 'Something went wrong',
+                'error' => $error
             ], 200);
         }
     }
@@ -258,8 +264,6 @@ class ItemController extends Controller
                 return response()->json([
                     'message' =>  $productFound->delete() ? 'success' : 'fail',
                 ], 200);
-
-
             } else {
                 return response()->json([
                     // 'role' => $request->user()->userRoleID,

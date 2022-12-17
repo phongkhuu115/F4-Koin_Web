@@ -322,72 +322,72 @@ function DashBoard(props) {
               </p>
             </div>
             <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">
-              <p className='text-muted fw-semibold m-0 text-center'>Hôm nay</p>
+              <p className='text-muted fw-semibold m-0 text-center fs-3'>Hôm nay</p>
               <div className='d-flex justify-content-between'>
-                <p className='m-0 fs-2'>
+                <p className='m-0 fs-3'>
                   <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
-                <p className='m-0 fs-2'>{dayProfit} vnd</p>
+                <p className='m-0 fs-3'>{dayProfit} vnd</p>
               </div>
-              <div className={`fs-3 fw-semibold text-success mb-0 ${dayArbitrage > 0 ? up : down}`}>
-                {dayArbitrage > 0 ? '+' + dayArbitrage : dayArbitrage} vnd
+              <div className={`fs-5 mt-1 mb-2 fw-semibold text-success mb-0 ${dayArbitrage > 0 ? up : down}`}>
+                {dayArbitrage > 0 ? '+ ' + dayArbitrage : dayArbitrage} vnd
               </div>
               <div className='d-flex justify-content-between'>
-                <p className='m-0 fs-2'>
+                <p className='m-0 fs-3'>
                   <i className="fa-solid fa-clipboard me-3 text-info"></i>
                   Số lượng đơn hàng bán được
                 </p>
-                <p className='m-0 fs-2'>{dayOrder} đơn</p>
+                <p className='m-0 fs-3'>{dayOrder} đơn</p>
               </div>
-              <div className={`fs-3 fw-semibold text-success mb-0 ${dayMore > 0 ? up : down}`}>
-                {dayMore > 0 ? '+' + dayMore : dayMore} đơn
+              <div className={`fs-5 mt-1 mb-2 fw-semibold text-success mb-0 ${dayMore > 0 ? up : down}`}>
+                {dayMore > 0 ? '+ ' + dayMore : dayMore} đơn
               </div>
             </div>
             <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">
-              <p className='text-muted fw-semibold m-0 text-center'>Trong tháng này</p>
+              <p className='text-muted fw-semibold m-0 text-center fs-3'>Trong tháng này</p>
               <div className='d-flex justify-content-between'>
-                <p className='m-0 fs-2'>
+                <p className='m-0 fs-3'>
                   <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
-                <p className='m-0 fs-2'>{monthProfit} vnd</p>
+                <p className='m-0 fs-3'>{monthProfit} vnd</p>
               </div>
-              <div className={`fs-3 fw-semibold text-success mb-0 ${monthArbitrage > 0 ? up : down}`}>
-                {monthArbitrage > 0 ? '+' + monthArbitrage : monthArbitrage} vnd
+              <div className={`fs-5 mt-1 mb-2 fw-semibold text-success mb-0 ${monthArbitrage > 0 ? up : down}`}>
+                {monthArbitrage > 0 ? '+ ' + monthArbitrage : monthArbitrage} vnd
               </div>
               <div className='d-flex justify-content-between'>
-                <p className='m-0 fs-2'>
+                <p className='m-0 fs-3'>
                   <i className="fa-solid fa-clipboard me-3 text-info"></i>
                   Số lượng đơn hàng bán được
                 </p>
-                <p className='m-0 fs-2'>{monthOrder} đơn</p>
+                <p className='m-0 fs-3'>{monthOrder} đơn</p>
               </div>
-              <div className={`fs-3 fw-semibold text-success mb-0 ${monthMore > 0 ? up : down}`}>
-                {monthMore > 0 ? '+' + monthMore : monthMore} đơn
+              <div className={`fs-5 mt-1 mb-2 fw-semibold text-success mb-0 ${monthMore > 0 ? up : down}`}>
+                {monthMore > 0 ? '+ ' + monthMore : monthMore} đơn
               </div>
             </div>
             <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">
-              <p className='text-muted fw-semibold m-0 text-center'>Trong năm nay</p>
+              <p className='text-muted fw-semibold m-0 text-center fs-3'>Trong năm nay</p>
               <div className='d-flex justify-content-between'>
-                <p className='m-0 fs-2'>
+                <p className='m-0 fs-3'>
                   <i className="fa-solid fa-credit-card me-3 text-success"></i>
                   Tổng doanh thu
                 </p>
-                <p className='m-0 fs-2'>{yearProfit} vnd</p>
+                <p className='m-0 fs-3'>{yearProfit} vnd</p>
               </div>
-              <div className={`fs-3 fw-semibold text-success mb-0 ${yearArbitrage > 0 ? up : down}`}>
-                {yearArbitrage > 0 ? '+' + yearArbitrage : yearArbitrage} vnd
+              <div className={`fs-5 mt-1 mb-2 fw-semibold text-success mb-0 ${yearArbitrage > 0 ? up : down}`}>
+                {yearArbitrage > 0 ? '+ ' + yearArbitrage : yearArbitrage} vnd
               </div>
               <div className='d-flex justify-content-between'>
-                <p className='m-0 fs-2'>
+                <p className='m-0 fs-3'>
                   <i className="fa-solid fa-clipboard me-3 text-info"></i>
                   Số lượng đơn hàng bán được
                 </p>
-                <p className='m-0 fs-2'>{yearOrder}</p>
+                <p className='m-0 fs-3'>{yearOrder}</p>
               </div>
-              <div className={`fs-3 fw-semibold text-success mb-0 ${yearMore > 0 ? up : down}`}>
-                {yearMore > 0 ? '+' + yearMore : yearMore} đơn
+              <div className={`fs-5 mt-1 mb-2 fw-semibold text-success mb-0 ${yearMore > 0 ? up : down}`}>
+                {yearMore > 0 ? '+ ' + yearMore : yearMore} đơn
               </div>
             </div>
           </div>

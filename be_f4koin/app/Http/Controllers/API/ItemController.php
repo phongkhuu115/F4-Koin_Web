@@ -149,7 +149,9 @@ class ItemController extends Controller
                 'productSize' => 'required|numeric|between:0,50',
                 'productCategoryID' => 'required',
                 'productInventory' => 'required|numeric|between:0,1000',
-                'productDiscount' => 'required|numeric|between:0,5',
+                'productDiscount' => 'numeric|between:0,5',
+                'productSex' => 'in:Male,Female',
+                'productBorn' => 'numeric|between:1900,'. date('Y'),
                 'imageUrl' => 'required',
             ]);
 

@@ -130,7 +130,15 @@ class OrderController extends Controller
         $order->order_status = 'Pre-order';
         $order->create_at = now();
         $isSaveOrder = $order->save();
-        $order->order_tinhtien = $this->tinhTienAndAdditemOrder($arrayProductID, $cart_id, $order->order_id);
+        try {
+            $order->order_tinhtien = $this->tinhTienAndAdditemOrder($arrayProductID, $cart_id, $order->order_id);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'fail',
+                'status' => 'invalid product_id',
+            ], 200);
+        }
+
         $isSaveOrder = $order->save();
 
         if ($isSaveOrder) {

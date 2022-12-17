@@ -132,7 +132,6 @@ class UserController extends Controller
         }
     }
 
-
     public function getbyid(Request $request)
     {
         if ($this->isAdmin($request)) {
@@ -220,7 +219,6 @@ class UserController extends Controller
             }
         }
     }
-
 
     // get my profile
     public function getmyprofile(Request $request)

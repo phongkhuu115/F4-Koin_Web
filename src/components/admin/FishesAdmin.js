@@ -51,12 +51,12 @@ function ProductsAdmin(props) {
       id: ids
     }
     console.log(ids)
-    // PostAPIToken(url, body).then(res => {
-    //   console.log(res.data)
-    //   if (res.data.message === "success") {
-    //     window.location.reload();
-    //   }
-    // })
+    PostAPIToken(url, body).then(res => {
+      console.log(res.data)
+      if (res.data.message === "success") {
+        window.location.reload();
+      }
+    })
   }
 
 

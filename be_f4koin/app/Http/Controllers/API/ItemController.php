@@ -140,6 +140,19 @@ class ItemController extends Controller
     public function insert(Request $request)
     {
         try {
+            // productDiscount must be > 0 and < 100
+            $request->validate([
+                'productName' => 'required',
+                'typeID' => 'required',
+                'productDetail' => 'required',
+                'productPrice' => 'required',
+                'productSize' => 'required|numeric|between:0,1',
+                'productCategoryID' => 'required',
+                'productInventory' => 'required',
+                'productDiscount' => 'required',
+                'imageUrl' => 'required',
+            ]);
+
             if ($this->isAdmin($request)) {
                 $product = new Product;
                 $product->productName = $request->productName;

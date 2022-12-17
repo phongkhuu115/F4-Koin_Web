@@ -143,12 +143,12 @@ class ItemController extends Controller
             // productDiscount must be > 0 and < 100
             $request->validate([
                 'productName' => 'required',
-                'typeID' => 'required',
-                'productDetail' => 'required',
+                'typeID' => 'required|in:1,2,3',
+                // 'productDetail' => 'required',
                 'productPrice' => 'required',
                 'productSize' => 'required|numeric|between:0,50',
                 'productCategoryID' => 'required',
-                'productInventory' => 'required',
+                'productInventory' => 'required|numeric|between:0,1000',
                 'productDiscount' => 'required|numeric|between:0,5',
                 'imageUrl' => 'required',
             ]);

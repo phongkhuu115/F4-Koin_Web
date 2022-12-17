@@ -10,6 +10,19 @@ use Illuminate\Support\Carbon;
 
 class CartController extends Controller
 {
+    public function createCart($userID)
+    {
+        try {
+            $cart = new Cart();
+            $cart->userID = $userID;
+            $cart->save();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'create cart fail',
+                'error' => $th
+            ], 500);
+        }
+    }
     // get user id from token
     public function getUserID(Request $request)
     {

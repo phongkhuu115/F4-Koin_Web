@@ -7,19 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\UuidTrait;
-
-class Cart extends Model
+class item_in_cart extends Model
 {
     use HasApiTokens, HasFactory, Notifiable, UuidTrait;
 
-    protected $table = 'carts';
+    protected $table = 'item_in_carts';
 
-    protected $primaryKey = 'cartID';
+    protected $primaryKey = 'cart_item_id';
 
     public $timestamps = false;
 
     protected $fillable = [
-        'cartID',
-        'id_user',
+        'cart_item_id',
+        'id_cart',
+        'product_id',
+        'quantity',
     ];
 }

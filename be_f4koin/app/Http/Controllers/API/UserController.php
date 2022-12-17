@@ -132,12 +132,7 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
+
     public function getbyid(Request $request)
     {
         if ($this->isAdmin($request)) {
@@ -153,12 +148,7 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Request $request)
     {
         try {
@@ -207,6 +197,10 @@ class UserController extends Controller
 
                 foreach ($userIDArr as $userID) {
                     $this->revokeToken($userID);
+                    // delete all item in cart of user
+                    $isSuccess4 = DB::table('item_in_carts')->whereIn('id_cart', function ($query) use ($userID) {
+                        $query->select('cartID')->from('carts')->where('id_user', $userID);
+                    })->delete();
                 }
                 // delete all cart have userID in cart table
                 $isSuccess1 = DB::table('carts')->whereIn('id_user', $userIDArr)->delete();

@@ -61,7 +61,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/getAllOrder', [OrderController::class, 'index']);
 
     Route::post('/orderAction', [OrderController::class, 'orderAction']);
-
+    Route::post('/placeOrder', [OrderController::class, 'placeOrder']);
     Route::get('/getOrderDetail', [OrderController::class, 'getOrderDetail']);
     Route::post('/deleteOrder', [OrderController::class, 'deleteOrder']);
 });

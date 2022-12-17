@@ -14,9 +14,27 @@ use Illuminate\Support\Collection;
 use Illuminate\Contracts\Support\JsonableInterface;
 use function PHPUnit\Framework\isEmpty;
 use App\Models\Product;
+use Illuminate\Support\Facades\Redis;
+use Psy\Readline\Hoa\Console;
+
 
 class OrderController extends Controller
 {
+    const timeout = 1;
+    public function removeExpirePreOrder($user_id)
+    {
+        $pre_order = DB::table('orders')->where('order_status', 'Pre-order')->where('user_id', $user_id)->get();
+        foreach ($pre_order as $order) {
+            if ($order->create_at < now()->subMinute(self::timeout)) {
+                $order_id = $order->order_id;
+
+                DB::table('item_in_order')->where('order_id', $order_id)->delete();
+
+                DB::table('orders')->where('order_id', $order_id)->delete();
+            }
+        }
+    }
+
     public function isAdmin(Request $request)
     {
         if ($request->user()->userRoleID == 1) {
@@ -46,20 +64,9 @@ class OrderController extends Controller
         // clear array
         return $string = array_filter($string);
     }
-    public function createPreOrder(Request $request)
+
+    public function vailidateCart($arrayProductID, $cart_id)
     {
-        $request->validate([
-            'cart_id' => 'required',
-            'product_id' => 'required',
-        ]);
-
-        $arrayProductID  = $this->stringToArray($request->product_id);
-        $cart_id = $request->cart_id;
-
-        $user_id = $this->getUserID($request);
-
-        // corner case
-        // check if cart is empty
         if (count($arrayProductID) == 0) {
             return response()->json([
                 'message' => 'fail',
@@ -84,58 +91,53 @@ class OrderController extends Controller
                 'item_in_cart' => $item_in_cart,
             ], 200);
         }
+    }
 
+    public function tinhTienAndAdditemOrder($arrayProductID, $cart_id, $orderID)
+    {
+        $order_tinhtien = 0;
+        for ($i = 0; $i < count($arrayProductID); $i++) {
+            $item_in_order = new item_in_order();
+            $item_in_order->order_id = $orderID;
+            $item_in_order->product_id = $arrayProductID[$i];
+            $item_in_order->quantity = DB::table('item_in_carts')->where('id_cart', $cart_id)->where('product_id', $arrayProductID[$i])->first()->quantity;
+            $order_tinhtien += DB::table('products')->where('productID', $arrayProductID[$i])->first()->productPrice * $item_in_order->quantity;
+            $item_in_order->save();
+        }
+        return $order_tinhtien;
+    }
+
+
+    public function createPreOrder(Request $request)
+    {
+        $request->validate([
+            'cart_id' => 'required',
+            'product_id' => 'required',
+        ]);
+
+        $arrayProductID  = $this->stringToArray($request->product_id);
+        $cart_id = $request->cart_id;
+        $user_id = $this->getUserID($request);
+
+        // corner case
+        // check if cart is empty
+        $this->removeExpirePreOrder($user_id);
+        $this->vailidateCart($arrayProductID, $cart_id);
 
         // create order
         $order = new Order();
         $order->user_id = $user_id;
-        $order->order_status = 'Pending';
+        $order->order_status = 'Pre-order';
         $order->create_at = now();
         $isSaveOrder = $order->save();
-        $order_tinhtien = 0;
+        $order->order_tinhtien = $this->tinhTienAndAdditemOrder($arrayProductID, $cart_id, $order->order_id);
+        $isSaveOrder = $order->save();
+
         if ($isSaveOrder) {
-            for ($i = 0; $i < count($arrayProductID); $i++) {
-                try {
-                    //code...
-                    $order_id = $order->order_id;
-                    $item_in_order = new item_in_order();
-                    $item_in_order->order_id = $order_id;
-                    $item_in_order->product_id = $arrayProductID[$i];
-                    $item_in_order->quantity = DB::table('item_in_carts')->where('id_cart', $cart_id)->where('product_id', $arrayProductID[$i])->first()->quantity;
-                    $order_tinhtien += DB::table('products')->where('productID', $arrayProductID[$i])->first()->productPrice * $item_in_order->quantity;
-                    // remove item in cart
-                    if (!$item_in_order->save()) {
-                        // rollback
-                        DB::table('orders')->where('order_id', $order_id)->delete();
-                        return response()->json([
-                            'message' => 'fail',
-                            'status' => 'add item in order fail',
-                        ], 200);
-                    }
-                    if (DB::table('item_in_carts')->where('id_cart', $cart_id)->where('product_id', $arrayProductID[$i])->delete() == 0) {
-                        // rollback
-                        DB::table('orders')->where('order_id', $order_id)->delete();
-                        return response()->json([
-                            'message' => 'fail',
-                            'status' => 'remove item in cart fail',
-                        ], 200);
-                    }
-                } catch (\Throwable $th) {
-                    // rollback
-                    DB::table('orders')->where('order_id', $order_id)->delete();
-                    return response()->json([
-                        'message' => 'fail',
-                        // 'status' => 'orders ' . $item_in_order->product_id . ' not found',
-                        'status' => $th->getMessage(),
-                    ], 200);
-                }
-            }
-            $order->order_tinhtien = $order_tinhtien;
-            $order->save();
             return response()->json([
                 'message' => 'success',
                 'status' => 'Create order success',
-                'recent_order' => $order_id,
+                'recent_order' => $order->order_id,
             ], 200);
         } else {
             return response()->json([
@@ -145,28 +147,101 @@ class OrderController extends Controller
         }
     }
 
-    public function getSpecifyOrder(Request $request)
+    public function removeItemInCart($order_id, $user_id)
+    {
+        $cart_id = DB::table('carts')->where('id_user', $user_id)->first()->cartID;
+        $item_in_order = DB::table('item_in_order')->where('order_id', $order_id)->get();
+        foreach ($item_in_order as $item) {
+            $item_in_cart = DB::table('item_in_carts')->where('id_cart', $cart_id)->where('product_id', $item->product_id)->first();
+            if ($item_in_cart->quantity == $item->quantity) {
+                DB::table('item_in_carts')->where('id_cart', $cart_id)->where('product_id', $item->product_id)->delete();
+            } else {
+                $item_in_cart->quantity -= $item->quantity;
+                if (!$item_in_cart->save()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public function placeOrder(Request $request)
     {
         $request->validate([
             'order_id' => 'required',
         ]);
         $order_id = $request->order_id;
         $order = Order::find($order_id);
-        $order->item_in_order = DB::table('item_in_order')->join('products', 'item_in_order.product_id', '=', 'products.productID')->where('order_id', $order_id)->select('item_in_order.*', 'products.productName', 'products.productPrice')->get();
-        return $order ? response()->json([
-            'message' => 'success',
-            'order' => $order,
-        ], 200) : response()->json([
-            'message' => 'fail',
-            'status' => 'order not found',
-        ], 200);
+
+        if ($order) {
+            if (!$this->removeItemInCart($order_id, $order->user_id)) {
+                return response()->json([
+                    'message' => 'fail',
+                    'status' => 'update cart fail',
+                ], 200);
+            }
+            if ($order->order_status != 'Pre-order') {
+                return response()->json([
+                    'message' => 'fail',
+                    'status' => 'order is not pre-order or already placed',
+                ], 200);
+            }
+            $order->order_status = 'Pending';
+            if (!$order->save()) {
+                return response()->json([
+                    'message' => 'fail',
+                    'status' => 'update order fail',
+                ], 200);
+            }
+
+            return response()->json([
+                'message' => 'success',
+                'status' => 'Place order success',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'fail',
+                'status' => 'order not found',
+            ], 200);
+        }
+    }
+
+    public function getSpecifyOrder(Request $request)
+    {
+        try {
+            $request->validate([
+                'order_id' => 'required',
+            ]);
+            $order_id = $request->order_id;
+            $order = Order::find($order_id);
+            $order->item_in_order = DB::table('item_in_order')->join('products', 'item_in_order.product_id', '=', 'products.productID')->where('order_id', $order_id)->select('item_in_order.*', 'products.productName', 'products.productPrice')->get();
+            return $order ? response()->json([
+                'message' => 'success',
+                'order' => $order,
+            ], 200) : response()->json([
+                'message' => 'fail',
+                'status' => 'order not found',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'fail',
+                'status' => $th->getMessage(),
+            ], 200);
+        }
     }
 
     public function index(Request $request)
     {
         if ($this->isAdmin($request)) {
             try {
-                $orders = Order::all();
+                // get all orders except pre-order
+                $orders = Order::where('order_status', '!=', 'Pre-order')->get();
+                // convert create_at to date
+                foreach ($orders as $order) {
+                    $order->create_at = date('d/m/Y', strtotime($order->create_at));
+                }
+                // sort by create_at
+                $orders = $orders->sortByDesc('create_at');
                 // paginate
                 $orders = $this->paginate($orders, 8, $request->input('page'));
                 return response()->json([

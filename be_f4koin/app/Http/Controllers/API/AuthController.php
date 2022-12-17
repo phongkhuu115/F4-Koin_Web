@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use App\Models\Cart;
+use App\Http\Controllers\API\CartController as CartController;
 
 
 class AuthController extends Controller
@@ -25,6 +27,8 @@ class AuthController extends Controller
         } catch (\Throwable $th) {
         }
     }
+
+
 
     public function register(Request $request)
     {
@@ -45,11 +49,18 @@ class AuthController extends Controller
             'password' => bcrypt($fields['password'])
         ]);
 
+        // create cart for user
+        $cart = Cart::create([
+            'id_user' => $user->userID,
+        ]);
+
+
         $token = $user->createToken('myToken')->plainTextToken;
         $this->updateExpireTimeOfToken(substr($token, 2));
         $response = [
             'user' => $user,
             'token' => $token,
+            'cart' => $cart
         ];
 
         return response($response, 201);

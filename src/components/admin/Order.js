@@ -29,11 +29,11 @@ function App(props) {
   return (
     <>
       <div className="profile d-flex p-4 position-relative border-bottom">
-        <p className='fs-2 m-0 col text-center'>
+        <p className='fs-3 m-0 col text-center'>
           {UUID_Format(props.order_id)}
         </p>
-        <p ref={statusRef} className={`fs-2 m-0 col text-center fw-semibold order__status rounded-5 py-1 ${setClass(props.order_status)}`}>{props.order_status}</p>
-        <p className='fs-2 m-0 col text-center'>{
+        <p ref={statusRef} className={`fs-3 m-0 col text-center fw-semibold order__status rounded-5 py-1 ${setClass(props.order_status)}`}>{props.order_status}</p>
+        <p className='fs-3 m-0 col text-center'>{
           MoneyFormat(props.order_tinhtien)
         } vnd</p>
         <input type="checkbox" name="" id="" className='position-absolute top-50 end-0 translate-middle me-4 item-box' />

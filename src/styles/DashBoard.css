@@ -101,6 +101,7 @@ a > i.fa-solid {
 
 .product__col {
   min-width: 25rem;
+  max-width: 25rem;
 }
 
 .product__col-status {

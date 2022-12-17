@@ -20,6 +20,7 @@ import {
   Route,
   HashRouter
 } from "react-router-dom";
+import FishesAdmin from './components/admin/FishesAdmin';
 import ProductsAdmin from './components/admin/ProductsAdmin';
 
 const htmlRoot = document.getElementById('root');
@@ -46,7 +47,8 @@ root.render(
       </Route>
       <Route path='/admin'>
         <Route index element={ <DashBoard></DashBoard>}></Route>
-        <Route exact path='fish' element={<ProductsAdmin></ProductsAdmin>} />
+        <Route exact path='fish' element={<FishesAdmin></FishesAdmin>} />
+        <Route exact path='products' element={<ProductsAdmin></ProductsAdmin>} />
       </Route>
     </Routes>
   </HashRouter>

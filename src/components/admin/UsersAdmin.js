@@ -15,21 +15,6 @@ function ProductsAdmin(props) {
     overlay.style.display = 'none'
   }
 
-  function selectAll(e) {
-    let checkBoxs = document.querySelectorAll('.item-box')
-    console.log(e)
-    if (e === true) {
-      for (let i = 0; i < checkBoxs.length; i++) {
-        checkBoxs[i].checked = true;
-      }
-    }
-    else {
-      for (let i = 0; i < checkBoxs.length; i++) {
-        checkBoxs[i].checked = false;
-      }
-    }
-  }
-
   useEffect(() => {
     let url = "https://backend.f4koin.cyou/api/getFoodAndTools?page=" + currentPage;
     GetAPINoToken(url).then(res => {
@@ -54,7 +39,7 @@ function ProductsAdmin(props) {
   // const [newName, setNewName] = useState('')
   // const [newName, setNewName] = useState('')
 
-  function nextPage() { 
+  function nextPage() {
     let value = Number(inputRef.current.value) + 1
     if (value > pageNum) {
       return
@@ -96,25 +81,8 @@ function ProductsAdmin(props) {
     })
   }
 
-  function gotoPage(e) {
-    if (e.keyCode === 13) {
-      if (e.target.value > pageNum || e.target.value < 1) {
-        return
-      }
-      let url = "https://backend.f4koin.cyou/api/getFoodAndTools?page=" + e.target.value;
-      GetAPINoToken(url).then(res => {
-        setPageNum(res.data.product.last_page);
-        setMessage(res.data.message);
-        if (Array.isArray(res.data.product.data)) {
-          setItems(res.data.product.data.slice());
-        }
-        else {
-          let array = Object.values(res.data.product.data);
-          setItems(array.slice());
-        }
-        setProductNumber(res.data.product.total);
-      })
-    }
+  function handleUpdate() {
+
   }
 
   return (
@@ -127,7 +95,7 @@ function ProductsAdmin(props) {
         <div className='btn btn-primary fs-3'>Thêm Sản Phẩm</div>
         <div className='ms-3 btn btn-danger fs-3'>Xóa Sản Phẩm</div>
         <div className='d-flex align-items-center mt-4 border-bottom border-top'>
-          <input onClick={(e) => selectAll(e.target.checked)} type="checkbox" name="main-checkbox" id="main-checkbox" className='me-5' />
+          <input type="checkbox" name="main-checkbox" id="main-checkbox" className='me-5' />
           <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center'>Tên</p>
           <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center'>Giống</p>
           <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center'>Số lượng</p>
@@ -145,7 +113,7 @@ function ProductsAdmin(props) {
         })}
         <div className='d-flex align-items-center justify-content-center mt-4'>
           <i className="fa fa-arrow-left btn-next fs-2 me-3" onClick={prevPage}></i>
-          <input onKeyDown={e => gotoPage(e)} ref={inputRef} type="text" name="" id="page__number" defaultValue={1} className='fs-3 text-center' />
+          <input ref={inputRef} type="text" name="" id="page__number" defaultValue={1} className='fs-3 text-center' />
           <i className="fa fa-arrow-right btn-prev fs-2 ms-3" onClick={nextPage}></i>
         </div>
       </div>
@@ -184,7 +152,7 @@ function ProductsAdmin(props) {
             <input type="file" name="productStatus" id="productStatus" className='form-control fs-2' />
           </div>
           <div className='text-center'>
-            <div className='btn btn-primary fs-2 mt-2' >
+            <div className='btn btn-primary fs-2 mt-2' onClick={handleUpdate}>
               Cập nhật
             </div>
           </div>

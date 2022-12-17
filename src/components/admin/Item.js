@@ -23,8 +23,8 @@ function App(props) {
   return (
     <>
       <div className='d-flex align-items-center py-3 border-bottom'>
-        <input type="checkbox" name="main-checkbox" id="main-checkbox" className='me-5' />
-        <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center'>{props.name}</p>
+        <input type="checkbox" name="main-checkbox" id="main-checkbox" className='me-5 item-box' />
+        <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center text-wrap'>{props.name}</p>
         <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center'>{props.sex}</p>
         <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center'>{props.quantity}</p>
         <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center'>{props.size} cm</p>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/DashBoard.css'
-import { BaseURL, GetAPIToken, PostAPINoBody } from '../helpers/GlobalFunction';
+import { BaseURL, GetAPIToken, PostAPINoBody, PostAPIToken } from '../helpers/GlobalFunction';
 import { MoneyFormat, UUID_Format } from '../helpers/DataFormat';
 import Order from './Order'
 import { Navigate, redirect, useNavigate } from 'react-router-dom';
@@ -76,6 +76,32 @@ function DashBoard(props) {
       setMonthMore(res.data.ArbitrageOrder)
     })
   }, [])
+
+  function handleAction(e, action) {
+    let url = BaseURL() + "orderAction"
+    let ids = ""
+    let checkBoxs = document.querySelectorAll('.item-box')
+    for (let i = 0; i < checkBoxs.length; i++) {
+      if (checkBoxs[i].checked === true) {
+        if (ids === "") {
+          ids = listID[i];
+        }
+        else {
+          ids = ids + "," + listID[i]
+        }
+      }
+    }
+    console.log(ids)
+    let body = {
+      action: action,
+      order_id: ids
+    }
+    PostAPIToken(url, body).then(res => {
+      if (res.data.message === "success") {
+        window.location.reload();
+      }
+    })
+  }
 
   useEffect(() => {
     var today = new Date();
@@ -223,7 +249,7 @@ function DashBoard(props) {
             </Link>
           </div>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
-            <Link className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
+            <Link to = '/admin/products' className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-box"></i>
               Dụng Cụ
             </Link>
@@ -277,15 +303,15 @@ function DashBoard(props) {
             })}
             <div className='d-flex align-items-center justify-content-center mt-4'>
               <i className="fa fa-arrow-left btn-next fs-2 me-3" onClick={prevPage}></i>
-              <input ref={inputRef} onKeyDown={e => gotoPage(e)} type="text" name="" id="page__number" defaultValue={1} className='fs-3 text-center' />
+              <input ref={inputRef} onKeyDown={e => gotoPage(e)} type="text" name="" id="page__number" defaultValue={1} className='fs-4 text-center' />
               <i className="fa fa-arrow-right btn-prev fs-2 ms-3" onClick={nextPage}></i>
             </div>
             <p className='text-secondary fs-3 fw-semibold text-uppercase my-4'>Hành động</p>
             <div className='d-flex justify-content-between'>
-              <div className="action__btn fs-3 fw-semibold btn btn-outline-warning">Đang chờ</div>
-              <div className="action__btn fs-3 fw-semibold btn btn-outline-primary">Đang giao</div>
-              <div className="action__btn fs-3 fw-semibold btn btn-outline-success">Đã giao</div>
-              <div className="action__btn fs-3 fw-semibold btn btn-outline-danger">Hủy</div>
+              <div onClick={e => handleAction(e, 1)} className="action__btn fs-3 fw-semibold btn btn-outline-warning">Đang chờ</div>
+              <div onClick={e => handleAction(e, 2)} className="action__btn fs-3 fw-semibold btn btn-outline-primary">Đang giao</div>
+              <div onClick={e => handleAction(e, 3)} className="action__btn fs-3 fw-semibold btn btn-outline-success">Đã giao</div>
+              <div onClick={e => handleAction(e, 4)} className="action__btn fs-3 fw-semibold btn btn-outline-danger">Hủy</div>
             </div>
           </div>
           <div className='col-sm-3 statistic bg-white rounded m-5 p-3 shadow-sm'>
@@ -305,7 +331,7 @@ function DashBoard(props) {
                 <p className='m-0 fs-2'>{dayProfit} vnd</p>
               </div>
               <div className={`fs-3 fw-semibold text-success mb-0 ${dayArbitrage > 0 ? up : down}`}>
-                { dayArbitrage > 0 ? '+' + dayArbitrage : dayArbitrage} vnd
+                {dayArbitrage > 0 ? '+' + dayArbitrage : dayArbitrage} vnd
               </div>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>
@@ -315,7 +341,7 @@ function DashBoard(props) {
                 <p className='m-0 fs-2'>{dayOrder} đơn</p>
               </div>
               <div className={`fs-3 fw-semibold text-success mb-0 ${dayMore > 0 ? up : down}`}>
-              { dayMore > 0 ? '+' + dayMore : dayMore} đơn
+                {dayMore > 0 ? '+' + dayMore : dayMore} đơn
               </div>
             </div>
             <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">
@@ -328,7 +354,7 @@ function DashBoard(props) {
                 <p className='m-0 fs-2'>{monthProfit} vnd</p>
               </div>
               <div className={`fs-3 fw-semibold text-success mb-0 ${monthArbitrage > 0 ? up : down}`}>
-                { monthArbitrage > 0 ? '+' + monthArbitrage : monthArbitrage} vnd
+                {monthArbitrage > 0 ? '+' + monthArbitrage : monthArbitrage} vnd
               </div>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>
@@ -338,7 +364,7 @@ function DashBoard(props) {
                 <p className='m-0 fs-2'>{monthOrder} đơn</p>
               </div>
               <div className={`fs-3 fw-semibold text-success mb-0 ${monthMore > 0 ? up : down}`}>
-                { monthMore > 0 ? '+' + monthMore : monthMore} đơn
+                {monthMore > 0 ? '+' + monthMore : monthMore} đơn
               </div>
             </div>
             <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">
@@ -351,17 +377,17 @@ function DashBoard(props) {
                 <p className='m-0 fs-2'>{yearProfit} vnd</p>
               </div>
               <div className={`fs-3 fw-semibold text-success mb-0 ${yearArbitrage > 0 ? up : down}`}>
-                { yearArbitrage > 0 ? '+' + yearArbitrage : yearArbitrage} vnd
+                {yearArbitrage > 0 ? '+' + yearArbitrage : yearArbitrage} vnd
               </div>
               <div className='d-flex justify-content-between'>
                 <p className='m-0 fs-2'>
                   <i className="fa-solid fa-clipboard me-3 text-info"></i>
                   Số lượng đơn hàng bán được
                 </p>
-                <p className='m-0 fs-2'>{ yearOrder}</p>
+                <p className='m-0 fs-2'>{yearOrder}</p>
               </div>
               <div className={`fs-3 fw-semibold text-success mb-0 ${yearMore > 0 ? up : down}`}>
-                { yearMore > 0 ? '+' + yearMore : yearMore} đơn
+                {yearMore > 0 ? '+' + yearMore : yearMore} đơn
               </div>
             </div>
           </div>

@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { GetAPINoToken } from '../helpers/GlobalFunction';
 import Item from './Item'
 import { BaseURL, PostAPIToken } from '../helpers/GlobalFunction';
+import { storage } from '../../components/helpers/firebase';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 function ProductsAdmin(props) {
   const [items, setItems] = useState([]);
@@ -9,12 +11,23 @@ function ProductsAdmin(props) {
   const [pageNum, setPageNum] = useState(0);
   const [productNumber, setProductNumber] = useState(0);
   const [message, setMessage] = useState('');
+  const [file, setFile] = useState(null);
   const inputRef = useRef(null)
   let listID = [];
 
-  function closePopup() {
+  function closeEditPopup() {
     const overlay = document.querySelector('.edit-popup')
     overlay.style.display = 'none'
+  }
+
+  function closeInsertPopup() {
+    const overlay = document.querySelector('.insert-popup')
+    overlay.style.display = 'none'
+  }
+
+  function handleAddFish() {
+    const overlay = document.querySelector('.insert-popup')
+    overlay.style.display = 'flex'
   }
 
   function selectAll(e) {
@@ -147,8 +160,127 @@ function ProductsAdmin(props) {
     })
   }
 
-  function handleUpdate() {
+  function RenderCategory() {
+    let categoryURL = BaseURL() + "getAllCategory"
+    let [category, setCategory] = useState([]);
+    useEffect(() => {
+      GetAPINoToken(categoryURL).then(res => {
+        setCategory(res.data.category.slice());
+      })
+    }, [])
+    return category.map(item => {
+      return (
+        <option key={item.categoryID} value={item.categoryID}>{item.categoryName}</option>
+      )
+    })
+  }
 
+  const MemoCategory = useMemo(() => RenderCategory, [])
+
+
+  const [fileUrl, setFileUrl] = useState('')
+  function handleUpdate() {
+    try {
+      const storageRef = ref(storage, `files/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on("state_changed",
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            let url = BaseURL() + "updateItem"
+            let body = {
+              productID: sessionStorage.getItem('edit_prod'),
+              productName: productName,
+              typeID: 1,
+              productDetail: productDetail,
+              productPrice: productPrice,
+              productSize: productSize,
+              productCategoryID: productCategoryID,
+              productInventory: productInventory,
+              productSex: productSex,
+              productDiscount: productDiscount,
+              imageUrl: downloadURL
+            }
+            console.log(body)
+            PostAPIToken(url, body).then(res => {
+              console.log(res.data)
+              // if (res.data.message === '') {
+              //   alert('thêm sản phẩm thành công')
+              // }
+            })
+          });
+        }
+      );
+    }
+    catch (error) {
+      let url = BaseURL() + "updateItem"
+      let body = {
+        productID: sessionStorage.getItem('edit_prod'),
+        productName: productName,
+        typeID: 1,
+        productDetail: productDetail,
+        productPrice: productPrice,
+        productSize: productSize,
+        productCategoryID: productCategoryID,
+        productInventory: productInventory,
+        productSex: productSex,
+        productDiscount: productDiscount,
+        imageUrl: ''
+      }
+      console.log(body)
+      PostAPIToken(url, body).then(res => {
+        console.log(res.data)
+        // if (res.data.message === '') {
+        //   alert('thêm sản phẩm thành công')
+        // }
+      })
+    }
+  }
+
+  // Insert Vars
+
+  const [productName, setProductName] = useState();
+  const [typeID, setTypeID] = useState();
+  const [productDetail, setProductDetail] = useState();
+  const [productSize, setProductSize] = useState();
+  const [productPrice, setProductPrice] = useState();
+  const [productCategoryID, setProductCategoryID] = useState('2d9fa7fb-72e2-f615-35ac-9d9d25c8c7ab');
+  const [productInventory, setProductInventory] = useState(0);
+  const [productDiscount, setProductDiscount] = useState(0);
+  const [productSex, setProductSex] = useState();
+
+  function insertNewFish(type) {
+    // console.log('click')
+    // console.log(file);
+
+    const storageRef = ref(storage, `files/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on("state_changed",
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          let url = BaseURL() + "insertItem"
+          let body = {
+            productName: productName,
+            typeID: type,
+            productDetail: productDetail,
+            productPrice: productPrice,
+            productSize: productSize,
+            productCategoryID: productCategoryID,
+            productInventory: productInventory,
+            productSex: productSex,
+            productDiscount: productDiscount,
+            imageUrl: downloadURL
+          }
+          PostAPIToken(url, body).then(res => {
+
+            if (res.data.message === 'Product created successfully') {
+              alert('thêm sản phẩm thành công')
+            }
+          })
+        });
+      }
+    );
   }
 
   return (
@@ -157,8 +289,8 @@ function ProductsAdmin(props) {
         <p className='mb-0 p-4 fw-bold text-danger'>F4 Koin</p>
       </div>
       <p className='m-5'>Sản phẩm</p>
-      <div className='bg-white m-5 rounded-1 p-4'>
-        <div className='btn btn-primary fs-3'>Thêm Sản Phẩm</div>
+      <div className='bg-white m-5 rounded-1 p-4 container-fluid'>
+        <div onClick={handleAddFish} className='btn btn-primary fs-3'>Thêm Sản Phẩm</div>
         <div onClick={handleDelete} className='ms-3 btn btn-danger fs-3'>Xóa Sản Phẩm</div>
         <div className='d-flex align-items-center mt-4 border-bottom border-top'>
           <input onClick={(e) => selectAll(e.target.checked)} type="checkbox" name="main-checkbox" id="main-checkbox" className='me-5' />
@@ -174,8 +306,9 @@ function ProductsAdmin(props) {
         </div>
         {items.map(item => {
           listID.push(item.productID)
+          console.log(item.productID)
           return (
-            <Item id={item.productID} name={item.productName} sex={item.productSex} size={item.productSize} quantity={item.productSupplierID} status={item.productSupplierID > 0 ? "Còn hàng" : "Hết hàng"} price={item.productPrice}></Item>
+            <Item id={item.productID} name={item.productName} sex={item.productSex} size={item.productSize} quantity={item.productInventory} status={item.productInventory > 0 ? "Còn hàng" : "Hết hàng"} price={item.productPrice}></Item>
           )
         })}
         <div className='d-flex align-items-center justify-content-center mt-4'>
@@ -184,43 +317,120 @@ function ProductsAdmin(props) {
           <i className="fa fa-arrow-right btn-prev fs-2 ms-3" onClick={nextPage}></i>
         </div>
       </div>
+      {/* Edit Fish */}
       <div className="edit-popup">
         <div className="bg-white rounded p-5 edit-section position-relative">
-          <div className='close-btn p-3 fs-3' onClick={closePopup}>
+          <div className='close-btn p-3 fs-3' onClick={closeEditPopup}>
             <i class="fa-solid fa-xmark"></i>
           </div>
           <p className='my-5 text-center text-muted fs-2'>Cập nhật sản phẩm</p>
           <div className='d-flex align-items-center mb-4'>
             <label htmlFor="productName" className='fs-3 me-5 edit-label'>Tên</label>
-            <input type="text" name="productName" id="productName" onChange={e => { }} className='form-control fs-3' />
+            <input type="text" name="productName" id="productName" onChange={e => { setProductName(e.target.value) }} className='form-control fs-4' />
           </div>
           <div className='d-flex align-items-center mb-4'>
             <label htmlFor="productSex" className='fs-3 me-5 edit-label'>Giống</label>
-            <input type="text" name="productSex" id="productSex" className='form-control fs-3' />
+            <div className='d-flex align-items-center me-5'>
+              <input type="radio" id="male" name="sex" value="Male" className='form-check-input fs-3 mt-0 me-2' onChange={e => { setProductSex(e.target.value) }} />
+              <label for="male" className='fs-4'>Đực</label>
+            </div>
+            <div className="d-flex align-items-center">
+              <input type="radio" id="female" name="sex" value="Female" className='form-check-input fs-3 mt-0 me-2' onChange={e => { setProductSex(e.target.value) }} />
+              <label for="female" className='fs-4'>Cái</label>
+            </div>
           </div>
           <div className='d-flex align-items-center mb-4'>
             <label htmlFor="quantity" className='fs-3 me-5 edit-label'>Số lượng</label>
-            <input type="text" name="quantity" id="quantity" className='form-control fs-3' />
+            <input type="text" name="quantity" id="quantity" className='form-control fs-4' onChange={e => { setProductInventory(e.target.value) }} />
           </div>
           <div className='d-flex align-items-center mb-4'>
             <label htmlFor="productSize" className='fs-3 me-5 edit-label'>Kích thước</label>
-            <input type="text" name="productSize" id="productSize" className='form-control fs-3' />
+            <input type="text" name="productSize" id="productSize" className='form-control fs-4' onChange={e => { setProductSize(e.target.value) }} />
           </div>
           <div className='d-flex align-items-center mb-4'>
             <label htmlFor="productPrice" className='fs-3 me-5 edit-label'>Giá</label>
-            <input type="text" name="productPrice" id="productPrice" className='form-control fs-3' />
+            <input type="text" name="productPrice" id="productPrice" className='form-control fs-4' onChange={e => { setProductPrice(e.target.value) }} />
           </div>
           <div className='d-flex align-items-center mb-4'>
-            <label htmlFor="productStatus" className='fs-3 me-5 edit-label'>Tình trạng</label>
-            <input type="text" name="productStatus" id="productStatus" className='form-control fs-3' />
+            <label htmlFor="productPrice" className='fs-3 me-5 edit-label'>Loại Cá</label>
+            <select name="category" id="category" className='form-select fs-4' onChange={e => { setProductCategoryID(e.target.value) }}>
+              <MemoCategory></MemoCategory>
+            </select>
           </div>
           <div className='d-flex align-items-center mb-4'>
-            <label htmlFor="productStatus" className='fs-3 me-5 edit-label'>Tình trạng</label>
-            <input type="file" name="productStatus" id="productStatus" className='form-control fs-2' />
+            <label htmlFor="discount" className='fs-3 me-5 edit-label'>Giảm Giá</label>
+            <input type="text" name="discount" id="discount" className='form-control fs-4' onChange={e => { setProductDiscount(e.target.value) }} />
+          </div>
+          <div className='d-flex align-items-center mb-4'>
+            <label htmlFor="productDetail" className='fs-3 me-5 edit-label'>Mô tả</label>
+            <input type="text" name="productDetail" id="productDetail" className='form-control fs-4' onChange={e => { setProductDetail(e.target.value) }} />
+          </div>
+          <div className='d-flex align-items-center mb-4'>
+            <label htmlFor="productStatus" className='fs-3 me-5 edit-label'>Hình ảnh</label>
+            <input type="file" name="productStatus" id="productStatus" className='form-control fs-2' onChange={e => setFile(e.target.files[0])} />
           </div>
           <div className='text-center'>
-            <div className='btn btn-primary fs-2 mt-2' onClick={handleUpdate}>
-              Cập nhật
+            <div className='btn btn-primary fs-3 mt-2' onClick={() => handleUpdate()}>
+              Sửa
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Insert Fish */}
+      <div className="insert-popup">
+        <div className="bg-white rounded p-5 edit-section position-relative">
+          <div className='close-btn p-3 fs-3' onClick={closeInsertPopup}>
+            <i class="fa-solid fa-xmark"></i>
+          </div>
+          <p className='my-5 text-center text-muted fs-2'>Thêm sản phẩm</p>
+          <div className='d-flex align-items-center mb-4'>
+            <label htmlFor="productName" className='fs-3 me-5 edit-label'>Tên</label>
+            <input type="text" name="productName" id="productName" onChange={e => { setProductName(e.target.value) }} className='form-control fs-4' />
+          </div>
+          <div className='d-flex align-items-center mb-4'>
+            <label htmlFor="productSex" className='fs-3 me-5 edit-label'>Giống</label>
+            <div className='d-flex align-items-center me-5'>
+              <input type="radio" id="male" name="sex" value="Male" className='form-check-input fs-3 mt-0 me-2' onChange={e => { setProductSex(e.target.value) }} />
+              <label for="male" className='fs-4'>Đực</label>
+            </div>
+            <div className="d-flex align-items-center">
+              <input type="radio" id="female" name="sex" value="Female" className='form-check-input fs-3 mt-0 me-2' onChange={e => { setProductSex(e.target.value) }} />
+              <label for="female" className='fs-4'>Cái</label>
+            </div>
+          </div>
+          <div className='d-flex align-items-center mb-4'>
+            <label htmlFor="quantity" className='fs-3 me-5 edit-label'>Số lượng</label>
+            <input type="text" name="quantity" id="quantity" className='form-control fs-4' onChange={e => { setProductInventory(e.target.value) }} />
+          </div>
+          <div className='d-flex align-items-center mb-4'>
+            <label htmlFor="productSize" className='fs-3 me-5 edit-label'>Kích thước</label>
+            <input type="text" name="productSize" id="productSize" className='form-control fs-4' onChange={e => { setProductSize(e.target.value) }} />
+          </div>
+          <div className='d-flex align-items-center mb-4'>
+            <label htmlFor="productPrice" className='fs-3 me-5 edit-label'>Giá</label>
+            <input type="text" name="productPrice" id="productPrice" className='form-control fs-4' onChange={e => { setProductPrice(e.target.value) }} />
+          </div>
+          <div className='d-flex align-items-center mb-4'>
+            <label htmlFor="productPrice" className='fs-3 me-5 edit-label'>Loại Cá</label>
+            <select name="category" id="category" className='form-select fs-4' onChange={e => { setProductCategoryID(e.target.value) }}>
+              <MemoCategory></MemoCategory>
+            </select>
+          </div>
+          <div className='d-flex align-items-center mb-4'>
+            <label htmlFor="discount" className='fs-3 me-5 edit-label'>Giảm Giá</label>
+            <input type="text" name="discount" id="discount" className='form-control fs-4' onChange={e => { setProductDiscount(e.target.value) }} />
+          </div>
+          <div className='d-flex align-items-center mb-4'>
+            <label htmlFor="productDetail" className='fs-3 me-5 edit-label'>Mô tả</label>
+            <input type="text" name="productDetail" id="productDetail" className='form-control fs-4' onChange={e => { setProductDetail(e.target.value) }} />
+          </div>
+          <div className='d-flex align-items-center mb-4'>
+            <label htmlFor="productStatus" className='fs-3 me-5 edit-label'>Hình ảnh</label>
+            <input type="file" name="productStatus" id="productStatus" className='form-control fs-2' onChange={e => setFile(e.target.files[0])} />
+          </div>
+          <div className='text-center'>
+            <div className='btn btn-primary fs-3 mt-2' onClick={() => insertNewFish(1)}>
+              Thêm
             </div>
           </div>
         </div>

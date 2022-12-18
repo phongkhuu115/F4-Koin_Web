@@ -4,7 +4,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import Bank from './BankPayment';
 import Momo from './MomoPayment';
 import Cash from './CashPayment';
-import { BaseURL, GetAPIToken } from './helpers/GlobalFunction';
+import { BaseURL, GetAPIToken, PostAPIToken } from './helpers/GlobalFunction';
 import { MoneyFormat } from './helpers/DataFormat';
 
 
@@ -17,6 +17,7 @@ function App(props) {
     productName: "Test Product",
     productPrice: "9999999"
   }])
+  const [method, setMethod] = useState('')
   const location = useLocation();
   const onShow = React.useCallback((e) => setRender(e.target.id), []);
   useEffect(() => {
@@ -29,6 +30,15 @@ function App(props) {
       }
     })
   }, [])
+  function handleCompleteOrder() {
+    let url = BaseURL() + "placeOrder"
+    let body = {
+      order_id: orderID,
+      payment_method: method
+    }
+    // console.log(body)
+    PostAPIToken(url, body).then(res => console.log(res.data))
+  }
   function RenderMethod(e) {
     if (hasRender === 'Bank') {
       return <Bank></Bank>
@@ -51,19 +61,19 @@ function App(props) {
             <p className="fw-bold fs-3 pt-3">Hình thức thanh toán:</p>
             <div className='d-flex pb-4'>
               <div className="form-check fs-4">
-                <input className="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Bank" onChange={onShow} />
+                <input className="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Bank" onClick={e => setMethod('Bank')} onChange={onShow} />
                 <label className="form-check-label" htmlFor="Bank">
                   Ngân hàng
                 </label>
               </div>
               <div className="form-check mx-5 fs-4">
-                <input className="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Momo" onChange={onShow} />
+                <input className="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Momo"  onChange={onShow} onClick={e => setMethod('Momo')}/>
                 <label className="form-check-label" htmlFor="Momo">
                   Momo
                 </label>
               </div>
               <div className="form-check fs-4">
-                <input className="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Cash" onChange={onShow} />
+                <input className="form-check-input me-2 pay-method" type="radio" name="payMethod" id="Cash"  onChange={onShow} onClick={e => setMethod('Cash')}/>
                 <label className="form-check-label" htmlFor="Cash">
                   Tiền mặt
                 </label>
@@ -72,7 +82,7 @@ function App(props) {
             {hasRender && <RenderMethod></RenderMethod>}
           </div>
           <div>
-            <button type="button" className="btn btn-success py-2 w-100 fs-4 mb-3">Thanh Toán</button>
+            <button type="button" className="btn btn-success py-2 w-100 fs-4 mb-3" onClick={handleCompleteOrder}>Đặt Hàng</button>
             <p className="text-muted fs-5">
               Your personal data will be used to process your order, support your experience
               throughout this website, and for other purposes described in our privacy policy.

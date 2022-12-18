@@ -4,6 +4,7 @@
 */
 
 export function MoneyFormat(cash) { 
+  if (cash === null) return
   return cash.split('').reverse().reduce((prev, next, index) => {
     return ((index % 3) ? next : (next + ',')) + prev
   })

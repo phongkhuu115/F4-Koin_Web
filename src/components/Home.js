@@ -31,7 +31,7 @@ function RenderItem() {
   return latest.map(item => {
     return (
       <>
-        <Link to='/home/product' className="fish-card order-md-first bg-dark p-3 rounded text-decoration-none new_product position-relative" state={{ id: item.productID }}>
+        <Link to='/home/product' className="fish-card bg-dark p-3 rounded text-decoration-none new_product position-relative col" state={{ id: item.productID }}>
           <div className="card">
             <img className="card_img d-block" src={item.imageUrl} alt="" />
           </div>
@@ -74,7 +74,7 @@ function RenderPickItem() {
   return random.map(item => {
     return (
       <>
-        <Link to='/home/product' className="fish-card order-md-first bg-dark p-3 rounded mt-3 text-decoration-none position-relative pick" state={{ id: item.productID }}>
+        <Link to='/home/product' className="fish-card order-md-first bg-dark p-3 rounded mt-3 text-decoration-none position-relative pick col" state={{ id: item.productID }}>
           <div className="card">
             <img className="card_img d-block" src={item.imageUrl} alt="" />
           </div>
@@ -102,13 +102,13 @@ function HomePage() {
           </Link>
         </div>
       </div>
-      <div className='newProduct-section d-flex flex-column h-100'>
+      <div className='newProduct-section d-flex flex-column container-fluid'>
         <div className='text-center border-bottom position-relative m-5'><h1 className='bg-white py-3 px-5 position-absolute top-50 start-50 translate-middle'>New Arrival</h1></div>
-        <div className="items-group d-flex justify-content-between m-5">
+        <div className="items-group d-flex justify-content-between m-5 flex-wrap">
           <RenderItem></RenderItem>
         </div>
       </div>
-      <div className="pick-product d-flex flex-column">
+      <div className="pick-product d-flex flex-column container-fluid">
         <h1 className="text-center m-5 text-uppercase text-white fw-bold">Picked For You</h1>
         <div className="pick-group d-flex flex-wrap justify-content-between mx-5 mb-5">
           <RenderPickItem></RenderPickItem>

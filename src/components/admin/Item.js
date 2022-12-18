@@ -29,7 +29,7 @@ function App(props) {
         <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center'>{props.quantity}</p>
         <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center'>{props.size} cm</p>
         <p className='text-muted fs-2 fw-semibold mb-0 product__col text-center'>
-          {MoneyFormat(props.price)} VND
+          {props.price === 'null' ? 0 :  MoneyFormat(props.price)} VND
         </p>
         <p ref={statusRef} className='fs-2 fw-semibold mb-0 product__status p-2 rounded-pill product__col-status text-center'> {props.quantity > 0 ? "Còn Hàng" : "Hết Hàng"}</p>
         <p className='text-light fs-2 fw-semibold mb-0 btn btn-secondary col ms-5 btn-edit' onClick={handleEdit}>

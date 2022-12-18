@@ -57,6 +57,7 @@ function FishShop(props) {
         e.preventDefault()
         let url = `https://backend.f4koin.cyou/api/addToCart?productID=${productID}&quantity=1`
         PostAPINoBody(url).then(res => {
+          console.log(res.data)
           if (res.data.message === 'success') {
             let popup = document.querySelector('.confirm-popup')
             popup.innerHTML = productName + " đã được thêm vào giỏ hàng";

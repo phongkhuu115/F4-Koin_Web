@@ -22,6 +22,13 @@ class ChatController extends Controller
         return $token->tokenable_id;
     }
 
+    public function getUserRole(Request $request)
+    {
+        $userID = $this->getUserID($request);
+        $userRoleID = DB::table('users')->where('userID', $userID)->first()->userRoleID;
+        return $userRoleID;
+    }
+
 
     public function sendMessage(Request $request)
     {
@@ -38,10 +45,11 @@ class ChatController extends Controller
             $username_prefix = DB::table('users')->where('userID', $userID)->first()->username;
             $channelOfUser = $userID_prefix . $username_prefix;
             if ($request->channel_name != $channelOfUser) {
-                return response()->json([
-                    'message' => 'error',
-                    'status' => 'You have no permission to send message to this channel',
-                ]);
+                if ($this->getUserRole($request) != 1)
+                    return response()->json([
+                        'message' => 'fail',
+                        'status' => 'You have no permission to send message to this channel',
+                    ]);
             }
             // user have role = 1
             $admins = DB::table('users')->where('userRoleID', 1)->get();
@@ -57,7 +65,7 @@ class ChatController extends Controller
                 ]);
                 if (!$insert) {
                     return response()->json([
-                        'message' => 'error',
+                        'message' => 'fail',
                         'status' => 'Save message to db failed',
                     ]);
                 }
@@ -71,15 +79,15 @@ class ChatController extends Controller
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'message' => 'error',
-                'status' => $th->getMessage(),
+                'message' => 'fail',
+                'status' => strpos($th->getMessage(), 'SQLSTATE[23000]') !== false &&  strpos($th->getMessage(), 'fk_channel_have_message') !== false ? 'Channel not exist' : $th->getMessage(),
                 'data' => $request->all()
             ]);
         }
     }
 
 
-    public function joinChannel(Request $request)
+    public function userJoinChannel(Request $request)
     {
         $userID = $this->getUserID($request);
         // set first prefix is 8 first characters of user id
@@ -97,7 +105,7 @@ class ChatController extends Controller
             ]);
             if (!$insert) {
                 return response()->json([
-                    'message' => 'error',
+                    'message' => 'fail',
                     'status' => 'Create channel in db failed',
                     // 'data' => $request->all()
                 ]);
@@ -115,6 +123,42 @@ class ChatController extends Controller
             'status' => $username_prefix . ' Join channel ' . $channel . ' success',
             'channel_name' => $channel,
             'username' => $username_prefix,
+            'data' =>  $messages
+        ]);
+    }
+
+    public function adminJoinChannel(Request $request)
+    {
+        $request->validate([
+            'channel_name' => 'required',
+        ]);
+        $userID = $this->getUserID($request);
+        $username = DB::table('users')->where('userID', $userID)->first()->username;
+        $channel = $request->channel_name;
+        $userRoleID = $this->getUserRole($request);
+        if ($userRoleID != 1) {
+            return response()->json([
+                'message' => 'fail',
+                'status' => 'You have no permission to join this channel',
+                'data' => $request->all()
+            ]);
+        }
+        if (!DB::table('channel')->where('id', $channel)->exists()) {
+            return response()->json([
+                'message' => 'fail',
+                'status' => 'Channel not exist',
+                'data' => $request->all()
+            ]);
+        }
+        // broadcast that admin join channel
+        broadcast(new MessageEvent($username,  $username . ' has joined the channel', $channel));
+        // message order by create_at
+        $messages = DB::table('messages')->where('channel_id', $channel)->orderBy('create_at', 'asc')->get();
+        return response()->json([
+            'message' => 'success',
+            'status' => $username . ' Join channel ' . $channel . ' success',
+            'channel_name' => $channel,
+            'username' => $username,
             'data' =>  $messages
         ]);
     }

@@ -11,6 +11,15 @@ export default function PublicMessagesPage() {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [channel, setChannel] = useState('');
+    Axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
+    const echo = new Echo({
+        broadcaster: 'pusher',
+        key: process.env.REACT_APP_MIX_ABLY_PUBLIC_KEY,
+        wsHost: 'realtime-pusher.ably.io',
+        wsPort: 443,
+        disableStats: true,
+        encrypted: true,
+    });
     async function handleSendMessage(e) {
         // 1
         e.preventDefault();
@@ -30,47 +39,53 @@ export default function PublicMessagesPage() {
         }
         try {
             // 4
-            await Axios.post('/sendChat', {
+            let response = await Axios.post('/sendChat', {
                 user: user,
                 message: message,
-                channel: 'public.room',
+                channel: channel,
             });
+            console.log(response);
         } catch (error) {
             console.error(error, error.response, error.response.data);
         }
     }
+
     async function handleJoinChannel(e) {
-        // 1
+        echo.channel(channel)
+            .subscribed(() => { console.log('subcribed channel:', channel) })
+            .listenToAll((e) => { console.log('listenToAll', e) })
+            .listen('MessageEvent', (e) => {
+                console.log(e.message);
+                setMessages((messages) => [...messages, e.message]);
+            });
         e.preventDefault();
         // 2
         if (!channel) {
             alert('Please add a channel');
             return;
         }
+        if (!user) {
+            alert('Please add your username');
+            return;
+        }
         try {
             // 3
-            await Axios.post('/joinChannel', {
+            let response = await Axios.post('/joinChannel', {
                 channel: channel,
+                user: user,
             });
+
+            // log response
+            console.log(response);
+
         } catch (error) {
             console.error(error, error.response, error.response.data);
         }
     }
-    
-    useEffect(() => {
-        // 2
-        Axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
-        // 3
-        const echo = new Echo({
-            broadcaster: 'pusher',
-            key: process.env.REACT_APP_MIX_ABLY_PUBLIC_KEY,
-            wsHost: 'realtime-pusher.ably.io',
-            wsPort: 443,
-            disableStats: true,
-            encrypted: true,
-        });
+    // useEffect(() => {
 
-    }, []);
+
+    // }, []);
     // 4
     return (
         <div>

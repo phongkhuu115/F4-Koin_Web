@@ -96,6 +96,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 //Route Chat
 Route::get('/getChat', [ChatController::class, 'getChat']);
 Route::post('/sendChat', [ChatController::class, 'sendChat']);
+Route::post('/joinChannel', [ChatController::class, 'joinChannel']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 

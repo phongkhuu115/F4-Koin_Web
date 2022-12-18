@@ -227,23 +227,26 @@ class ItemController extends Controller
         try {
             if ($this->isAdmin($request)) {
                 $productFound =  Product::where('productID', $request->productID);
+                if ($productFound->get()->count() == 0) {
+                    return response()->json([
+                        'message' => 'Product not found',
+                    ], 200);
+                }
                 return response()->json([
                     'message' =>  $productFound->update([
-                        'productName' => $request->productName,
-                        'typeID' => $request->typeID,
-                        'productDetail' => $request->productDetail,
-                        'productPrice' => $request->productPrice,
-                        'productCategoryID' => $request->productCategoryID,
-                        'productInventory' => $request->productInventory,
-                        'productSex' => $request->productSex,
-                        'productBorn' => $request->productBorn,
-                        'productDiscount' => $request->productDiscount,
-                        'imageUrl' => $request->imageUrl,
+                        'productName' => $request->productName == null ? $productFound->get()->first()->productName : $request->productName,
+                        'typeID' => $request->typeID == null ? $productFound->get()->first()->typeID : $request->typeID,
+                        'productDetail' => $request->productDetail == null ? $productFound->get()->first()->productDetail : $request->productDetail,
+                        'productPrice' => $request->productPrice == null ? $productFound->get()->first()->productPrice : $request->productPrice,
+                        'productCategoryID' => $request->productCategoryID == null ? $productFound->get()->first()->productCategoryID : $request->productCategoryID,
+                        'productInventory' => $request->productInventory == null ? $productFound->get()->first()->productInventory : $request->productInventory,
+                        'productSex' => $request->productSex == null ? $productFound->get()->first()->productSex : $request->productSex,
+                        'productBorn' => $request->productBorn == null ? $productFound->get()->first()->productBorn : $request->productBorn,
+                        'productDiscount' => $request->productDiscount == null ? $productFound->get()->first()->productDiscount : $request->productDiscount,
+                        'imageUrl' => $request->imageUrl == null ? $productFound->get()->first()->imageUrl : $request->imageUrl,
                         'update_at' => now()
                     ]) ? 'success' : 'fail',
-                    //product updated
-                    'product' => $productFound->get()->count() != 0 ? $productFound->get() : 'Product not found',
-
+                    'product' => $productFound->get()->first()
                 ], 200);
             } else {
                 return response()->json([

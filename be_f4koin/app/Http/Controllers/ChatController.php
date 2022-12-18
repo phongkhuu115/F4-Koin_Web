@@ -29,6 +29,28 @@ class ChatController extends Controller
         return $userRoleID;
     }
 
+    // get all channels of user
+    public function getAllChannel(Request $request)
+    {
+        try {
+            // get username, number of message per channel, last message
+            if ($this->getUserRole($request) == 1) {
+                $channels = DB::table('channel')->get();
+                foreach ($channels as $channel) {
+                    $channel->username = DB::table('users')->where('userID', $channel->user_id)->first()->username;
+                    $channel->number_of_message = DB::table('messages')->where('channel_id', $channel->id)->count();
+                    $channel->last_message = DB::table('messages')->where('channel_id', $channel->id)->orderBy('create_at', 'desc')->first();
+                }
+                return response()->json([
+                    'message' => 'success',
+                    'status' => 'Get all channels successfully',
+                    'data' => $channels,
+                ]);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
 
     public function sendMessage(Request $request)
     {
@@ -39,16 +61,17 @@ class ChatController extends Controller
             ]);
 
             $userID = $this->getUserID($request);
-            // set first prefix is 8 first characters of user id
-            $userID_prefix = substr($userID, 0, 8);
-            // set second prefix is username
-            $username_prefix = DB::table('users')->where('userID', $userID)->first()->username;
-            $channelOfUser = $userID_prefix . $username_prefix;
+            // // set first prefix is 8 first characters of user id
+            // $userID_prefix = substr($userID, 0, 8);
+            // // set second prefix is username
+            // $username = DB::table('users')->where('userID', $userID)->first()->username;
+            $channelOfUser = $this->getChannelName($userID);
             if ($request->channel_name != $channelOfUser) {
                 if ($this->getUserRole($request) != 1)
                     return response()->json([
                         'message' => 'fail',
                         'status' => 'You have no permission to send message to this channel',
+                        // 'data' => $request->all()
                     ]);
             }
             // user have role = 1
@@ -86,15 +109,21 @@ class ChatController extends Controller
         }
     }
 
+    public function getChannelName($userID)
+    {
+        // set first prefix is 8 first characters of user id
+        $userID_prefix = substr($userID, 0, 8);
+        $channel = $userID_prefix . '-ablychnl';
+        return $channel;
+    }
 
     public function userJoinChannel(Request $request)
     {
         $userID = $this->getUserID($request);
-        // set first prefix is 8 first characters of user id
-        $userID_prefix = substr($userID, 0, 8);
-        // set second prefix is username
-        $username_prefix = DB::table('users')->where('userID', $userID)->first()->username;
-        $channel = $userID_prefix . $username_prefix;
+
+        $username = DB::table('users')->where('userID', $userID)->first()->username;
+        $channel = $this->getChannelName($userID);
+
         // if channel is not exist, create new channel
         if (!DB::table('channel')->where('id', $channel)->exists()) {
             $insert = DB::table('channel')->insert([
@@ -114,15 +143,15 @@ class ChatController extends Controller
         // broadcast that user join channel
 
         // get history message
-        broadcast(new MessageEvent($username_prefix,  $request->user . ' has joined the channel', $channel));
+        broadcast(new MessageEvent($username,  $request->user . ' has joined the channel', $channel));
         // message order by create_at
         $messages = DB::table('messages')->where('channel_id', $channel)->orderBy('create_at', 'asc')->get();
 
         return response()->json([
             'message' => 'success',
-            'status' => $username_prefix . ' Join channel ' . $channel . ' success',
+            'status' => $username . ' Join channel ' . $channel . ' success',
             'channel_name' => $channel,
-            'username' => $username_prefix,
+            'username' => $username,
             'data' =>  $messages
         ]);
     }

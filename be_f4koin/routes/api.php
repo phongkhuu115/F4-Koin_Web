@@ -96,10 +96,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     //Route Chat
-    Route::get('/getChat', [ChatController::class, 'getChat']);
+    Route::get('/getAllChannel', [ChatController::class, 'getAllChannel']);
     Route::post('/sendMessage', [ChatController::class, 'sendMessage']);
     Route::get('/userJoinChannel', [ChatController::class, 'userJoinChannel']);
     Route::get('/adminJoinChannel', [ChatController::class, 'adminJoinChannel']);
+
 });
 
 // Route::post('new-message', function (Request $request) {

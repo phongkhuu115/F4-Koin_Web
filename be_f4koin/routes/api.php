@@ -93,11 +93,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/getReportByYear', [ReportController::class, 'getReportByYear']);
 });
 
-//Route Chat
-Route::get('/getChat', [ChatController::class, 'getChat']);
-Route::post('/sendChat', [ChatController::class, 'sendChat']);
-Route::post('/joinChannel', [ChatController::class, 'joinChannel']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    //Route Chat
+    Route::get('/getChat', [ChatController::class, 'getChat']);
+    Route::post('/sendMessage', [ChatController::class, 'sendMessage']);
+    Route::get('/joinChannel', [ChatController::class, 'joinChannel']);
 });
 
 // Route::post('new-message', function (Request $request) {

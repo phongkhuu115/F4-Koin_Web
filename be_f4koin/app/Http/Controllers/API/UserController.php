@@ -204,14 +204,22 @@ class UserController extends Controller
                     $isSuccess5 = DB::table('item_in_order')->whereIn('order_id', function ($query) use ($userID) {
                         $query->select('order_id')->from('orders')->where('user_id', $userID);
                     })->delete();
+
+                    // delete all message have channelOfUser in message table
+                    $channelOfUser = substr($userID, 0, 8) . DB::table('users')->where('userID', $userID)->first()->username;
+                    $isSuccess8 = DB::table('messages')->where('channel_id', $channelOfUser)->delete();
                 }
+
                 // delete all cart have userID in cart table
                 $isSuccess1 = DB::table('carts')->whereIn('id_user', $userIDArr)->delete();
                 // delete all order have userID in order table
                 $isSuccess2 = DB::table('orders')->whereIn('user_id', $userIDArr)->delete();
+                // delete all message have userID in message table
+                $isSuccess6 = DB::table('messages')->whereIn('user_from', $userIDArr)->delete();
+                // delete all channel have userID in message table
+                $isSuccess7 = DB::table('channel')->whereIn('user_id', $userIDArr)->delete();
                 // delete all user have userID in user table
                 $isSuccess3 = User::destroy($userIDArr);
-
                 return response()->json([
                     'message' =>  $isSuccess3 ?  'success' : 'fail',
                     'user deleted' => $userIDArr

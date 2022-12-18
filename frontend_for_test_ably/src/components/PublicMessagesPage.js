@@ -39,7 +39,7 @@ export default function PublicMessagesPage() {
         }
         try {
             // 4
-            let response = await Axios.post('/sendChat', {
+            let response = await Axios.post('/sendMessage', {
                 user: user,
                 message: message,
                 channel: channel,
@@ -60,7 +60,10 @@ export default function PublicMessagesPage() {
             .listen('.message.new', (data) => {
                 // 6
                 console.log(data);
-                setMessages((oldMessages) => [...oldMessages, data]);
+
+                setMessages((oldMessages) => {
+                    return [...oldMessages, data];
+                });
                 setMessage('');
             });
         e.preventDefault();

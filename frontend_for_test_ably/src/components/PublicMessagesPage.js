@@ -51,12 +51,17 @@ export default function PublicMessagesPage() {
     }
 
     async function handleJoinChannel(e) {
-        echo.channel(channel)
-            .subscribed(() => { console.log('subcribed channel:', channel) })
-            .listenToAll((e) => { console.log('listenToAll', e) })
-            .listen('MessageEvent', (e) => {
-                console.log(e.message);
-                setMessages((messages) => [...messages, e.message]);
+        echo
+            .channel(channel)
+            .subscribed(() => {
+                console.log('You are subscribed');
+            })
+            // 5
+            .listen('.message.new', (data) => {
+                // 6
+                console.log(data);
+                setMessages((oldMessages) => [...oldMessages, data]);
+                setMessage('');
             });
         e.preventDefault();
         // 2

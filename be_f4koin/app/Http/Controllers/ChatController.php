@@ -25,7 +25,7 @@ class ChatController extends Controller
         // create channel
         $channel = $request->channel;
         // send message to channel
-        event(new MessageEvent($request->user,  $message, $channel));
+        broadcast(new MessageEvent($request->user,  $message, $channel));
         return response()->json([
             'status' => 'success',
             'message' => 'Channel ' . $channel . ' created'

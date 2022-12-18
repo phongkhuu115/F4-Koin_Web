@@ -42,6 +42,6 @@ class MessageEvent implements ShouldBroadcast
     public function broadcastOn()
     {
         // return new Channel('public.room');
-        return new Channel($this->channel);
+        return [new Channel($this->channel)];
     }
 }

@@ -146,7 +146,7 @@ class ItemController extends Controller
                 'typeID' => 'required|in:1,2,3',
                 // 'productDetail' => 'required',
                 'productPrice' => 'required',
-                'productSize' => 'required|numeric|between:0,50',
+                'productSize' => 'required|numeric|between:0,300',
                 'productCategoryID' => 'required',
                 'productInventory' => 'required|numeric|between:0,1000',
                 'productDiscount' => 'numeric|between:0,5',

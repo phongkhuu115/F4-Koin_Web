@@ -430,7 +430,7 @@ class ItemController extends Controller
     {
         try {
             // $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('typeID', 1)->get();
-            $items = Product::where('typeID', 1)->get();
+            $items = Product::where('typeID', 1)->orderBy('create_at', 'desc')->get();
 
             $items = $this->paginate($items, 12, $request->input('page'));
         } catch (\Throwable $th) {

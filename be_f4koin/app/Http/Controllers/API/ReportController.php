@@ -51,6 +51,8 @@ class ReportController extends Controller
 
             $ArbitrageTurnOver = $TodayTurnover - $YesterdayTurnover;
 
+            $PendingOrder = DB::table('orders')->where('create_at', 'like', $today . '%')->where('order_status', 'like', 'Pending')->get()->count();
+
             return response()->json([
                 'Sumary' => $TodayTurnover,
                 'ArbitrageTurnOver' => $ArbitrageTurnOver,
@@ -63,6 +65,8 @@ class ReportController extends Controller
                 'yesterday' => $yesterday,
                 'YesterdayTurnover' => $YesterdayTurnover,
                 'yesterdayAmountOfOrder' => $yesterdayAmountOfOrder,
+
+                'PendingOrder' => $PendingOrder,
 
                 'message' => 'success',
             ], 200);
@@ -111,6 +115,8 @@ class ReportController extends Controller
 
             $ArbitrageTurnOver = $thisMonthTurnover - $lastMonthTurnover;
 
+            $PendingOrder = DB::table('orders')->where('create_at', 'like', $monthYear . '%')->where('order_status', 'like', 'Pending')->get()->count();
+
             return response()->json([
                 'Sumary' => $thisMonthTurnover,
                 'ArbitrageTurnOver' =>  $ArbitrageTurnOver,
@@ -123,6 +129,8 @@ class ReportController extends Controller
                 'lastMonth' => $lastMonth,
                 'lastMonthTurnover' => $lastMonthTurnover,
                 'lastMonthAmountOfOrder' => $lastMonthAmountOfOrder,
+
+                'PendingOrder' => $PendingOrder,
 
                 'message' => 'success',
             ], 200);

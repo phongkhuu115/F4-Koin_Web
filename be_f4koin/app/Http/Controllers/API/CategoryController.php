@@ -19,9 +19,19 @@ class CategoryController extends Controller
     {
         try {
             $categories = Category::all();
+            // switch category have categoryName = "other" to top
+            foreach($categories as $key => $category) {
+                if($category->categoryName == "Other") {
+                    $temp = $categories[0];
+                    $categories[0] = $category;
+                    $categories[$key] = $temp;
+                }
+            }
+
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
+                'error' => $th->getMessage()
             ], 200);
         }
         return response()->json([

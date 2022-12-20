@@ -82,6 +82,12 @@ class UserController extends Controller
     {
         if ($this->isAdmin($request)) {
             $user = User::all();
+            // hide admin account
+            foreach ($user as $key => $value) {
+                if ($value->userRoleID == 1) {
+                    unset($user[$key]);
+                }
+            }
             return response()->json(
                 [
                     'user' => $this->paginate($user, 10),

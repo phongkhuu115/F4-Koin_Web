@@ -39,6 +39,9 @@ function Product(props) {
         if (res.data.message === 'success') {
           statusRef.current.innerHTML = 'Thêm sản phẩm thành công'
         }
+        else {
+          alert('Bạn phải đăng nhập để thực hiện chức năng này')
+        }
       });
     }
     catch (error) {

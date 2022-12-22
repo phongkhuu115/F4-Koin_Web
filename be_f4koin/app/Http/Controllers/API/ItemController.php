@@ -116,7 +116,7 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getbyid(Request $request)
+    public function getItemByID(Request $request)
     {
         try {
             $data = Product::where('productID', $request->input('productID'))->get();
@@ -151,7 +151,7 @@ class ItemController extends Controller
                 'productInventory' => 'required|numeric|between:0,1000',
                 'productDiscount' => 'numeric|between:0,5',
                 'productSex' => 'in:Male,Female',
-                'productBorn' => 'numeric|between:1900,'. date('Y'),
+                'productBorn' => 'numeric|between:1900,' . date('Y'),
                 'imageUrl' => 'required',
             ]);
 
@@ -301,15 +301,20 @@ class ItemController extends Controller
     }
 
     // get by Category Name
-    public function getItemByCategoryName(Request $request)
+    public function getItemByCate(Request $request)
     {
         try {
-            $category = Category::where('categoryName', $request->categoryName)->first();
-            $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl')->where('productCategoryID', $category->categoryID)->get();
+            $request->validate([
+                'input' => 'required',
+                'action' => 'in:AscTime,DescTime,AscPrice,DescPrice'
+            ]);
+            $category = Category::where('categoryName', $request->input)->first();
+            $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl', 'create_at')->where('productCategoryID', $category->categoryID)->get();
+            $items = $this->sortItem($request->action,$items );
         } catch (\Throwable $th) {
             return response()->json([
-                'message' => 'Category not found',
-                'error' => $th
+                'message' => 'fail',
+                'error' => $th->getMessage()
             ], 200);
         }
 
@@ -499,7 +504,142 @@ class ItemController extends Controller
             'message' => 'success'
         ], 200);
     }
-    // reduce quantity of product
+    // get item by Sex
+    public function getItemByGender(Request $request)
+    {
+        try {
+            $request->validate([
+                'input' => 'required|string|in:Male,Female',
+                'action' => 'in:AscTime,DescTime,AscPrice,DescPrice'
+            ]);
+            // Set default values for any optional request parameters
+            $items = Product::all();
+            $items = $items->where('productSex', $request->input);
+            $items = $this->sort($items, $request->action);
+            $items = $this->paginate($items, 12, $request->input('page'));
+            return response()->json([
+                'product' =>  $items = $this->customImageUrl($items),
+                'message' => 'success'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th->getMessage()
+            ], 200);
+        }
+    }
+    // get item by price
+    public function getItemByPrice(Request $request)
+    {
+        try {
+            $request->validate([
+                'input' => 'required|numeric',
+                'page' => 'required|numeric|min:1',
+                'action' => 'in:AscTime,DescTime,AscPrice,DescPrice',
+                'constraint' => 'required|in:Less,More'
+            ]);
+            // Set default values for any optional request parameters
+            $items = Product::all();
+            $constraint = $request->constraint == 'Less' ? '<=' : '>=';
+            $items = $items->where('productPrice', $constraint, $request->input);
+            $items = $this->sortItem($request->action, $items);
+            $items = $this->paginate($items, 12, $request->input('page'));
+            return response()->json([
+                '$request->action' => $request->action,
+                'product' =>  $items = $this->customImageUrl($items),
+                'message' => 'success'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th->getMessage()
+            ], 200);
+        }
+    }
+    // sort item
+    public function sortItem($action, $items)
+    {
+        try {
+            switch ($action) {
+                case 'AscTime':
+                    $items = $items->sortBy('create_at');
+                    break;
+                case 'DescTime':
+                    $items = $items->sortByDesc('create_at');
+                    break;
+                case 'AscPrice':
+                    $items = $items->sortBy('productPrice');
+                    break;
+                case 'DescPrice':
+                    $items = $items->sortByDesc('productPrice');
+                    break;
+                default:
+                    $items = $items->sortByDesc('create_at');
+                    break;
+            }
+            return $items;
+        } catch (\Throwable $th) {
 
+        }
+    }
+    // getByName
+    public function getItemByName(Request $request)
+    {
+        try {
+            $request->validate([
+                'input' => 'required|string',
+                'page' => 'required|numeric|min:1',
+                'action' => 'in:AscTime,DescTime,AscPrice,DescPrice',
+            ]);
+            // Set default values for any optional request parameters
+            $items = Product::where('productName', 'LIKE', '%' . $request->input . '%')->get();
+            $items = $this->sortItem($request->action, $items);
+            $items = $this->paginate($items, 12, $request->input('page'));
+            return response()->json([
+                'product' =>  $items = $this->customImageUrl($items),
+                'message' => 'success',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th->getMessage()
+            ], 200);
+        }
+    }
 
+    public function getItemByNameAndCategory(Request $request)
+    {
+        try {
+            $request->validate([
+                // 'input_name' => 'string',
+                // 'input_category' => 'required|string',
+                'page' => 'required|numeric|min:1',
+                'action' => 'in:AscTime,DescTime,AscPrice,DescPrice',
+            ]);
+            // Set default values for any optional request parameters
+            $items = Product::all();
+            if($request->input_name && $request->input_category){
+                $items = Product::where('productName', 'LIKE', '%' . $request->input_name . '%')->where('productCategoryID', $request->input_category)->get();
+            }
+            else if($request->input_category)
+            {
+                $items = Product::where('productCategoryID', $request->input_category)->get();
+            }
+            else if($request->input_name)
+            {
+                $items = Product::where('productName', 'LIKE', '%' . $request->input_name . '%')->get();
+            }
+            $items = $this->sortItem($request->action, $items);
+            $items = $this->paginate($items, 12, $request->input('page'));
+            return response()->json([
+                'product' =>  $items = $this->customImageUrl($items),
+                'message' => 'success',
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $th->getMessage()
+            ], 200);
+        }
+    }
 }

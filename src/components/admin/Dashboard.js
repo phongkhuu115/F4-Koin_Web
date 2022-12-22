@@ -344,13 +344,7 @@ function DashBoard(props) {
               <div className={`fs-5 mt-1 mb-2 fw-semibold text-success mb-0 ${dayMore > 0 ? up : down}`}>
                 {dayMore > 0 ? '+ ' + dayMore : dayMore} đơn
               </div>
-              <div className='d-flex justify-content-between'>
-                <p className='m-0 fs-3'>
-                  <i className="fa-solid fa-clipboard me-3 text-info"></i>
-                  Đơn hàng đang chờ
-                </p>
-                <p className='m-0 fs-3'>{waitingOrder} đơn</p>
-              </div>
+          
             </div>
             <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">
               <p className='text-muted fw-semibold m-0 text-center fs-3'>Trong tháng này</p>

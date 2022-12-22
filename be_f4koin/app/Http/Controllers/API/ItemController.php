@@ -119,6 +119,9 @@ class ItemController extends Controller
     public function getItemByID(Request $request)
     {
         try {
+            $request->validate([
+                'input' => 'required',
+            ]);
             $data = Product::where('productID', $request->input('productID'))->get();
             $data = $this->replaceProductDetail($data);
         } catch (\Throwable $th) {
@@ -310,7 +313,7 @@ class ItemController extends Controller
             ]);
             $category = Category::where('categoryName', $request->input)->first();
             $items = Product::select('productID', 'productName', 'productPrice', 'imageUrl', 'create_at')->where('productCategoryID', $category->categoryID)->get();
-            $items = $this->sortItem($request->action,$items );
+            $items = $this->sortItem($request->action, $items);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'fail',
@@ -515,7 +518,7 @@ class ItemController extends Controller
             // Set default values for any optional request parameters
             $items = Product::all();
             $items = $items->where('productSex', $request->input);
-            $items = $this->sortItem($request->action,$items);
+            $items = $this->sortItem($request->action, $items);
             $items = $this->paginate($items, 12, $request->input('page'));
             return response()->json([
                 'product' =>  $items = $this->customImageUrl($items),
@@ -579,7 +582,6 @@ class ItemController extends Controller
             }
             return $items;
         } catch (\Throwable $th) {
-
         }
     }
     // getByName
@@ -618,15 +620,11 @@ class ItemController extends Controller
             ]);
             // Set default values for any optional request parameters
             $items = Product::all();
-            if($request->input_name && $request->input_category){
+            if ($request->input_name && $request->input_category) {
                 $items = Product::where('productName', 'LIKE', '%' . $request->input_name . '%')->where('productCategoryID', $request->input_category)->get();
-            }
-            else if($request->input_category)
-            {
+            } else if ($request->input_category) {
                 $items = Product::where('productCategoryID', $request->input_category)->get();
-            }
-            else if($request->input_name)
-            {
+            } else if ($request->input_name) {
                 $items = Product::where('productName', 'LIKE', '%' . $request->input_name . '%')->get();
             }
             $items = $this->sortItem($request->action, $items);

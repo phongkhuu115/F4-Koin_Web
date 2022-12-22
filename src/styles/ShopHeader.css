@@ -44,8 +44,23 @@ button > img {
   width: 100%;
 }
 
+.search-menu {
+  position: absolute;
+  overflow: auto;
+  bottom: -20rem;
+  right: 39.5%;
+  width: 27%;
+  height: 20rem;
+  z-index: 20;
+  display: flex;
+}
+
 .hide {
   display: none;
+}
+
+.search-item:hover {
+  background-color: #ccc;
 }
 
 @media (width < 600px) {

@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import fishPic from '../assets/koi.png'
 import mainLogo from '../assets/mainlogo.png'
 import '../styles/Product.css'
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { GetToken } from '../components/helpers/GlobalFunction'
+import { MoneyFormat } from './helpers/DataFormat';
 
 function Product(props) {
   const location = useLocation();
+  const [number, setNumber] = useState(1);
+  const statusRef = useRef(null)
   let getItem = async () => {
-    let url = "https://backend.f4koin.cyou/api/getSpecifyItem?productID=" + location.state.id;
+    let url = "https://backend.f4koin.cyou/api/getItemByID?input=" + location.state.id;
     let data = await axios(url, {
       headers: {
         'Content-Type': 'application/json',
@@ -27,12 +30,16 @@ function Product(props) {
     })
     return data;
   }
-  
+
   function SendToCart() {
     try {
-      let url = `https://backend.f4koin.cyou/api/addToCart?productID=${location.state.id}&quantity=1`
+      let url = `https://backend.f4koin.cyou/api/addToCart?productID=${location.state.id}&quantity=${number}`
       console.log(url);
-      AddToCart(url).then(res => console.log(res.data.message));
+      AddToCart(url).then(res => { 
+        if (res.data.message === 'success') {
+          statusRef.current.innerHTML = 'Thêm sản phẩm thành công'
+        }
+      });
     }
     catch (error) {
       alert('Bạn phải đăng nhập để thực hiện chức năng này')
@@ -41,7 +48,6 @@ function Product(props) {
   function RenderItem() {
     const [item, setItem] = useState(0);
     useEffect(() => {
-      console.log(item.productInventory)
       getItem().then(res => {
         setItem(res.data.product[0]);
       })
@@ -53,9 +59,10 @@ function Product(props) {
         </div>
         <div className='w-50 p-5 position-relative border-start d-flex'>
           <div className='h-100'>
+            <p ref={statusRef} className='span-4 mb-0 text-success position-absolute top-0'></p>
             <p className='text-uppercase fs-1'>{item.productName} <span className='fs-3'>(Còn <span className='fw-bold text-danger'>{typeof item.productInventory === 'undefined' ? 0 : item.productInventory}</span> sản phẩm trong kho)</span></p>
             <div className='bg-light p-3 rounded'>
-              <p>Giá: <b>{item.productPrice * 24815.00} VND</b></p>
+              <p>Giá: <b>{MoneyFormat(String(item.productPrice * 24815.00))} VND</b></p>
               <div className='bg-danger d-inline-block text-white fs-2 rounded p-2'>- {item.productDiscount}%</div>
             </div>
             <p>Giới tính: <b>{item.productSex === "Male" ? "Đực" : "Cái"}</b></p>
@@ -64,7 +71,7 @@ function Product(props) {
             <p className='mt-2'>Số lượng: </p>
             <div className='d-flex'>
               <div id="decrease" onClick={decreaseValue} value="Decrease Value" className='value-button btn fs-3 px-4'>-</div>
-              <input type="text" id="number" value="0" className='fs-4' />
+              <input type="text" id="number" value="0" className='fs-4' defaultValue={1} onChange={e => setNumber(e.target.value)}/>
               <div id="increase" onClick={increaseValue} value="Increase Value" className='value-button btn fs-3 px-4'>+</div>
             </div>
           </div>

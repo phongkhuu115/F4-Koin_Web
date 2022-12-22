@@ -142,8 +142,8 @@ function FishShop(props) {
           <div className="drop-main d-flex flex-row">
             <select name="gender" id="gender" className="form-select fs-4 me-5">
               <option value="" selected disabled hidden>Gender</option>
-              <option value="1">Đực</option>
-              <option value="2">Cái</option>
+              <option value="Male">Đực</option>
+              <option value="Female">Cái</option>
             </select>
             <select name="price" id="price" className="form-select fs-4 me-5">
               <option value="" selected disabled hidden>Price</option>

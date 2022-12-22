@@ -76,6 +76,41 @@ function RenderUser() {
 }
 
 function ShopHeader() {
+
+  let [searchItem, setSearchItem] = useState([]);
+  let [searchCate, setSearchCate] = useState('');
+  let [searchName, setSearchName] = useState('');
+
+  window.addEventListener('click', function (e) {   
+    let menu = document.querySelector('.search-menu')
+    if (menu.contains(e.target)){
+      // Clicked in box
+    } else {
+      if (!menu.classList.contains('hide')) {
+        menu.classList.add('hide')
+      }
+    }
+  });
+
+  function searchByNameAndCate(e) {
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      let menu = document.querySelector('.search-menu')
+      menu.classList.remove('hide')
+      console.log('enter')
+      let url = BaseURL() + `getItemByNameAndCategory?input_name=${searchName}&input_category=${searchCate}&page=1&action=DescTime`
+      GetAPINoToken(url).then(res => {
+        if (Array.isArray(res.data.product.data)) {
+          setSearchItem(res.data.product.data.slice());
+        }
+        else {
+          let array = Object.values(res.data.product.data);
+          setSearchItem(array.slice());
+        }
+        console.log(res.data)
+      })
+    }
+  }
   const navigate = useNavigate()
   function GotoCart() {
     if (sessionStorage.getItem('auth') !== null) {
@@ -92,17 +127,28 @@ function ShopHeader() {
           <i class="fa-solid fa-gear"></i>
         </Link>
         <Link className="navbar-brand fw-bold fs-3 text-uppercase" to='/home'>Koi Store</Link>
-        <form action="" className='search-group d-flex'>
-          <select id="catergory" name="catergory" className='p-3 bg-transparent fs-4 fw-bold border-0'>
+        <form onSubmit={e => e.preventDefault()} onKeyDown={e => searchByNameAndCate(e)} action="" className='search-group d-flex'>
+          <select id="catergory" name="catergory" className='p-3 bg-transparent fs-4 fw-bold border-0' onChange={e => setSearchCate(e.target.value)}>
             <option value="1">All Categories</option>
             <RenderCategory></RenderCategory>
           </select>
           <hr className='border border-dark ms-3' />
-          <input type="text" className='search-input form-control fs-4 p-4 bg-transparent' placeholder='Search for items...' />
+          <input type="text" className='search-input form-control fs-4 p-4 bg-transparent' defaultValue={''} placeholder='Search for items...' onChange={e => setSearchName(e.target.value)} />
           <button type="submit" className='search-btn btn btn-dark fs-4'>
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </form>
+        <div className='search-menu flex-column bg-white rounded-3 shadow-sm hide'>
+          {searchItem.map(item => {
+            return (
+              <>
+                <Link to='/home/product' className='search-item m-3 btn text-start' state={{ id: item.productID }}>
+                  <p className='text-decoration-none text-black fs-4 mb-0 p-3'>{item.productName}</p>
+                </Link>
+              </>
+            )
+          })}
+        </div>
         <div onClick={GotoCart}>
           <button type="button" className="btn-cart btn btn-primary position-relative fs-4">
             <i className="fa-solid fa-cart-shopping"></i> <span className="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"><span className="visually-hidden">unread messages</span></span>

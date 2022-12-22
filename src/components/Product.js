@@ -62,7 +62,7 @@ function Product(props) {
             <p ref={statusRef} className='span-4 mb-0 text-success position-absolute top-0'></p>
             <p className='text-uppercase fs-1'>{item.productName} <span className='fs-3'>(Còn <span className='fw-bold text-danger'>{typeof item.productInventory === 'undefined' ? 0 : item.productInventory}</span> sản phẩm trong kho)</span></p>
             <div className='bg-light p-3 rounded'>
-              <p>Giá: <b>{MoneyFormat(String(item.productPrice * 24815.00))} VND</b></p>
+              <p>Giá: <b>{MoneyFormat(String(item.productPrice))} VND</b></p>
               <div className='bg-danger d-inline-block text-white fs-2 rounded p-2'>- {item.productDiscount}%</div>
             </div>
             <p>Giới tính: <b>{item.productSex === "Male" ? "Đực" : "Cái"}</b></p>

@@ -32,6 +32,7 @@ function Product(props) {
   }
 
   function SendToCart() {
+    if (sessionStorage.getItem('jwt') === null) alert('Bạn phải đăng nhập để sử dụng chức năng này')
     try {
       let url = `https://backend.f4koin.cyou/api/addToCart?productID=${location.state.id}&quantity=${number}`
       console.log(url);
@@ -39,13 +40,9 @@ function Product(props) {
         if (res.data.message === 'success') {
           statusRef.current.innerHTML = 'Thêm sản phẩm thành công'
         }
-        else {
-          alert('Bạn phải đăng nhập để thực hiện chức năng này')
-        }
       });
     }
     catch (error) {
-      alert('Bạn phải đăng nhập để thực hiện chức năng này')
     }
   }
   function RenderItem() {

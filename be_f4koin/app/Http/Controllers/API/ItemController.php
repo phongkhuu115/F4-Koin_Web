@@ -122,7 +122,7 @@ class ItemController extends Controller
             $request->validate([
                 'input' => 'required',
             ]);
-            $data = Product::where('productID', $request->input('productID'))->get();
+            $data = Product::where('productID', $request->input('input'))->get();
             $data = $this->replaceProductDetail($data);
         } catch (\Throwable $th) {
             return response()->json([

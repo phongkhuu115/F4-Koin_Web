@@ -47,3 +47,13 @@ button > img {
 .hide {
   display: none;
 }
+
+@media (width < 600px) {
+  .search-group {
+    display: none !important;
+  }
+
+  .btn-cart {
+    display: none;
+  }
+}

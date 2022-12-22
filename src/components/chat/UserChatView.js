@@ -93,7 +93,8 @@ function App(props) {
                 if (item.message === ' has joined the channel') {
                   return null;
                 }
-                if (getPrefixID(item.user) === user) {
+                console.log(item.user)
+                if (item.user === user) {
                   return (
                     <MyMessageBox key={item.id} message={item}></MyMessageBox>
                   )

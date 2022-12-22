@@ -27,11 +27,16 @@ function Product(props) {
     })
     return data;
   }
-
+  
   function SendToCart() {
-    let url = `https://backend.f4koin.cyou/api/addToCart?productID=${location.state.id}&quantity=1`
-    console.log(url);
-    AddToCart(url).then(res => console.log(res.data.message));
+    try {
+      let url = `https://backend.f4koin.cyou/api/addToCart?productID=${location.state.id}&quantity=1`
+      console.log(url);
+      AddToCart(url).then(res => console.log(res.data.message));
+    }
+    catch (error) {
+      alert('Bạn phải đăng nhập để thực hiện chức năng này')
+    }
   }
   function RenderItem() {
     const [item, setItem] = useState(0);
@@ -64,7 +69,6 @@ function Product(props) {
             </div>
           </div>
           <div className='d-flex position-absolute bottom-0 w-100'>
-            <button className='text-uppercase fs-1 btn btn-dark flex-grow-1 mx-3 py-2 fw-bold ms-0'>buy now</button>
             <button onClick={SendToCart} className='text-uppercase fs-1 btn btn-dark flex-grow-1 py-2 fw-bold me-5'>add to cart</button>
           </div>
           <img src={mainLogo} alt="" className='sticker position-absolute top-0 end-0 ' />

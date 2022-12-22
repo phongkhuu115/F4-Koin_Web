@@ -38,7 +38,7 @@ function App(props) {
     let url = BaseURL() + 'sendMessage'
     // let url = "http://localhost:8000/api/sendMessage"
     let body = {
-      channel_name: '345ba2f4-ablychnl',
+      channel_name: '44da130e-ablychnl',
       message_content: message,
       user: user
     }
@@ -65,7 +65,7 @@ function App(props) {
         encrypted: true,
       })
       echo
-        .channel('345ba2f4-ablychnl')
+        .channel('44da130e-ablychnl')
         .subscribed(() => {
           console.log('You are subscribed');
         })
@@ -92,11 +92,14 @@ function App(props) {
               <div className='dot bg-warning rounded-circle me-3'></div>
               <div className='dot bg-danger rounded-circle me-3'></div>
             </div>
-            {channels.map(item => { 
-              console.log(item)
-              return (
-                <UserChat username= {item.username} last_message={item.last_message === null ? 'Chưa có tin nhắn' : item.last_message} create_at={item.create_at === null ? '9999-99-99 99:99:99': item.create_at}></UserChat>
-              )
+            {channels.map(item => {
+              // console.log(item)
+              // console.log(item.username)
+              // console.log(item.last_message)
+              // console.log(item.create_at)
+              // return (
+              //   <UserChat item = {item}></UserChat>
+              // )
             })}
           </div>
           <div className='col chat-page_view p-3 m-5 rounded shadow-sm d-flex flex-column justify-content-end'>
@@ -104,7 +107,7 @@ function App(props) {
               {messages.map(item => {
                 console.log(item)
                 console.log(item.channel)
-                if (getPrefixID(item.user) === 'admin') {
+                if (item.user === 'admin') {
                   return (
                     <MyMessageBox key={item.id} message={item}></MyMessageBox>
                   )

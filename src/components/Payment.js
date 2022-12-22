@@ -85,7 +85,7 @@ function App(props) {
               </div>
             </div>
             {hasRender && <RenderMethod></RenderMethod>}
-            <p ref={statusRef} className="span-4"></p>
+            <p ref={statusRef} className="span-4 text-center text-success"></p>
           </div>
           <div>
             <button type="button" className="btn btn-success py-2 w-100 fs-4 mb-3" onClick={handleCompleteOrder}>Đặt Hàng</button>

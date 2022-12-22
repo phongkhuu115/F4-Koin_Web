@@ -515,7 +515,7 @@ class ItemController extends Controller
             // Set default values for any optional request parameters
             $items = Product::all();
             $items = $items->where('productSex', $request->input);
-            $items = $this->sort($items, $request->action);
+            $items = $this->sortItem($request->action,$items);
             $items = $this->paginate($items, 12, $request->input('page'));
             return response()->json([
                 'product' =>  $items = $this->customImageUrl($items),

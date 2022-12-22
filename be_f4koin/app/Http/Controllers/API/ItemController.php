@@ -34,7 +34,8 @@ class ItemController extends Controller
         });
         $category = Category::where('categoryID', $categoryID)->first();
         $product->map(function ($item) use ($category) {
-            $item->productDetail = $category->categoryDescription;
+            if ($category != null)
+                $item->productDetail = $category->categoryDescription;
         });
         return $product;
     }

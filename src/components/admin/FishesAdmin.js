@@ -201,12 +201,10 @@ function ProductsAdmin(props) {
               productDiscount: productDiscount,
               imageUrl: downloadURL
             }
-            console.log(body)
             PostAPIToken(url, body).then(res => {
-              console.log(res.data)
-              // if (res.data.message === '') {
-              //   alert('thêm sản phẩm thành công')
-              // }
+              if (res.data.message === 'success') {
+                window.location.reload();
+              }
             })
           });
         }
@@ -230,9 +228,9 @@ function ProductsAdmin(props) {
       console.log(body)
       PostAPIToken(url, body).then(res => {
         console.log(res.data)
-        // if (res.data.message === '') {
-        //   alert('thêm sản phẩm thành công')
-        // }
+        if (res.data.message === 'success') {
+          window.location.reload();
+        }
       })
     }
   }
@@ -273,9 +271,9 @@ function ProductsAdmin(props) {
             imageUrl: downloadURL
           }
           PostAPIToken(url, body).then(res => {
-
+            console.log(res.data)
             if (res.data.message === 'Product created successfully') {
-              alert('thêm sản phẩm thành công')
+              
             }
           })
         });

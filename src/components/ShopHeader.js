@@ -87,7 +87,10 @@ function ShopHeader() {
   }
   return (
     <>
-      <header className='navbar navbar-expand-lg bg-light justify-content-evenly shadow'>
+      <header className='navbar navbar-expand-lg bg-light justify-content-evenly shadow position-relative'>
+        <Link to='/home/info' className='btn position-absolute end-0 fs-3'>
+          <i class="fa-solid fa-gear"></i>
+        </Link>
         <Link className="navbar-brand fw-bold fs-3 text-uppercase" to='/home'>Koi Store</Link>
         <form action="" className='search-group d-flex'>
           <select id="catergory" name="catergory" className='p-3 bg-transparent fs-4 fw-bold border-0'>

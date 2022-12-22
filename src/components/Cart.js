@@ -70,7 +70,7 @@ function App(props) {
       product_id: ids
     }
     PostAPIToken(url, body).then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.message = "success") {
         navigate('/home/payment', {
           state: {

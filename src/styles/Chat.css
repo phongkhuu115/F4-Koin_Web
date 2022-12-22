@@ -1,0 +1,49 @@
+.chat-page {
+  background-color: #f0f0f6;
+}
+
+.chat-page__logo {
+  width: 80px;
+}
+
+.chat-page_container {
+  overflow: auto;
+}
+
+.user_chat {
+  overflow: auto;
+  background-color: #f5f5f9;
+}
+
+.chat-page_view {
+  overflow: auto;
+  background-color: #f5f5f9;
+}
+
+.chat-page__user {
+  text-overflow: ellipsis; 
+  white-space: nowrap;
+  overflow: hidden !important;
+}
+
+.dot {
+  width: 24px;
+  height: 24px;
+}
+
+.message {
+  text-overflow: ellipsis; 
+  white-space: nowrap;
+  overflow: hidden !important;
+}
+
+.user__chatting {
+  position: fixed;
+  width: calc(75vw - 16rem);
+  background: #f5f5f9;
+}
+
+.text-justify {
+  text-align: justify;
+  text-justify: inter-word;
+}

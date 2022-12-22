@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ReactDOM } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import Bank from './BankPayment';
@@ -20,6 +20,7 @@ function App(props) {
   const [method, setMethod] = useState('')
   const location = useLocation();
   const onShow = React.useCallback((e) => setRender(e.target.id), []);
+  const statusRef = useRef();
   useEffect(() => {
     let url = BaseURL() + "getSpecifyOrder?order_id=" + location.state.id;
     GetAPIToken(url).then(res => {
@@ -37,7 +38,11 @@ function App(props) {
       payment_method: method
     }
     // console.log(body)
-    PostAPIToken(url, body).then(res => console.log(res.data))
+    PostAPIToken(url, body).then(res => {
+      if (res.data.message === 'success') {
+        statusRef.current.innerHTML = 'Đặt Hàng Thành Công'
+      }
+    })
   }
   function RenderMethod(e) {
     if (hasRender === 'Bank') {
@@ -80,13 +85,10 @@ function App(props) {
               </div>
             </div>
             {hasRender && <RenderMethod></RenderMethod>}
+            <p ref={statusRef} className="span-4"></p>
           </div>
           <div>
             <button type="button" className="btn btn-success py-2 w-100 fs-4 mb-3" onClick={handleCompleteOrder}>Đặt Hàng</button>
-            <p className="text-muted fs-5">
-              Your personal data will be used to process your order, support your experience
-              throughout this website, and for other purposes described in our privacy policy.
-            </p>
           </div>
         </form>
         <div className="col bg-light border-start ms-5 px-5">

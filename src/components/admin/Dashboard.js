@@ -25,6 +25,7 @@ function DashBoard(props) {
   const [monthMore, setMonthMore] = useState(1)
   const [yearOrder, setYearOrder] = useState(1)
   const [yearMore, setYearMore] = useState(1)
+  const [waitingOrder, setWaitingOrder] = useState(1)
   const [pageNum, setPageNum] = useState(0)
   const inputRef = useRef(null)
   const navigate = useNavigate()
@@ -264,7 +265,7 @@ function DashBoard(props) {
             </Link>
           </div>
           <div className="profile menu__btn text-center p-3 m-3 rounded menu__hover">
-            <Link className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
+            <Link to ='/admin/chat' className='text-muted text-decoration-none fw-semibold m-0 fs-3 d-flex align-items-center'>
               <i className="fa-solid fa-message"></i>
               Tin nhắn
             </Link>
@@ -342,6 +343,13 @@ function DashBoard(props) {
               </div>
               <div className={`fs-5 mt-1 mb-2 fw-semibold text-success mb-0 ${dayMore > 0 ? up : down}`}>
                 {dayMore > 0 ? '+ ' + dayMore : dayMore} đơn
+              </div>
+              <div className='d-flex justify-content-between'>
+                <p className='m-0 fs-3'>
+                  <i className="fa-solid fa-clipboard me-3 text-info"></i>
+                  Đơn hàng đang chờ
+                </p>
+                <p className='m-0 fs-3'>{waitingOrder} đơn</p>
               </div>
             </div>
             <div className="d-flex flex-column p-4 mx-3 mt-3 mb-5 rounded">

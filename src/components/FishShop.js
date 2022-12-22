@@ -57,7 +57,7 @@ function FishShop(props) {
         e.preventDefault()
         let url = `https://backend.f4koin.cyou/api/addToCart?productID=${productID}&quantity=1`
         PostAPINoBody(url).then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           if (res.data.message === 'success') {
             let popup = document.querySelector('.confirm-popup')
             popup.innerHTML = productName + " đã được thêm vào giỏ hàng";
@@ -140,66 +140,26 @@ function FishShop(props) {
         <h1 className="header-2 display-5 p-5 mb-5 fw-bold text-uppercase">{location.state.name} <span className="number-item font-italic display-6 fs-5">({productNumber})</span></h1>
         <div className="drop-gr d-flex justify-content-between align-items-center py-3 ps-3 border-solid border-top border-bottom">
           <div className="drop-main d-flex flex-row">
-            <div className="dropdown">
-              <button className="btn btn-dark dropdown-toggle drop-item-btn fs-4" aria-expanded="false" data-bs-toggle="dropdown" type="button">
-                Gender </button>
-              <div className="dropdown-menu">
-                <a className="dropdown-item" href="#top">First Item</a>
-                <a className="dropdown-item" href="#top">Second Item</a>
-                <a className="dropdown-item" href="#top">Third Item</a>
-              </div>
-            </div>
-            <div className="dropdown">
-              <button className="btn btn-dark dropdown-toggle drop-item-btn fs-4" aria-expanded="false" data-bs-toggle="dropdown" type="button">
-                Color </button>
-              <div className="dropdown-menu">
-                <a className="dropdown-item" href="#top">First Item</a>
-                <a className="dropdown-item" href="#top">Second Item</a>
-                <a className="dropdown-item" href="#top">Third Item</a>
-              </div>
-            </div>
-            <div className="dropdown">
-              <button className="btn btn-dark dropdown-toggle drop-item-btn fs-4" aria-expanded="false" data-bs-toggle="dropdown" type="button">
-                Size </button>
-              <div className="dropdown-menu">
-                <a className="dropdown-item" href="#top">First Item</a>
-                <a className="dropdown-item" href="#top">Second Item</a>
-                <a className="dropdown-item" href="#top">Third Item</a>
-              </div>
-            </div>
-            <div className="dropdown">
-              <button className="btn btn-dark dropdown-toggle drop-item-btn fs-4" aria-expanded="false" data-bs-toggle="dropdown" type="button">
-                Price
-              </button>
-              <div className="dropdown-menu">
-                <a className="dropdown-item" href="#top">First Item</a>
-                <a className="dropdown-item" href="#top">Second Item</a>
-                <a className="dropdown-item" href="#top">Third Item</a>
-              </div>
-            </div>
+            <select name="gender" id="gender" className="form-select fs-4 me-5">
+              <option value="" selected disabled hidden>Gender</option>
+              <option value="1">Đực</option>
+              <option value="2">Cái</option>
+            </select>
+            <select name="price" id="price" className="form-select fs-4 me-5">
+              <option value="" selected disabled hidden>Price</option>
+              <option value="1">Trên 5 triệu</option>
+              <option value="2"> Dưới 5 triệu </option>
+            </select>
           </div>
-          <div className="drop-sub d-flex justify-content-between align-items-center">
-            <ul className="list-group " >
-              <li className="list-group-item" ><span className="span-4">Sort By:</span></li>
-            </ul>
-            <div className="dropdown">
-              <button className="btn btn-dark dropdown-toggle drop-item-btn fs-4" aria-expanded="false" data-bs-toggle="dropdown" type="button" >
-                Dropdown </button>
-              <div className="dropdown-menu">
-                <a className="dropdown-item" href="#top">First Item</a>
-                <a className="dropdown-item" href="#top">Second Item</a>
-                <a className="dropdown-item" href="#top">Third Item</a>
-              </div>
-            </div>
+          <div className="drop-sub d-flex text-nowrap align-items-center">
+            <p className="mb-0 fs-4 span-4 me-5">Sort By:</p>
+            <select name="sort" id="sort" className="form-select fs-4">
+              <option value="1">Tên (A-Z)</option>
+              <option value="2">Giá (Cao Nhất)</option>
+              <option value="3">Giá (Thấp Nhất)</option>
+            </select>
           </div>
         </div>
-        <div className="btn-category-group p-5" role="group">
-          <button className="btn btn-dark btn-close-category px-4 text-uppercase" type="button">
-            {location.state.name}<i className="fa-solid fa-xmark ms-3"></i>
-          </button>
-          <a className="btn-category-group p-5" href="#top">Clear all</a>
-        </div>
-
         <div className="pb-5">
           <div className="row gy-4 row-cols-1 row-cols-md-4 w-100 m-0 justify-content-between">
             <RenderItem></RenderItem>
@@ -223,7 +183,7 @@ function FishShop(props) {
           <br />
           Sản phẩm đã hết hàng hoặc ngừng kinh doanh
           <br />
-          <img src={ outStock} alt="" className="me-5"/>
+          <img src={outStock} alt="" className="me-5" />
         </p>
       </div>
     </>

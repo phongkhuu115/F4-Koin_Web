@@ -27,6 +27,7 @@ function RenderLogin() {
           password: password
         }
         PostAPINoToken(url, body).then(res => {
+          console.log(res.data.user)
           sessionStorage.setItem('auth', res.data.token);
           if (res.data.user.userRoleID === "1" && res.data.message === "Login success") { 
             navigate('/admin', {

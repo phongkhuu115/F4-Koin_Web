@@ -23,6 +23,9 @@ import {
 import FishesAdmin from './components/admin/FishesAdmin';
 import ProductsAdmin from './components/admin/ProductsAdmin';
 import UsersAdmin from './components/admin/UsersAdmin'
+import Chat from './components/chat/ChatView'
+import UserChat from './components/chat/UserChatView'
+import UserInfo from './components/UserInfo';
 
 const htmlRoot = document.getElementById('root');
 window.addEventListener("beforeunload", () => {
@@ -33,7 +36,7 @@ const root = ReactDOM.createRoot(htmlRoot);
 root.render(
   <HashRouter>
     <Routes>
-      <Route path="/" element={<IntroHeader />}>
+      <Route exact path="/" element={<IntroHeader />}>
         <Route index element={<Body />} />
         <Route exact path="login" element={<RenderLogin />} />
         <Route exact path="signup" element={<RenderSignup />} />
@@ -45,12 +48,15 @@ root.render(
         <Route exact path='payment' element={<Payment></Payment>} />
         <Route exact path='product' element={<Product></Product>} />
         <Route exact path='cart' element={<Cart></Cart>} />
+        <Route exact path = 'userchat' element={<UserChat></UserChat>}></Route>
+        <Route exact path = 'info' element={<UserInfo></UserInfo>}></Route>
       </Route>
       <Route path='/admin'>
         <Route index element={ <DashBoard></DashBoard>}></Route>
         <Route exact path='fish' element={<FishesAdmin></FishesAdmin>} />
         <Route exact path='products' element={<ProductsAdmin></ProductsAdmin>} />
         <Route exact path='users' element={<UsersAdmin></UsersAdmin>} />
+        <Route exact path = 'chat' element={<Chat></Chat>}></Route>
       </Route>
     </Routes>
   </HashRouter>

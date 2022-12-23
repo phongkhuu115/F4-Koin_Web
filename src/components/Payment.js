@@ -101,9 +101,10 @@ function App(props) {
           <div className="container py-4">
             <div className="row fs-4">
               {orderItems.map(item => {
+                console.log(item)
                 return (
                   <>
-                    <div className="col-sm-8 ps-0">{item.productName}</div>
+                    <div className="col-sm-8 ps-0">{item.productName} x { item.quantity}</div>
                     <div className="col-sm-4 fw-bold">{item.productPrice} VND</div>
                   </>
                 )

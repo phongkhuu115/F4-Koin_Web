@@ -32,7 +32,7 @@ function Product(props) {
   }
 
   function SendToCart() {
-    if (sessionStorage.getItem('jwt') === null) alert('Bạn phải đăng nhập để sử dụng chức năng này')
+    if (sessionStorage.getItem('auth') === null) alert('Bạn phải đăng nhập để sử dụng chức năng này')
     try {
       let url = `https://backend.f4koin.cyou/api/addToCart?productID=${location.state.id}&quantity=${number}`
       console.log(url);

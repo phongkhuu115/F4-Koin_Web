@@ -165,12 +165,14 @@ class OrderController extends Controller
         $item_in_order = DB::table('item_in_order')->where('order_id', $order_id)->get();
         foreach ($item_in_order as $item) {
             $item_in_cart = DB::table('item_in_carts')->where('id_cart', $cart_id)->where('product_id', $item->product_id)->first();
-            if ($item_in_cart->quantity == $item->quantity) {
-                DB::table('item_in_carts')->where('id_cart', $cart_id)->where('product_id', $item->product_id)->delete();
-            } else {
-                $item_in_cart->quantity -= $item->quantity;
-                if (!$item_in_cart->save()) {
-                    return false;
+            if ($item_in_cart != null) {
+                if ($item_in_cart->quantity == $item->quantity) {
+                    DB::table('item_in_carts')->where('id_cart', $cart_id)->where('product_id', $item->product_id)->delete();
+                } else {
+                    $item_in_cart->quantity -= $item->quantity;
+                    if (!$item_in_cart->save()) {
+                        return false;
+                    }
                 }
             }
         }
@@ -201,6 +203,7 @@ class OrderController extends Controller
             }
             $order->order_status = 'Pending';
             $order->payment_method = $request->payment_method;
+            $order->create_at = now();
             if (!$order->save()) {
                 return response()->json([
                     'message' => 'fail',

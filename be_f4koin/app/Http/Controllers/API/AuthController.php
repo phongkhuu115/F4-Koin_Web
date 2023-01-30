@@ -112,6 +112,53 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
+    public function googleSignIn(Request $request)
+    {
+        $fields = $request->validate([
+            'id' => 'required|string|min:3',
+            'email' => 'required|min:4',
+        ]);
+
+        $fields['given_name'] = $request->given_name;
+        $fields['family_name'] = $request->family_name;
+        $fields['picture'] = $request->picture;
+
+
+
+        // check user exsting in database
+        $user = User::where('userEmail', $fields['email'])->first();
+        if (!$user) {
+            $m1 = 'User not found, Created new user';
+            // create new user
+            $user = User::create([
+                'username' => $fields['given_name'] . $fields['id'],
+                'userEmail' => $fields['email'],
+                'userFullName' => $fields['given_name'] . $fields['family_name'],
+                'userRoleID' => '3',
+                'password' => bcrypt($fields['id'])
+            ]);
+        }
+
+
+        // clear all the token of this user
+        $user->tokens()->delete();
+        // create new token
+        $token = $user->createToken('loginToken')->plainTextToken;
+        // add expire time to personal access token
+        // $user->tokens()->where('name','loginToken')->update(['expires_at' => now()->addDay(1)]);
+        $user->tokens()->where('name', 'loginToken')->update(['expires_at' => now()->addMinute(self::timeout)]);
+
+
+
+        $response = [
+            'user' => $user,
+            'token' => $token,
+            'message' =>  $m1 == null ?  'Login success' : $m1
+        ];
+
+        return response($response, 201);
+    }
+
     public function logout(User $user)
     {
         $user->tokens()->delete();

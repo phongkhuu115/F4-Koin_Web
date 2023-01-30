@@ -25,6 +25,8 @@ use App\Http\Controllers\ChatController;
 */
 // Route Public API
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/google-sign-in', [AuthController::class, 'googleSignIn']);
+
 Route::post('/register', [AuthController::class, 'register']);
 
 // Route Public product

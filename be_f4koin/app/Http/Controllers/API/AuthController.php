@@ -127,6 +127,7 @@ class AuthController extends Controller
 
         // check user exsting in database
         $user = User::where('userEmail', $fields['email'])->first();
+        $m1 = null;
         if (!$user) {
             $m1 = 'User not found, Created new user';
             // create new user

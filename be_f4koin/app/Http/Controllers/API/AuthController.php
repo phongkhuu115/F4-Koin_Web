@@ -28,6 +28,20 @@ class AuthController extends Controller
         }
     }
 
+    public function getClientId(Request $request)
+    {
+        if($request->secret_message != hash('sha256', 'f4koin')){
+            return response([
+                'message' => 'Invalid secret message'
+            ], 200);
+        }
+        return response([
+            'expoClientId'=> env('GOOGLE_EXPO_CLIENT_ID'),
+            'clientId' => env('GOOGLE_CLIENT_ID'),
+            'iosClientId' => env('GOOGLE_IOS_CLIENT_ID'),
+            'androidClientId' => env('GOOGLE_ANDROID_CLIENT_ID'),
+        ], 200);
+    }
 
 
     public function register(Request $request)

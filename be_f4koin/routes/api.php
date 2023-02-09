@@ -1,17 +1,17 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ItemController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\OrderController;
-use App\Models\Role;
-use App\Events\MessageEvent;
 use App\Http\Controllers\API\ReportController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\RegisteredUserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +23,15 @@ use App\Http\Controllers\ChatController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 // Route Public API
+// group route api/auth
+Route::group(['prefix' => 'auth'], function () {
+    Route::get('/verify-email/{vrfcode}', [AuthController::class, 'verifyEmail']);
+});
+
+
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/google-sign-in', [AuthController::class, 'googleSignIn']);
 Route::post('/get-client-id', [AuthController::class, 'getClientId']);
@@ -110,7 +118,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/sendMessage', [ChatController::class, 'sendMessage']);
     Route::get('/userJoinChannel', [ChatController::class, 'userJoinChannel']);
     Route::get('/adminJoinChannel', [ChatController::class, 'adminJoinChannel']);
-
 });
 
 // Route::post('new-message', function (Request $request) {

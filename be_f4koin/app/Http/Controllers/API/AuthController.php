@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\Cart;
 use App\Http\Controllers\API\CartController as CartController;
-
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Str;
+use App\Http\Controllers\EmailController;
 
 class AuthController extends Controller
 {
@@ -30,19 +32,53 @@ class AuthController extends Controller
 
     public function getClientId(Request $request)
     {
-        if($request->secret_message != hash('sha256', 'f4koin')){
+        if ($request->secret_message != hash('sha256', 'f4koin')) {
             return response([
                 'message' => 'Invalid secret message'
             ], 200);
         }
+
         return response([
-            'expoClientId'=> env('GOOGLE_EXPO_CLIENT_ID'),
+            'expoClientId' => env('GOOGLE_EXPO_CLIENT_ID'),
             'clientId' => env('GOOGLE_CLIENT_ID'),
             'iosClientId' => env('GOOGLE_IOS_CLIENT_ID'),
             'androidClientId' => env('GOOGLE_ANDROID_CLIENT_ID'),
         ], 200);
     }
 
+    public function verifyEmail(Request $request, $vrfcode)
+    {
+        // get verification code from first parameter
+        $verification_code = $vrfcode;
+
+        if (!$verification_code) {
+            return response([
+                'message' => 'Invalid verification code',
+                'verification_code' => $verification_code,
+            ], 200);
+        }
+
+        // check verification code in database
+        $user = User::where('verification_code', $verification_code)->first();
+        if (!$user) {
+            return response([
+                'message' => 'Invalid verification code'
+            ], 200);
+        }
+
+        // update user status
+        $user->email_verified_at = now();
+        $user->save();
+        if (!$user->wasChanged()) {
+            return response([
+                'message' => 'Invalid verification code'
+            ], 200);
+        }
+
+        return response([
+            'message' => 'Email verified successfully'
+        ], 200);
+    }
 
     public function register(Request $request)
     {
@@ -60,21 +96,26 @@ class AuthController extends Controller
             'userFullName' => $fields['userFullName'],
             'userTelephone' => $fields['userTelephone'],
             'userRoleID' => '3',
-            'password' => bcrypt($fields['password'])
+            'password' => bcrypt($fields['password']),
+            'verification_code' => Str::random(32),
         ]);
+
 
         // create cart for user
         $cart = Cart::create([
             'id_user' => $user->userID,
         ]);
 
-
-        $token = $user->createToken('myToken')->plainTextToken;
-        $this->updateExpireTimeOfToken(substr($token, 2));
+        // send email to user to verify email
+        $emailController = new EmailController();
         $response = [
             'user' => $user,
-            'token' => $token,
-            'cart' => $cart
+            'token' => $user->email_verified_at ? $user->createToken('loginToken')->plainTextToken : 'unverified',
+            'cart' => $cart,
+            'message' => $emailController->sendEmailVerify($user->userEmail, $user->verification_code)
+                != 'Email sent successfully'
+                ? 'Register success, but email not sent'
+                : 'Register success, please verify your email'
         ];
 
         return response($response, 201);
@@ -97,8 +138,8 @@ class AuthController extends Controller
 
         // clear all the token of this user
         $user->tokens()->delete();
-        // create new token
-        $token = $user->createToken('loginToken')->plainTextToken;
+        // create new token if user is verified
+        $token = $user->email_verified_at ? $user->createToken('loginToken')->plainTextToken : 'unverified';
         // add expire time to personal access token
         // $user->tokens()->where('name','loginToken')->update(['expires_at' => now()->addDay(1)]);
         $user->tokens()->where('name', 'loginToken')->update(['expires_at' => now()->addMinute(self::timeout)]);

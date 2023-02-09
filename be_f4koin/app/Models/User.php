@@ -8,9 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\UuidTrait;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Auth\Events\Registered;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, UuidTrait;
 
@@ -33,6 +34,7 @@ class User extends Authenticatable
         'username',
         'userEmail',
         'password',
+        'verification_code',
     ];
 
     /**

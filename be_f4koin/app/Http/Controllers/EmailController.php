@@ -25,7 +25,7 @@ class EmailController extends Controller
     {
         $url = env('APP_ENV') == 'local' ? env('LOCAL_URL') : env('PRODUCTION_URL');
         $data = [
-            'verification_link' => $url . '/api/auth/verify-email?' . $verification_code
+            'verification_link' => $url . '/api/auth/verify-email/' . $verification_code
         ];
 
         Mail::send('emails.verification', $data, function ($message) use ($email) {

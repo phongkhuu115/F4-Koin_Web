@@ -21,6 +21,7 @@ class EmailController extends Controller
 
         return 'Email sent successfully';
     }
+    
     public function sendEmailVerify($email, $verification_code)
     {
         $url = env('APP_ENV') == 'local' ? env('LOCAL_URL') : env('PRODUCTION_URL');

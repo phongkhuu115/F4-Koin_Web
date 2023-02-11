@@ -178,8 +178,6 @@ class AuthController extends Controller
         $fields['family_name'] = $request->family_name;
         $fields['picture'] = $request->picture;
 
-
-
         // check user exsting in database
         $user = User::where('userEmail', $fields['email'])->first();
         $m1 = null;
@@ -191,8 +189,16 @@ class AuthController extends Controller
                 'userEmail' => $fields['email'],
                 'userFullName' => $fields['given_name'] . $fields['family_name'],
                 'userRoleID' => '3',
-                'password' => bcrypt($fields['id'])
+                'password' => bcrypt($fields['id']),
+                'verification_code' => Str::random(32),
+                'email_verified_at' => now(),
+                'userAvatar' => $fields['picture'],
             ]);
+
+            $cart = Cart::create([
+                'id_user' => $user->userID,
+            ]);
+
         }
 
 

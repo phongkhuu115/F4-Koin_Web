@@ -215,7 +215,8 @@ class AuthController extends Controller
         $response = [
             'user' => $user,
             'token' => $token,
-            'message' =>  $m1 == null ?  'Login success' : $m1
+            'message' =>  $m1 == null ?  'Login success' : $m1,
+            'request' => $fields
         ];
 
         return response($response, 201);

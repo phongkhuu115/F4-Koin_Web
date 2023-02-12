@@ -185,7 +185,7 @@ class AuthController extends Controller
             $m1 = 'User not found, Created new user';
             // create new user
             $user = User::create([
-                'username' => $fields['given_name'] . $fields['id'],
+                'username' => $fields['id'],
                 'userEmail' => $fields['email'],
                 'userFullName' => $fields['given_name'] . $fields['family_name'],
                 'userRoleID' => '3',

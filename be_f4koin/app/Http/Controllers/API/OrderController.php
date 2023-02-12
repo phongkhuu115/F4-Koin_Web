@@ -58,6 +58,14 @@ class OrderController extends Controller
         $token = DB::table('personal_access_tokens')->where('token', $token)->first();
         return $token->tokenable_id;
     }
+
+    public function getUser($userID)
+    {
+        $user = DB::table('users')->where('userID', $userID)->first();
+        return $user;
+    }
+
+
     public function stringToArray($string)
     {
         $string = explode(",", $string);
@@ -384,5 +392,22 @@ class OrderController extends Controller
             }
         }
         return true;
+    }
+
+    public function getMyOrder(Request $request)
+    {
+        $user = $this->getUser($this->getUserID($request));
+        $orders = Order::where('user_id', $user->userID)->get();
+        foreach ($orders as $order) {
+            $order->create_at = date('d/m/Y', strtotime($order->create_at));
+        }
+        $orders = $orders->sortByDesc('create_at');
+        $orders = $this->paginate($orders, 8, 1);
+        return response()->json([
+            'orders' => $orders,
+            // 'user' => $user,
+            // fail if total is 0
+            'message' => $orders->total() != 0 ? 'success' : 'fail'
+        ], 200);
     }
 }

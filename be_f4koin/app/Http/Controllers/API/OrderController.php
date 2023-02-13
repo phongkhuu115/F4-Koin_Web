@@ -399,7 +399,9 @@ class OrderController extends Controller
         $user = $this->getUser($this->getUserID($request));
         $orders = Order::where('user_id', $user->userID)->get();
         foreach ($orders as $order) {
-            $order->create_at = date('d/m/Y', strtotime($order->create_at));
+            // date d/m/y h:i:s
+            $order->create_at = date('d/m/Y H:i:s', strtotime($order->create_at));
+
         }
         $orders = $orders->sortByDesc('create_at');
         $orders = $this->paginate($orders, 8, 1);
